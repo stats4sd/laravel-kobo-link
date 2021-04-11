@@ -1,6 +1,6 @@
 <?php
 
-namespace VendorName\Skeleton\Tests;
+namespace Stats4sd\KoboLink\Tests;
 
 class ExampleTest extends TestCase
 {

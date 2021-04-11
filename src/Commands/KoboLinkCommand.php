@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Stats4sd\KoboLink\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class KoboLinkCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-kobo-link';
 
     public $description = 'My command';
 

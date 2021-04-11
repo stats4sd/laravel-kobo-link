@@ -1,2 +1,2 @@
 providers:
-  - VendorName\Skeleton\SkeletonServiceProvider
+  - Stats4sd\KoboLink\KoboLinkServiceProvider
