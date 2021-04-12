@@ -5,21 +5,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/stats4sd/laravel-kobo-link/Check%20&%20fix%20styling?label=code%20style)](https://github.com/stats4sd/laravel-kobo-link/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/stats4sd/laravel-kobo-link.svg?style=flat-square)](https://packagist.org/packages/stats4sd/laravel-kobo-link)
 
-[](delete) 1) manually replace `Dave Mills, stats4sd, auhor@domain.com, stats4sd, stats4sd, Vendor Name, laravel-kobo-link, laravel-kobo-link, laravel-kobo-link, KoboLink, Manage KoboToolBox from your Laravel Project` with their correct values
-[](delete) in `CHANGELOG.md, LICENSE.md, README.md, ExampleTest.php, ModelFactory.php, KoboLink.php, KoboLinkCommand.php, KoboLinkFacade.php, KoboLinkServiceProvider.php, TestCase.php, composer.json, create_laravel-kobo-link_table.php.stub`
-[](delete) and delete `configure-laravel-kobo-link.sh`
-
-[](delete) 2) You can also run `./configure-laravel-kobo-link.sh` to do this automatically.
-
 This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/package-laravel-kobo-link-laravel.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/package-laravel-kobo-link-laravel)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
 
 ## Installation
 
@@ -36,16 +22,36 @@ php artisan vendor:publish --provider="Stats4sd\KoboLink\KoboLinkServiceProvider
 php artisan migrate
 ```
 
-You can publish the config file with:
-```bash
-php artisan vendor:publish --provider="Stats4sd\KoboLink\KoboLinkServiceProvider" --tag="laravel-kobo-link-config"
+### Setup Required Configuration Variables
+
+In order to link up to a KoBoToolbox server, you must provide the following environment variables:
+
+```
+KOBO_ENDPOINT=
+KOBO_OLD_ENDPOINT=
+KOBO_USERNAME=
+KOBO_PASSWORD=
 ```
 
-This is the contents of the published config file:
+The two endpoint variables should be the full url to the server you are using. For example:
+```
+## If you use the 'for everyone else' server provided by the team at https://kobotoolbox.org:
+KOBO_ENDPOINT=https://kf.kobotoolbox.org,
+KOBO_OLD_ENDPOINT=https://kc.kobotoolbox.org
 
-```php
-return [
-];
+## If you use their humanitarian server, use:
+KOBO_ENDPOINT=https://kobo.humanitarianresponse.info
+KOBO_OLD_ENDPOINT=https://kc.humanitarianresponse.info
+```
+
+The platform requires a 'primary' user account on the KoboToolbox server to manage deployments of ODK forms. This account will *own* every form published by the platform. We HIGHLY recommend creating an account specifically for the Laravel application. If the application uses an account also used by other users, there is a chance that your database will become out of sync with the forms present on KoBoToolbox, and the form management functions may stop working correctly.
+
+### Publishing The config
+
+If you add the required ENV variables to your application, there should be no need to publish the config file. However, you may wish to do so anyway. To publish the file, use:
+
+```bash
+php artisan vendor:publish --provider="Stats4sd\KoboLink\KoboLinkServiceProvider" --tag="laravel-kobo-link-config"
 ```
 
 ## Usage
