@@ -54,19 +54,6 @@ If you add the required ENV variables to your application, there should be no ne
 php artisan vendor:publish --provider="Stats4sd\KoboLink\KoboLinkServiceProvider" --tag="laravel-kobo-link-config"
 ```
 
-## Usage
-
-```php
-$laravel-kobo-link = new Stats4sd\KoboLink();
-echo $laravel-kobo-link->echoPhrase('Hello, Spatie!');
-```
-
-## Testing
-
-```bash
-composer test
-```
-
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
