@@ -67,9 +67,6 @@ You can add links to these crud panels into your sidebar:
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
-## Contributing
-
-Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
 
 ## Security Vulnerabilities
 

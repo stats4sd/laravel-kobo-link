@@ -11,7 +11,8 @@ use Stats4sd\KoboLink\Models\Traits\HasUploadFields;
 
 class Xlsform extends Model
 {
-    use CrudTrait, HasUploadFields;
+    use CrudTrait;
+    use HasUploadFields;
 
     protected $table = 'xlsforms';
     protected $guarded = ['id'];

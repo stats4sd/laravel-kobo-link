@@ -5,15 +5,18 @@ namespace Stats4sd\KoboLink\Jobs;
 use App\Models\User;
 use Stats4sd\KoboLink\Models\XlsForm;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Stats4sd\KoboLink\Events\KoboDeploymentReturnedSuccess;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Stats4sd\KoboLink\Events\KoboDeploymentReturnedSuccess;
 
 class DeploymentSuccessMessage implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public $user;
     public $form;
@@ -38,6 +41,5 @@ class DeploymentSuccessMessage implements ShouldQueue
     {
         // emit Laravel event
         event(new KoboDeploymentReturnedSuccess($this->user, $this->form));
-
     }
 }

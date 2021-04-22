@@ -5,19 +5,21 @@ namespace Stats4sd\KoboLink\Jobs;
 use App\Models\User;
 use Stats4sd\KoboLink\Models\XlsForm;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Http;
 
 class DeployFormToKobo implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public $user;
     public $form;
-
 
     /**
      * Create a new job instance.
@@ -40,7 +42,7 @@ class DeployFormToKobo implements ShouldQueue
     {
 
         //if form is not already on Kobo, create asset...
-        if(! $this->form->kobo_id) {
+        if (! $this->form->kobo_id) {
             // Create new Kobo Asset
             $response = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
             ->withHeaders(["Accept" => "application/json"])
@@ -60,8 +62,5 @@ class DeployFormToKobo implements ShouldQueue
 
         // Always upload xlsform (in case it is changed)
         UploadXlsFormToKobo::dispatch($this->user, $this->form);
-
-
     }
-
 }
