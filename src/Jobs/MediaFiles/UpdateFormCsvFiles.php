@@ -2,12 +2,12 @@
 
 namespace Stats4sd\KoboLink\Jobs\MediaFiles;
 
-use Stats4sd\KoboLink\Models\XlsForm;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Stats4sd\KoboLink\Models\XlsForm;
 
 /**
  * Call this class to update the csv lookup files on the passed xlsform.

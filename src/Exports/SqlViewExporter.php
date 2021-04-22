@@ -3,7 +3,6 @@
 
 namespace Stats4sd\KoboLink\Exports;
 
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 
 class SqlViewExporter implements \Maatwebsite\Excel\Concerns\FromCollection

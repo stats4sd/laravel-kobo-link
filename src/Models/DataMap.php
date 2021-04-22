@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class DataMap extends \Illuminate\Database\Eloquent\Model
 {
-    use CrudTrait, ValidatesRequests;
+    use CrudTrait;
+    use ValidatesRequests;
 
     /*
     |--------------------------------------------------------------------------
@@ -25,12 +26,10 @@ class DataMap extends \Illuminate\Database\Eloquent\Model
     |--------------------------------------------------------------------------
     */
 
-
     public function xlsforms(): BelongsToMany
     {
         return $this->belongsToMany(Xlsform::class);
     }
-
 
     public function process(Submission $submission)
     {

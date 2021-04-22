@@ -2,18 +2,14 @@
 
 namespace Stats4sd\KoboLink\Jobs\MediaFiles;
 
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Maatwebsite\Excel\Facades\Excel;
 use Stats4sd\KoboLink\Exports\SqlViewExporter;
 use Stats4sd\KoboLink\Models\XlsForm;
-use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Queue\SerializesModels;
-use Symfony\Component\Process\Process;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /**
  * Job to generate the csv files from the specified mysql tables/views. Generates all the csv files required for the xlsform passed to it, as defined in the xlsform->csv_lookups property
@@ -21,7 +17,10 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
  */
 class GenerateCsvLookupFiles implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public $xlsform;
 

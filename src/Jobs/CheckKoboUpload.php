@@ -3,22 +3,25 @@
 namespace Stats4sd\KoboLink\Jobs;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Bus;
-use Stats4sd\KoboLink\Models\XlsForm;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Queue\SerializesModels;
-use Stats4sd\KoboLink\Events\KoboUploadReturnedError;
-use Illuminate\Queue\InteractsWithQueue;
-use Stats4sd\KoboLink\Events\KoboUploadReturnedSuccess;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Http;
+use Stats4sd\KoboLink\Events\KoboUploadReturnedError;
+use Stats4sd\KoboLink\Events\KoboUploadReturnedSuccess;
 use Stats4sd\KoboLink\Jobs\MediaFiles\GenerateCsvLookupFiles;
 use Stats4sd\KoboLink\Jobs\MediaFiles\UploadMediaFileAttachmentsToKoboForm;
+use Stats4sd\KoboLink\Models\XlsForm;
 
 class CheckKoboUpload implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public $user;
     public $form;
@@ -26,6 +29,7 @@ class CheckKoboUpload implements ShouldQueue
 
     public $tries = 50;
     public $maxExceptions = 1;
+
     /**
      * Create a new job instance.
      * @param User $user
