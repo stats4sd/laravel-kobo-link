@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs;
+namespace Stats4sd\KoboLink\Jobs;
 
 use Psy\Util\Str;
 use Illuminate\Bus\Queueable;
@@ -41,12 +41,12 @@ class ImportAttachmentFromKobo implements ShouldQueue
         // As of June 11 2020, downloadable filename is in the format:
         // kobo_username/attachments/submission['formhub/uuid']/submission['_uuid']/submission['photo_variable']
 
-        $filename = config('services.kobo.username').'/attachments/'.$this->submission['formhub/uuid'].'/'.$this->submission['_uuid'].'/'.$this->name;
+        $filename = config('kobo-link.kobo.username').'/attachments/'.$this->submission['formhub/uuid'].'/'.$this->submission['_uuid'].'/'.$this->name;
 
-        $downloadUrl = config('services.kobo.old_endpoint').'/media/original?media_file='.$filename;
+        $downloadUrl = config('kobo-link.kobo.old_endpoint').'/media/original?media_file='.$filename;
 
 
-        $response = Http::withBasicAuth(config('services.kobo.username'), config('services.kobo.password'))
+        $response = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
         ->get(urlencode($downloadUrl))
         ->throw();
 

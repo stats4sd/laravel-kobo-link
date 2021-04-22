@@ -22,5 +22,8 @@ class KoboLinkServiceProvider extends PackageServiceProvider
             ->hasMigration('create_kobo_link_tables')
             ->hasRoute('backpack/kobolink')
             ->hasCommand(KoboLinkCommand::class);
+
+        // Add extra config merge(s)
+        //$this->mergeConfigFrom($this->package->basePath("/../config/services.php"), $configFileName);
     }
 }

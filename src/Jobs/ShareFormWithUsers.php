@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Jobs;
+namespace Stats4sd\KoboLink\Jobs;
 
 use App\Models\User;
-use App\Models\Xlsform;
+use Stats4sd\KoboLink\Models\XlsForm;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
@@ -44,16 +44,16 @@ class ShareFormWithUsers implements ShouldQueue
             if ($member->kobo_id) {
                 foreach ($permissions as $permission) {
                     $payload[] = [
-                        'permission' => config('services.kobo.endpoint_v2').'/permissions/'.$permission.'/',
-                        'user' => config('services.kobo.endpoint_v2').'/users/'.$member->kobo_id.'/',
+                        'permission' => config('kobo-link.kobo.endpoint_v2').'/permissions/'.$permission.'/',
+                        'user' => config('kobo-link.kobo.endpoint_v2').'/users/'.$member->kobo_id.'/',
                     ];
                 }
             }
         }
 
-        $response = Http::withBasicAuth(config('services.kobo.username'), config('services.kobo.password'))
+        $response = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
         ->withHeaders(['Accept' => 'application/json'])
-        ->post(config('services.kobo.endpoint_v2').'/assets/'.$this->form->kobo_id.'/permission-assignments/bulk/', $payload)
+        ->post(config('kobo-link.kobo.endpoint_v2').'/assets/'.$this->form->kobo_id.'/permission-assignments/bulk/', $payload)
         ->throw()
         ->json();
     }

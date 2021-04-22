@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Jobs;
+namespace Stats4sd\KoboLink\Jobs;
 
 use App\Models\User;
 use App\Models\Sample;
 use App\Models\DataMap;
 use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
-use App\Models\Xlsform;
+use Stats4sd\KoboLink\Models\XlsForm;
 use App\Models\Submission;
 use Illuminate\Support\Facades\Http;
 use Stats4sd\KoboLink\Events\GetDataFromKoboFailed;
@@ -47,9 +47,9 @@ class GetDataFromKobo implements ShouldQueue
      */
     public function handle()
     {
-        $response = Http::withBasicAuth(config('services.kobo.username'), config('services.kobo.password'))
+        $response = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
         ->withHeaders(['Accept' => 'application/json'])
-        ->get(config('services.kobo.endpoint_v2').'/assets/'.$this->form->kobo_id.'/data/');
+        ->get(config('kobo-link.kobo.endpoint_v2').'/assets/'.$this->form->kobo_id.'/data/');
 
 
         if ($response->failed()) {

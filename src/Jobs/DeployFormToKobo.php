@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Jobs;
+namespace Stats4sd\KoboLink\Jobs;
 
 use App\Models\User;
-use App\Models\Xlsform;
+use Stats4sd\KoboLink\Models\XlsForm;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
@@ -42,9 +42,9 @@ class DeployFormToKobo implements ShouldQueue
         //if form is not already on Kobo, create asset...
         if(! $this->form->kobo_id) {
             // Create new Kobo Asset
-            $response = Http::withBasicAuth(config('services.kobo.username'), config('services.kobo.password'))
+            $response = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
             ->withHeaders(["Accept" => "application/json"])
-            ->post(config('services.kobo.endpoint')."/api/v2/assets/", [
+            ->post(config('kobo-link.kobo.endpoint')."/api/v2/assets/", [
                 "name" => $this->form->title,
                 "asset_type" => "survey",
             ])

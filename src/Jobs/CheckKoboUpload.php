@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Jobs;
+namespace Stats4sd\KoboLink\Jobs;
 
 use App\Models\User;
-use App\Models\Xlsform;
+use Illuminate\Support\Facades\Bus;
+use Stats4sd\KoboLink\Models\XlsForm;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
@@ -12,8 +13,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Stats4sd\KoboLink\Events\KoboUploadReturnedSuccess;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Jobs\MediaFiles\GenerateCsvLookupFiles;
-use App\Jobs\MediaFiles\UploadMediaFileAttachmentsToKoboForm;
+use Stats4sd\KoboLink\Jobs\MediaFiles\GenerateCsvLookupFiles;
+use Stats4sd\KoboLink\Jobs\MediaFiles\UploadMediaFileAttachmentsToKoboForm;
 
 class CheckKoboUpload implements ShouldQueue
 {
@@ -47,11 +48,11 @@ class CheckKoboUpload implements ShouldQueue
     public function handle()
     {
         $importCheck = Http::withBasicAuth(
-            config('services.kobo.username'),
-            config('services.kobo.password')
+            config('kobo-link.kobo.username'),
+            config('kobo-link.kobo.password')
         )
         ->withHeaders(["Accept" => "application/json"])
-        ->get(config('services.kobo.endpoint') . '/imports/' . $this->importUid . '/')
+        ->get(config('kobo-link.kobo.endpoint') . '/imports/' . $this->importUid . '/')
         ->throw()
         ->json();
 
@@ -90,9 +91,9 @@ class CheckKoboUpload implements ShouldQueue
                 $this->form
             ));
 
-            // run other actions on Kobo that required a succesfully imported form:
-
-            UpdateFormNameOnKobo::withChain([
+            // run other actions on Kobo that required a successfully imported form:
+            Bus::chain([
+                new UpdateFormNameOnKobo($this->form),
                 new SetKoboFormToActive($this->user, $this->form),
                 new GenerateCsvLookupFiles($this->form),
                 new UploadMediaFileAttachmentsToKoboForm($this->form),

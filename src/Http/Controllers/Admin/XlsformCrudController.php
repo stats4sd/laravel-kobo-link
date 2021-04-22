@@ -3,13 +3,17 @@
 
 namespace Stats4sd\KoboLink\Http\Controllers\Admin;
 
+use Stats4sd\KoboLink\Jobs\DeployFormToKobo;
+use Stats4sd\KoboLink\Jobs\GetDataFromKobo;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+use Backpack\CRUD\app\Library\Widget;
 use Illuminate\Support\Facades\Storage;
+use Stats4sd\KoboLink\Http\Requests\XlsformRequest;
 use Stats4sd\KoboLink\Models\Xlsform;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -40,12 +44,12 @@ class XlsformCrudController extends CrudController
         CRUD::column('xlsfile')->type('upload')->wrapper([
             'href' => function ($crud, $column, $entry) {
                 if ($entry->xlsfile) {
-                    return Storage::disk('xlsforms')->url($entry->xlsfile);
+                    return Storage::disk(config('kobo-link.xlsforms.storage_disk'))->url($entry->xlsfile);
                 }
                 return '#';
             }
         ]);
-        CRUD::column('media')->type('upload_multiple');
+        CRUD::column('media')->type('upload_multiple')->disk(config('kobo-link.xlsforms.storage_disk'));
         CRUD::column('csv_lookups')->type('table')->columns([
             'mysql_name' => 'MySQL Table/View',
             'csv_name' => 'CSV File Name',
@@ -111,28 +115,28 @@ class XlsformCrudController extends CrudController
 
         Crud::button('deploy')
         ->stack('line')
-        ->view('crud::buttons.deploy');
+        ->view('kobo-link::crud.buttons.xlsforms.deploy');
 
         Crud::button('sync')
         ->stack('line')
-        ->view('crud::buttons.sync');
+        ->view('kobo-link::crud.buttons.xlsforms.sync');
 
         Crud::button('archive')
         ->stack('line')
-        ->view('crud::buttons.archive');
+        ->view('kobo-link::crud.buttons.xlsforms.archive');
 
         $form = $this->crud->getCurrentEntry();
 
         Widget::add([
             'type' => 'view',
-            'view' => 'crud::widgets.xlsform_kobo_info',
+            'view' => 'kobo-link::crud.widgets.xlsforms.kobo-info',
             'form' => $form,
         ])->to('after_content');
     }
 
     public function deployToKobo(Xlsform $xlsform)
     {
-        DeployFormToKobo::dispatch(backpack_auth()->user(), $xlsform);
+        DeployFormToKobo::dispatchSync(backpack_auth()->user(), $xlsform);
 
         return response()->json([
             'title' => $xlsform->title,
@@ -142,7 +146,7 @@ class XlsformCrudController extends CrudController
 
     public function syncData(Xlsform $xlsform)
     {
-        GetDataFromKobo::dispatchNow(backpack_auth()->user(), $xlsform);
+        GetDataFromKobo::dispatchSync(backpack_auth()->user(), $xlsform);
 
         $submissions = $xlsform->submissions;
 

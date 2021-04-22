@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Jobs;
+namespace Stats4sd\KoboLink\Jobs;
 
 use App\Models\User;
-use App\Models\Xlsform;
+use Stats4sd\KoboLink\Models\XlsForm;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

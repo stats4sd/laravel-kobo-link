@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Jobs\MediaFiles;
+namespace Stats4sd\KoboLink\Jobs\MediaFiles;
 
-use App\Models\Xlsform;
+use Stats4sd\KoboLink\Models\XlsForm;
 use Illuminate\Support\Arr;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Http;
@@ -22,17 +22,17 @@ class UploadMediaFileAttachmentsToKoboForm implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $team_xls_form;
+    public $xlsform;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Xlsform $team_xls_form)
+    public function __construct(Xlsform $xlsform)
     {
         //
-        $this->team_xls_form = $team_xls_form;
+        $this->xlsform = $xlsform;
     }
 
     /**
@@ -44,9 +44,9 @@ class UploadMediaFileAttachmentsToKoboForm implements ShouldQueue
     {
         // media upload still works on the OLD Kobo Api, so we need the OLD formid:
 
-        $oldIdResponse = Http::withBasicAuth(config('services.kobo.username'), config('services.kobo.password'))
+        $oldIdResponse = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
         ->withHeaders(['Accept' => 'application/json'])
-        ->get(config('services.kobo.old_endpoint').'/api/v1/forms?id_string='.$this->team_xls_form->kobo_id)
+        ->get(config('kobo-link.kobo.old_endpoint').'/api/v1/forms?id_string='.$this->xlsform->kobo_id)
         ->throw()
         ->json();
 
@@ -56,19 +56,19 @@ class UploadMediaFileAttachmentsToKoboForm implements ShouldQueue
         // delete any existing media from form to make way for fresh upload:
         foreach ($koboform['metadata'] as $metadata) {
             if ($metadata['data_type'] === "media") {
-                Http::withBasicAuth(config('services.kobo.username'), config('services.kobo.password'))
-                ->delete(config('services.kobo.old_endpoint').'/api/v1/metadata/'.$metadata['id'])
+                Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
+                ->delete(config('kobo-link.kobo.old_endpoint').'/api/v1/metadata/'.$metadata['id'])
                 ->throw();
             }
         }
 
-        foreach ($this->team_xls_form->xls_form->media as $media) {
+        foreach ($this->xlsform->media as $media) {
             UploadFileToKoboForm::dispatch($media, $koboform);
         }
 
-        foreach ($this->team_xls_form->xls_form->csv_lookups as $csvMedia) {
+        foreach ($this->xlsform->csv_lookups as $csvMedia) {
             //if the file is team specific, look inside the correct team folder
-            $filename = $csvMedia['per_team'] ? 'teams/'.$this->team_xls_form->team->id.'/'.$csvMedia['csv_file'] : $csvMedia['csv_file'];
+            $filename = $csvMedia['csv_name'];
 
             UploadFileToKoboForm::dispatch($filename.'.csv', $koboform);
         }

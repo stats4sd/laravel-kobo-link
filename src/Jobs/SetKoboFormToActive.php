@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Jobs;
+namespace Stats4sd\KoboLink\Jobs;
 
 use App\Models\User;
-use App\Models\Xlsform;
+use Stats4sd\KoboLink\Models\XlsForm;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
@@ -43,18 +43,18 @@ class SetKoboFormToActive implements ShouldQueue
 
         // Deployement already exists, so get new version_id to update deployment
         if ($this->form->kobo_version_id) {
-            $getVersion = Http::withBasicAuth(config('services.kobo.username'), config('services.kobo.password'))
+            $getVersion = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
             ->withHeaders(['Accept' => 'application/json'])
-            ->get(config('services.kobo.endpoint_v2').'/assets/'.$this->form->kobo_id.'/')
+            ->get(config('kobo-link.kobo.endpoint_v2').'/assets/'.$this->form->kobo_id.'/')
             ->throw()
             ->json();
             \Log::info(json_encode($getVersion));
             $newVersionId = $getVersion['version_id'];
 
             // update deployment with new version
-            $response = Http::withBasicAuth(config('services.kobo.username'), config('services.kobo.password'))
+            $response = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
                 ->withHeaders(['Accept' => 'application/json'])
-                ->patch(config('services.kobo.endpoint_v2') . '/assets/' . $this->form->kobo_id . '/deployment/', [
+                ->patch(config('kobo-link.kobo.endpoint_v2') . '/assets/' . $this->form->kobo_id . '/deployment/', [
                     'active' => true,
                     'version_id' => $newVersionId,
                 ]);
@@ -62,9 +62,9 @@ class SetKoboFormToActive implements ShouldQueue
 
         // Deployment doesn't exist for this form, so POST;
         else {
-            $response = Http::withBasicAuth(config('services.kobo.username'), config('services.kobo.password'))
+            $response = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
             ->withHeaders(['Accept' => 'application/json'])
-            ->post(config('services.kobo.endpoint_v2').'/assets/'.$this->form->kobo_id.'/deployment/', [
+            ->post(config('kobo-link.kobo.endpoint_v2').'/assets/'.$this->form->kobo_id.'/deployment/', [
                 'active' => true,
             ]);
         }

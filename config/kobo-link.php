@@ -30,4 +30,8 @@ return [
         'password' => env('KOBO_PASSWORD', ''),
     ],
 
+    'xlsforms' => [
+        'storage_disk' => config('filesystems.default'),
+    ],
+
 ];

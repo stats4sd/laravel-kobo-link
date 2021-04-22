@@ -34,7 +34,7 @@ class KoboGetDataReturnedSuccess implements ShouldBroadcast
      * Get the channels the event should broadcast on.
      *
      */
-    public function broadcastOn(): Channel|array
+    public function broadcastOn(): Channel
     {
         return new PrivateChannel("App.Models.User.{$this->user->id}");
     }

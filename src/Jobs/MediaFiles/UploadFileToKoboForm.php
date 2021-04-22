@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Jobs\MediaFiles;
+namespace Stats4sd\KoboLink\Jobs\MediaFiles;
 
-use App\Models\Xlsform;
+use Stats4sd\KoboLink\Models\XlsForm;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
@@ -45,14 +45,14 @@ class UploadFileToKoboForm implements ShouldQueue
     {
         $filename = Arr::last(explode('/', $this->media));
 
-        $upload = Http::withBasicAuth(config('services.kobo.username'), config('services.kobo.password'))
+        $upload = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
             ->withHeaders(['Accept' => 'application/json'])
             ->attach(
                 'data_file',
-                Storage::disk('media')->get($this->media),
+                Storage::disk(config('kobo-link.xlsforms.storage_disk'))->get($this->media),
                 $filename
             )
-            ->post(config('services.kobo.old_endpoint') . '/api/v1/metadata', [
+            ->post(config('kobo-link.kobo.old_endpoint') . '/api/v1/metadata', [
                 'xform' => $this->koboform['formid'],
                 'data_type' => 'media',
                 'data_value' => $filename,

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Jobs;
+namespace Stats4sd\KoboLink\Jobs;
 
 use App\Models\User;
-use App\Models\Xlsform;
+use Stats4sd\KoboLink\Models\XlsForm;
 use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
@@ -41,15 +41,15 @@ class UploadXlsFormToKobo implements ShouldQueue
      */
     public function handle()
     {
-        $response = Http::withBasicAuth(config('services.kobo.username'), config('services.kobo.password'))
+        $response = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
             ->withHeaders(["Accept" => "application/json"])
             ->attach(
                 'file',
-                Storage::disk('xlsforms')->get($this->form->xlsfile),
+                Storage::disk(config('kobo-link.xlsforms.storage_driver'))->get($this->form->xlsfile),
                 Str::slug($this->form->title)
             )
-            ->post(config('services.kobo.endpoint').'/imports/', [
-                'destination' => config('services.kobo.endpoint_v2').'/assets/'.$this->form->kobo_id.'/',
+            ->post(config('kobo-link.kobo.endpoint').'/imports/', [
+                'destination' => config('kobo-link.kobo.endpoint_v2').'/assets/'.$this->form->kobo_id.'/',
                 'assetUid' => $this->form->kobo_id,
                 'name' => $this->form->title,
             ])

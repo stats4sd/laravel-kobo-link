@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Jobs\MediaFiles;
+namespace Stats4sd\KoboLink\Jobs\MediaFiles;
 
-use App\Models\Xlsform;
+use Stats4sd\KoboLink\Models\XlsForm;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -12,22 +12,22 @@ use Illuminate\Foundation\Bus\Dispatchable;
 /**
  * Call this class to update the csv lookup files on the passed xlsform.
  * This handles calling the right jobs to generate the new csv files from the database and push them up to Kobotoolbox
- * @param Xlsform $team_xls_form
+ * @param Xlsform $xlsform
  */
 class UpdateFormCsvFiles implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $team_xls_form;
+    public $xlsform;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Xlsform $team_xls_form)
+    public function __construct(Xlsform $xlsform)
     {
-        $this->team_xls_form = $team_xls_form;
+        $this->xlsform = $xlsform;
     }
 
     /**
@@ -39,8 +39,8 @@ class UpdateFormCsvFiles implements ShouldQueue
     {
         GenerateCsvLookupFiles::withChain(
             [
-                new UploadCsvMediaFileAttachmentsToKoboForm($this->team_xls_form),
+                new UploadCsvMediaFileAttachmentsToKoboForm($this->xlsform),
             ]
-        )->dispatch($this->team_xls_form);
+        )->dispatch($this->xlsform);
     }
 }
