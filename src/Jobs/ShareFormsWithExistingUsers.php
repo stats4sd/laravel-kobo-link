@@ -2,15 +2,15 @@
 
 namespace App\Jobs;
 
-use App\Models\User;
 use App\Models\Team;
+use App\Models\User;
 use App\Models\Xlsform;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Http;
 
 /**
  * This job sends a post request to the permission-assignments/bulk endpoint.
@@ -19,8 +19,10 @@ use Illuminate\Foundation\Bus\Dispatchable;
  */
 class ShareFormsWithExistingUsers implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Execute the job.

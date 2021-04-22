@@ -4,13 +4,13 @@ namespace App\Jobs\MediaFiles;
 
 use App\Models\Xlsform;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Queue\SerializesModels;
-use Symfony\Component\Process\Process;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 /**
  * Job to generate the csv files from the specified mysql tables/views. Generates all the csv files required for the xlsform passed to it, as defined in the xlsform->csv_lookups property
@@ -18,7 +18,10 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
  */
 class GenerateCsvLookupFiles implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public $team_xls_form;
 
@@ -51,7 +54,7 @@ class GenerateCsvLookupFiles implements ShouldQueue
                 $scriptPath = base_path().'/scripts/save_table.py';
             }
 
-            if (config('app.env')!='local') {
+            if (config('app.env') != 'local') {
                 putenv("PATH=" . getenv('PATH').':/home/forge/.local/bin');
             }
 
@@ -62,7 +65,7 @@ class GenerateCsvLookupFiles implements ShouldQueue
             Log::info('generating file: '.$media['csv_file'].' from mysql view: '.$media['mysql_view']);
             Log::info($process->getOutput());
 
-            if (!$process->isSuccessful()) {
+            if (! $process->isSuccessful()) {
                 throw new ProcessFailedException($process);
             }
         }

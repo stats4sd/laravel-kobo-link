@@ -3,14 +3,12 @@
 namespace App\Jobs\MediaFiles;
 
 use App\Models\Xlsform;
-use Illuminate\Support\Arr;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Http;
 
 /**
  * Job to handle replacing / uploading ALL media files for the passed xlsform.
@@ -20,7 +18,10 @@ use Illuminate\Foundation\Bus\Dispatchable;
  */
 class UploadMediaFileAttachmentsToKoboForm implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public $team_xls_form;
 

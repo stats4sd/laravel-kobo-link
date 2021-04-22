@@ -2,28 +2,26 @@
 
 namespace App\Jobs;
 
-use App\Models\User;
-use App\Models\Sample;
-use App\Models\DataMap;
-use Illuminate\Support\Str;
-use Illuminate\Bus\Queueable;
-use App\Models\Xlsform;
-use App\Models\Submission;
-use Illuminate\Support\Facades\Http;
-use Stats4sd\KoboLink\Events\GetDataFromKoboFailed;
-use Illuminate\Queue\SerializesModels;
-use Stats4sd\KoboLink\Events\KoboGetDataReturnedError;
-use Illuminate\Queue\InteractsWithQueue;
-use Stats4sd\KoboLink\Events\KoboGetDataReturnedSuccess;
 use App\Helpers\GenericHelper;
 use App\Http\Controllers\DataMapController;
+use App\Models\Submission;
+use App\Models\User;
+use App\Models\Xlsform;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Http;
+use Stats4sd\KoboLink\Events\KoboGetDataReturnedError;
+use Stats4sd\KoboLink\Events\KoboGetDataReturnedSuccess;
 
 class GetDataFromKobo implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public $form;
     public $user;
@@ -66,7 +64,7 @@ class GetDataFromKobo implements ShouldQueue
         $submissions = Submission::where('team_xls_form_id', '=', $this->form->id)->get();
 
         foreach ($data as $newSubmission) {
-            if (!in_array($newSubmission['_id'], $submissions->pluck('id')->toArray())) {
+            if (! in_array($newSubmission['_id'], $submissions->pluck('id')->toArray())) {
                 $submission = new Submission;
 
                 $submission->id = $newSubmission['_id'];

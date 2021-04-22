@@ -4,8 +4,8 @@
 namespace Stats4sd\KoboLink\Models\Traits;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic;
 
 /*
@@ -15,7 +15,6 @@ use Intervention\Image\ImageManagerStatic;
 */
 trait HasUploadFields
 {
-
     /**
      * Handle file upload and DB storage for a file:
      * - on CREATE
@@ -132,7 +131,7 @@ trait HasUploadFields
     {
 
         // if the image was erased
-        if ($value==null) {
+        if ($value == null) {
             // delete the image from disk
             \Storage::disk($disk)->delete($this->{$attribute_name});
 

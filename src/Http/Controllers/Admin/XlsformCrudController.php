@@ -9,9 +9,9 @@ use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\Storage;
 use Stats4sd\KoboLink\Models\Xlsform;
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
  * Class XlsformCrudController
@@ -20,7 +20,11 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  */
 class XlsformCrudController extends CrudController
 {
-    use ListOperation, CreateOperation, UpdateOperation, DeleteOperation, ShowOperation;
+    use ListOperation;
+    use CreateOperation;
+    use UpdateOperation;
+    use DeleteOperation;
+    use ShowOperation;
 
     public function setup()
     {
@@ -28,6 +32,7 @@ class XlsformCrudController extends CrudController
         CRUD::setRoute(config('backpack.base.route_prefix') . '/xlsform');
         CRUD::setEntityNameStrings('xlsform', 'xlsforms');
     }
+
     /**
      * Define what happens when the List operation is loaded.
      *
@@ -42,8 +47,9 @@ class XlsformCrudController extends CrudController
                 if ($entry->xlsfile) {
                     return Storage::disk('xlsforms')->url($entry->xlsfile);
                 }
+
                 return '#';
-            }
+            },
         ]);
         CRUD::column('media')->type('upload_multiple');
         CRUD::column('csv_lookups')->type('table')->columns([
@@ -55,6 +61,7 @@ class XlsformCrudController extends CrudController
                 if ($entry->kobo_id) {
                     return 'https://kf.kobotoolbox.org/#/forms/'.$entry->kobo_id;
                 }
+
                 return '#';
             },
         ]);
@@ -153,7 +160,6 @@ class XlsformCrudController extends CrudController
     {
         return 'TODO';
     }
-
 
     public function archiveOnKobo(Xlsform $xlsform)
     {

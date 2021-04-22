@@ -3,17 +3,19 @@
 namespace Stats4sd\KoboLink\Events;
 
 use App\Models\User;
-use Stats4sd\KoboLink\Models\Xlsform;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+use Stats4sd\KoboLink\Models\Xlsform;
 
 class KoboGetDataReturnedSuccess implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public User $user;
     public Xlsform $form;
@@ -34,7 +36,7 @@ class KoboGetDataReturnedSuccess implements ShouldBroadcast
      * Get the channels the event should broadcast on.
      *
      */
-    public function broadcastOn(): Channel|array
+    public function broadcastOn(): Channel | array
     {
         return new PrivateChannel("App.Models.User.{$this->user->id}");
     }

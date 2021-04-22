@@ -3,14 +3,13 @@
 
 namespace Stats4sd\KoboLink\Http\Requests;
 
-
 class XlsformRequest extends \Illuminate\Foundation\Http\FormRequest
 {
-/**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
+    /**
+         * Determine if the user is authorized to make this request.
+         *
+         * @return bool
+         */
     public function authorize(): bool
     {
         // only allow updates if the user is logged in

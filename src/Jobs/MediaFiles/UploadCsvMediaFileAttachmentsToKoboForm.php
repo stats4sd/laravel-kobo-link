@@ -3,15 +3,13 @@
 namespace App\Jobs\MediaFiles;
 
 use App\Models\Xlsform;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 /**
  * Version of the uploadMediaFileAttachments job that ONLY handles csv files. All non .csv files are ignored. Use this to avoid replacing lots of large image / multimedia files on Kobotools.
@@ -19,7 +17,10 @@ use Illuminate\Foundation\Bus\Dispatchable;
  */
 class UploadCsvMediaFileAttachmentsToKoboForm implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public $team_xls_form;
 
@@ -63,7 +64,7 @@ class UploadCsvMediaFileAttachmentsToKoboForm implements ShouldQueue
         foreach ($this->team_xls_form->xls_form->media as $media) {
 
             // if the file is not a csv, ignore it
-            if (!Str::endsWith($media, 'csv')) {
+            if (! Str::endsWith($media, 'csv')) {
                 continue;
             }
 

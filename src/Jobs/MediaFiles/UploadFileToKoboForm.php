@@ -2,16 +2,14 @@
 
 namespace App\Jobs\MediaFiles;
 
-use App\Models\Xlsform;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Uploads an individual file to Kobotoolbox
@@ -20,7 +18,10 @@ use Illuminate\Foundation\Bus\Dispatchable;
  */
 class UploadFileToKoboForm implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public $media;
     public $koboform;

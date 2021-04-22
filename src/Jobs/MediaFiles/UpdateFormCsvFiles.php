@@ -4,10 +4,10 @@ namespace App\Jobs\MediaFiles;
 
 use App\Models\Xlsform;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 /**
  * Call this class to update the csv lookup files on the passed xlsform.
@@ -16,7 +16,10 @@ use Illuminate\Foundation\Bus\Dispatchable;
  */
 class UpdateFormCsvFiles implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public $team_xls_form;
 

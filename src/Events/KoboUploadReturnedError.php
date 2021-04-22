@@ -2,24 +2,24 @@
 
 namespace Stats4sd\KoboLink\Events;
 
-use Stats4sd\KoboLink\Models\Xlsform;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+use Stats4sd\KoboLink\Models\Xlsform;
 
 class KoboUploadReturnedError implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public User $user;
     public Xlsform $form;
     public string $errorType;
     public string $errorMessage;
-
 
     /**
      * Create a new event instance
@@ -41,7 +41,7 @@ class KoboUploadReturnedError implements ShouldBroadcast
      * Get the channels the event should broadcast on.
      *
      */
-    public function broadcastOn(): Channel|array
+    public function broadcastOn(): Channel | array
     {
         return new PrivateChannel("App.Models.User.{$this->user->id}");
     }
