@@ -40,6 +40,6 @@ class KoboArchiveRequestReturnedError implements ShouldBroadcast
      */
     public function broadcastOn(): Channel|array
     {
-        return new PrivateChannel("App.User.{$this->user->id}");
+        return new PrivateChannel("App.Models.User.{$this->user->id}");
     }
 }

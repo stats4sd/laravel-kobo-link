@@ -18,7 +18,7 @@ composer require stats4sd/laravel-kobo-link
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --provider="Stats4sd\KoboLink\KoboLinkServiceProvider" --tag="laravel-kobo-link-migrations"
+php artisan vendor:publish --provider="Stats4sd\KoboLink\KoboLinkServiceProvider" --tag="kobo-link-migrations"
 php artisan migrate
 ```
 
@@ -54,6 +54,15 @@ If you add the required ENV variables to your application, there should be no ne
 php artisan vendor:publish --provider="Stats4sd\KoboLink\KoboLinkServiceProvider" --tag="laravel-kobo-link-config"
 ```
 
+
+## Add the CrudControllers to the Sidebar
+This package assumes you are using Laravel Backpack as your admin panel. As such, it comes with a set of CrudControllers for managing your XLS forms and submissions. 
+
+You can add links to these crud panels into your sidebar:
+
+```
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('xlsform') }}'><i class="lab la-wpforms nav-icon"></i> XLSForms</a></li>
+```
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.

@@ -43,6 +43,6 @@ class KoboDeploymentReturnedError implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel("App.User.{$this->user->id}");
+        return new PrivateChannel("App.Models.User.{$this->user->id}");
     }
 }

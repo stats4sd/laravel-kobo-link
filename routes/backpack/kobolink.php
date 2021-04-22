@@ -9,7 +9,7 @@ Route::group([
     'namespace' => 'Stats4sd\KoboLink\Http\Controllers\Admin',
 ], function() {
     Route::crud('xlsform', 'XlsformCrudController');
-    Route::crud('submission', 'SubmissionCrudController');
+//    Route::crud('submission', 'SubmissionCrudController');
 
     // XLS Form <--> KoBoToolbox handling
     Route::post('xlsform/{xlsform}/deploytokobo', 'XlsformCrudController@deployToKobo');
