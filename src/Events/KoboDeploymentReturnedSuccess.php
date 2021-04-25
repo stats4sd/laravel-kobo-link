@@ -9,7 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Stats4sd\KoboLink\Models\Xlsform;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 class KoboDeploymentReturnedSuccess implements ShouldBroadcast
 {
@@ -18,13 +18,13 @@ class KoboDeploymentReturnedSuccess implements ShouldBroadcast
     use SerializesModels;
 
     public User $user;
-    public Xlsform $form;
+    public TeamXlsform $form;
 
     /**
      * Create a new event instance.
      * @return void
      */
-    public function __construct(User $user, Xlsform $form)
+    public function __construct(User $user, TeamXlsform $form)
     {
         $this->user = $user;
         $this->form = $form;

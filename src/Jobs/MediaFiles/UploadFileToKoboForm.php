@@ -50,7 +50,7 @@ class UploadFileToKoboForm implements ShouldQueue
             ->withHeaders(['Accept' => 'application/json'])
             ->attach(
                 'data_file',
-                Storage::disk(config('kobo-link.xlsforms.storage_disk'))->get($this->media),
+                Storage::disk(config('kobo-link.TeamXlsforms.storage_disk'))->get($this->media),
                 $filename
             )
             ->post(config('kobo-link.kobo.old_endpoint') . '/api/v1/metadata', [
@@ -61,7 +61,5 @@ class UploadFileToKoboForm implements ShouldQueue
             ->throw()
             ->json();
 
-        \Log::info('media file uploaded');
-        \Log::info($upload);
     }
 }

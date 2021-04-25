@@ -9,11 +9,11 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
-use Stats4sd\KoboLink\Models\XlsForm;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 /**
  * Version of the uploadMediaFileAttachments job that ONLY handles csv files. All non .csv files are ignored. Use this to avoid replacing lots of large image / multimedia files on Kobotools.
- * @param Xlsform $xlform
+ * @param TeamXlsform $xlform
  */
 class UploadCsvMediaFileAttachmentsToKoboForm implements ShouldQueue
 {
@@ -22,16 +22,16 @@ class UploadCsvMediaFileAttachmentsToKoboForm implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public $xlform;
+    public TeamXlsform $form;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Xlsform $xlform)
+    public function __construct(TeamXlsform $form)
     {
-        $this->$xlform = $xlform;
+        $this->$form = $form;
     }
 
     /**
@@ -45,7 +45,7 @@ class UploadCsvMediaFileAttachmentsToKoboForm implements ShouldQueue
 
         $oldIdResponse = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
         ->withHeaders(['Accept' => 'application/json'])
-        ->get(config('kobo-link.kobo.old_endpoint').'/api/v1/forms?id_string='.$this->xlform->kobo_id)
+        ->get(config('kobo-link.kobo.old_endpoint').'/api/v1/forms?id_string='.$this->form->kobo_id)
         ->throw()
         ->json();
 
@@ -61,18 +61,24 @@ class UploadCsvMediaFileAttachmentsToKoboForm implements ShouldQueue
             }
         }
 
-        foreach ($this->xlform->media as $media) {
+        $mediaCollection = $this->form->xlsform->media;
+        $csvLookups = $this->form->xlsform->csv_lookups;
+        if ($mediaCollection && is_countable($mediaCollection)) {
+            foreach ($mediaCollection as $media) {
 
             // if the file is not a csv, ignore it
-            if (! Str::endsWith($media, 'csv')) {
-                continue;
-            }
+                if (! Str::endsWith($media, 'csv')) {
+                    continue;
+                }
 
-            UploadFileToKoboForm::dispatch($media, $koboform);
+                UploadFileToKoboForm::dispatch($media, $koboform);
+            }
         }
 
-        foreach ($this->xlform->csv_lookups as $csvMedia) {
-            UploadFileToKoboForm::dispatch($csvMedia['csv_name'].'.csv', $koboform);
+        if ($csvLookups && is_countable($csvLookups)) {
+            foreach ($csvLookups as $csvMedia) {
+                UploadFileToKoboForm::dispatch($csvMedia['csv_name'] . '.csv', $koboform);
+            }
         }
     }
 }

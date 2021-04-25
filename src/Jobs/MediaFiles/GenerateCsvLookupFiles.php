@@ -9,11 +9,11 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Maatwebsite\Excel\Facades\Excel;
 use Stats4sd\KoboLink\Exports\SqlViewExporter;
-use Stats4sd\KoboLink\Models\XlsForm;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 /**
- * Job to generate the csv files from the specified mysql tables/views. Generates all the csv files required for the xlsform passed to it, as defined in the xlsform->csv_lookups property
- * @param Xlsform $xlsform
+ * Job to generate the csv files from the specified mysql tables/views. Generates all the csv files required for the TeamXlsform passed to it, as defined in the TeamXlsform->csv_lookups property
+ * @param TeamXlsform $TeamXlsform
  */
 class GenerateCsvLookupFiles implements ShouldQueue
 {
@@ -22,16 +22,16 @@ class GenerateCsvLookupFiles implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public $xlsform;
+    public $form;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Xlsform $xlsform)
+    public function __construct(TeamXlsform $form)
     {
-        $this->xlsform = $xlsform;
+        $this->form = $form;
     }
 
     /**
@@ -41,22 +41,24 @@ class GenerateCsvLookupFiles implements ShouldQueue
      */
     public function handle()
     {
-        $mediaToGenerate = $this->xlsform->csv_lookups;
+        $mediaToGenerate = $this->form->xlsform->csv_lookups;
 
-        foreach ($mediaToGenerate as $media) {
+        if ($mediaToGenerate && is_countable($mediaToGenerate)) {
+            foreach ($mediaToGenerate as $media) {
 
-            // if the media file should be filtered by the team that owns the xlsform, use a customised script...
-//            if ($media['per_team']) {
-//                $scriptPath = base_path().'/scripts/save_table_for_team.py';
-//            } else {
-//            $scriptPath = base_path().'/scripts/save_table.py';
-//            }
+                // if the media file should be filtered by the team that owns the TeamXlsform, use a customised script...
+                //            if ($media['per_team']) {
+                //                $scriptPath = base_path().'/scripts/save_table_for_team.py';
+                //            } else {
+                //            $scriptPath = base_path().'/scripts/save_table.py';
+                //            }
 
-            Excel::store(
-                new SqlViewExporter($media['mysql_name']),
-                $media['csv_name'] . '.csv',
-                config('kobo-link.xlsforms.storage_disk'),
-            );
+                Excel::store(
+                    new SqlViewExporter($media['mysql_name']),
+                    $media['csv_name'] . '.csv',
+                    config('kobo-link.TeamXlsforms.storage_disk'),
+                );
+            }
         }
     }
 }

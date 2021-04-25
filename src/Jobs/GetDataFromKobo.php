@@ -4,7 +4,6 @@ namespace Stats4sd\KoboLink\Jobs;
 
 use App\Helpers\GenericHelper;
 use App\Http\Controllers\DataMapController;
-use App\Models\Submission;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -14,7 +13,8 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Stats4sd\KoboLink\Events\KoboGetDataReturnedError;
 use Stats4sd\KoboLink\Events\KoboGetDataReturnedSuccess;
-use Stats4sd\KoboLink\Models\XlsForm;
+use Stats4sd\KoboLink\Models\Submission;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 class GetDataFromKobo implements ShouldQueue
 {
@@ -23,16 +23,16 @@ class GetDataFromKobo implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public $form;
-    public $user;
-    public $tries = 5;
+    public TeamXlsform $form;
+    public User $user;
+    public int $tries = 5;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(User $user, Xlsform $form)
+    public function __construct(User $user, TeamXlsform $form)
     {
         $this->user = $user;
         $this->form = $form;
@@ -52,7 +52,7 @@ class GetDataFromKobo implements ShouldQueue
 
         if ($response->failed()) {
             if ($response->status() === 504) {
-                $this->release('5');
+                $this->release(5);
             }
             event(new KoboGetDataReturnedError($this->user, $this->form, json_encode($response->json())));
             $this->fail();
@@ -61,7 +61,7 @@ class GetDataFromKobo implements ShouldQueue
         $data = $response['results'];
 
         //compare
-        $submissions = Submission::where('team_xls_form_id', '=', $this->form->id)->get();
+        $submissions = Submission::where('team_xlsform_id', '=', $this->form->id)->get();
 
         foreach ($data as $newSubmission) {
             if (! in_array($newSubmission['_id'], $submissions->pluck('id')->toArray())) {
@@ -69,7 +69,7 @@ class GetDataFromKobo implements ShouldQueue
 
                 $submission->id = $newSubmission['_id'];
                 $submission->uuid = $newSubmission['_uuid'];
-                $submission->team_xls_form_id = $this->form->id;
+                $submission->team_xlsform_id = $this->form->id;
                 $submission->content = json_encode($newSubmission);
                 $submission->submitted_at = $newSubmission['_submission_time'];
 

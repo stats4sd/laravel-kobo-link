@@ -10,7 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Stats4sd\KoboLink\Events\KoboDeploymentReturnedError;
-use Stats4sd\KoboLink\Models\XlsForm;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 class SetKoboFormToActive implements ShouldQueue
 {
@@ -19,18 +19,18 @@ class SetKoboFormToActive implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public $user;
-    public $form;
-    public $tries = 3;
-    public $maxExceptions = 1;
+    public User $user;
+    public TeamXlsform $form;
+    public int $tries = 3;
+    public int $maxExceptions = 1;
 
     /**
      * Create a new job instance.
      * @param User $user
-     * @param Xlsform $form
+     * @param TeamXlsform $form
      * @return void
      */
-    public function __construct(User $user, Xlsform $form)
+    public function __construct(User $user, TeamXlsform $form)
     {
         $this->user = $user;
         $this->form = $form;
@@ -44,14 +44,14 @@ class SetKoboFormToActive implements ShouldQueue
     public function handle()
     {
 
-        // Deployement already exists, so get new version_id to update deployment
+        // Deployment already exists, so get new version_id to update deployment
         if ($this->form->kobo_version_id) {
             $getVersion = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
             ->withHeaders(['Accept' => 'application/json'])
             ->get(config('kobo-link.kobo.endpoint_v2').'/assets/'.$this->form->kobo_id.'/')
             ->throw()
             ->json();
-            \Log::info(json_encode($getVersion));
+
             $newVersionId = $getVersion['version_id'];
 
             // update deployment with new version

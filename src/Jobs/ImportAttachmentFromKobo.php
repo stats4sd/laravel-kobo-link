@@ -53,6 +53,6 @@ class ImportAttachmentFromKobo implements ShouldQueue
         ->throw();
 
         // store file in "attachments / _id / name"
-        Storage::disk('kobomedia')->put($this->submission['_id'].'/'.$this->name, $response);
+        Storage::disk(config('kobomedia.storage_disk'))->put($this->submission['_id'].'/'.$this->name, $response);
     }
 }

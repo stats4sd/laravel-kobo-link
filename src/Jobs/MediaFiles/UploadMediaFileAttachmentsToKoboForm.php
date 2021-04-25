@@ -8,13 +8,13 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
-use Stats4sd\KoboLink\Models\XlsForm;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 /**
- * Job to handle replacing / uploading ALL media files for the passed xlsform.
+ * Job to handle replacing / uploading ALL media files for the passed TeamXlsform.
  *  - Deletes the old versions off Kobotoolbox
- *  - Takes the media and csv_lookup properties of the passed xlsform, and passes each file to the uploader
- * @param Xlsform $xlsform
+ *  - Takes the media and csv_lookup properties of the passed TeamXlsform, and passes each file to the uploader
+ * @param TeamXlsform $TeamXlsform
  */
 class UploadMediaFileAttachmentsToKoboForm implements ShouldQueue
 {
@@ -23,17 +23,17 @@ class UploadMediaFileAttachmentsToKoboForm implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public $xlsform;
+    public TeamXlsform $form;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Xlsform $xlsform)
+    public function __construct(TeamXlsform $form)
     {
         //
-        $this->xlsform = $xlsform;
+        $this->form = $form;
     }
 
     /**
@@ -47,7 +47,7 @@ class UploadMediaFileAttachmentsToKoboForm implements ShouldQueue
 
         $oldIdResponse = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
         ->withHeaders(['Accept' => 'application/json'])
-        ->get(config('kobo-link.kobo.old_endpoint').'/api/v1/forms?id_string='.$this->xlsform->kobo_id)
+        ->get(config('kobo-link.kobo.old_endpoint').'/api/v1/forms?id_string='.$this->form->kobo_id)
         ->throw()
         ->json();
 
@@ -63,15 +63,19 @@ class UploadMediaFileAttachmentsToKoboForm implements ShouldQueue
             }
         }
 
-        foreach ($this->xlsform->media as $media) {
-            UploadFileToKoboForm::dispatch($media, $koboform);
+        $mediaCollection = $this->form->xlsform->media;
+        $csvLookups = $this->form->xlsform->csv_lookups;
+
+        if ($mediaCollection && is_countable($mediaCollection)) {
+            foreach ($mediaCollection as $media) {
+                UploadFileToKoboForm::dispatch($media, $koboform);
+            }
         }
 
-        foreach ($this->xlsform->csv_lookups as $csvMedia) {
-            //if the file is team specific, look inside the correct team folder
-            $filename = $csvMedia['csv_name'];
-
-            UploadFileToKoboForm::dispatch($filename.'.csv', $koboform);
+        if ($csvLookups && is_countable($csvLookups)) {
+            foreach ($csvLookups as $csvMedia) {
+                UploadFileToKoboForm::dispatch($csvMedia['csv_name'] . '.csv', $koboform);
+            }
         }
     }
 }

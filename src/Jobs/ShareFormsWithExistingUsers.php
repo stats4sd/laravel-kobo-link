@@ -10,7 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
-use Stats4sd\KoboLink\Models\XlsForm;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 /**
  * This job sends a post request to the permission-assignments/bulk endpoint.
@@ -24,6 +24,19 @@ class ShareFormsWithExistingUsers implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+
+    public Team $team;
+
+    /**
+     * Create a new job instance.
+     * @param Team $team
+     * @return void
+     */
+    public function __construct(Team $team)
+    {
+        $this->team = $form;
+    }
+
     /**
      * Execute the job.
      *
@@ -31,15 +44,12 @@ class ShareFormsWithExistingUsers implements ShouldQueue
      */
     public function handle()
     {
-        $forms = Xlsform::all();
-        $users = User::all();
-
-        \Log::info("sharing forms with new Users");
+        $forms = $this->team->teamXlsForms;
+        $users = $this->team->users;
 
         $permissions = ['change_asset', 'add_submissions', 'change_submissions', 'validate_submissions'];
 
         foreach ($forms as $form) {
-            \Log::info("sharing form " . $form->title);
 
             if ($form->is_active && $form->kobo_version_id) {
                 $payload = [];
@@ -61,8 +71,6 @@ class ShareFormsWithExistingUsers implements ShouldQueue
                 ->throw()
                 ->json();
 
-                \Log::info("new team member assigned to form");
-                \Log::info(json_encode($response));
             }
         }
     }

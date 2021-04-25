@@ -14,8 +14,8 @@ class Submission extends Model
     protected $table = 'submissions';
     protected $guarded = ['id'];
 
-    public function xlsform(): BelongsTo
+    public function teamXlsform(): BelongsTo
     {
-        return $this->belongsTo(Xlsform::class);
+        return $this->belongsTo(TeamXlsform::class);
     }
 }

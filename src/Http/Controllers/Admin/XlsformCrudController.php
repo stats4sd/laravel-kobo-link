@@ -60,16 +60,6 @@ class XlsformCrudController extends CrudController
             'mysql_name' => 'MySQL Table/View',
             'csv_name' => 'CSV File Name',
         ]);
-        CRUD::column('kobo_id')->label('Kobo Form ID')->wrapper([
-            'href' => function ($crud, $column, $entry) {
-                if ($entry->kobo_id) {
-                    return 'https://kf.kobotoolbox.org/#/forms/'.$entry->kobo_id;
-                }
-
-                return '#';
-            },
-        ]);
-        CRUD::column('is_active')->type('boolean')->label('Form active on Kobo?');
         CRUD::column('available')->type('boolean')->label('Is the form available for live use?');
     }
 
@@ -100,7 +90,8 @@ class XlsformCrudController extends CrudController
                 <li>CSV File Name = households</li>
             </ul>
         </div>')->entity_singular('CSV Lookup reference');
-        CRUD::field('available')->label('If this form should be available to all users as a "live" data collection form, tick this box')->type('checkbox');
+        CRUD::field('available')->label('If this form should be available to all teams, tick this box')->type('checkbox');
+        CRUD::field('privateTeam')->label('If this form should be available to a <b>single</b> team, select the team here.')->type('relationship')->attribute('name');
     }
 
     /**
@@ -119,59 +110,5 @@ class XlsformCrudController extends CrudController
         $this->crud->set('show.setFromDb', false);
 
         $this->setupListOperation();
-
-        Crud::button('deploy')
-        ->stack('line')
-        ->view('kobo-link::crud.buttons.xlsforms.deploy');
-
-        Crud::button('sync')
-        ->stack('line')
-        ->view('kobo-link::crud.buttons.xlsforms.sync');
-
-        Crud::button('archive')
-        ->stack('line')
-        ->view('kobo-link::crud.buttons.xlsforms.archive');
-
-        $form = $this->crud->getCurrentEntry();
-
-        Widget::add([
-            'type' => 'view',
-            'view' => 'kobo-link::crud.widgets.xlsforms.kobo-info',
-            'form' => $form,
-        ])->to('after_content');
-    }
-
-    public function deployToKobo(Xlsform $xlsform)
-    {
-        DeployFormToKobo::dispatchSync(backpack_auth()->user(), $xlsform);
-
-        return response()->json([
-            'title' => $xlsform->title,
-            'user' => backpack_auth()->user()->email,
-        ]);
-    }
-
-    public function syncData(Xlsform $xlsform)
-    {
-        GetDataFromKobo::dispatchSync(backpack_auth()->user(), $xlsform);
-
-        $submissions = $xlsform->submissions;
-
-        return $submissions->toJson();
-    }
-
-    public function downloadSubmissions(Xlsform $xlsform)
-    {
-        return 'TODO';
-    }
-
-    public function archiveOnKobo(Xlsform $xlsform)
-    {
-        ArchiveKoboForm::dispatch(backpack_auth()->user(), $xlsform);
-
-        return response()->json([
-            'title' => $xlsform->title,
-            'user' => backpack_auth()->user()->email,
-        ]);
     }
 }

@@ -46,6 +46,44 @@ KOBO_OLD_ENDPOINT=https://kc.humanitarianresponse.info
 
 The platform requires a 'primary' user account on the KoboToolbox server to manage deployments of ODK forms. This account will *own* every form published by the platform. We HIGHLY recommend creating an account specifically for the Laravel application. If the application uses an account also used by other users, there is a chance that your database will become out of sync with the forms present on KoBoToolbox, and the form management functions may stop working correctly.
 
+## Setup Teams
+
+This packages assumes that the following models exist in the platform:
+- `\App\Models\User`
+- '\App\Models\Team`
+
+At some point the package will be updated to allow you to customise these models, but for now they must be called exactly as above. 
+
+They also require the following relationships:
+ - Users belong to many teams;
+ - teams belong to many users;
+
+Next, you should add the following relationships to models from this package:
+
+```
+############################
+## For \App\Models\Team
+############################
+public function xls_forms()
+{
+    return $this->belongsToMany(XlsForm::class, 'team_xlsform')
+    ->withPivot([
+        'kobo_id',
+        'kobo_version_id',
+        'enketo_url',
+        'processing',
+        'is_active',
+    ]);
+}
+
+public function team_xlsforms()
+{
+    return $this->hasMany(TeamXlsForm::class);
+}
+
+```
+
+
 ### Publishing The config
 
 If you add the required ENV variables to your application, there should be no need to publish the config file. However, you may wish to do so anyway. To publish the file, use:

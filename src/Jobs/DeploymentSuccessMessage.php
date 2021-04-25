@@ -9,7 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Stats4sd\KoboLink\Events\KoboDeploymentReturnedSuccess;
-use Stats4sd\KoboLink\Models\XlsForm;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 class DeploymentSuccessMessage implements ShouldQueue
 {
@@ -18,15 +18,15 @@ class DeploymentSuccessMessage implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public $user;
-    public $form;
+    public User $user;
+    public TeamXlsform $form;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(User $user, Xlsform $form)
+    public function __construct(User $user, TeamXlsform $form)
     {
         $this->user = $user;
         $this->form = $form;

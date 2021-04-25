@@ -9,7 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Stats4SD\KoboLink\Models\Xlsform;
+use Stats4SD\KoboLink\Models\TeamXlsform;
 
 class KoboArchiveRequestReturnedError implements ShouldBroadcast
 {
@@ -18,7 +18,7 @@ class KoboArchiveRequestReturnedError implements ShouldBroadcast
     use SerializesModels;
 
     public User $user;
-    public Xlsform $form;
+    public TeamXlsform $form;
     public string $errorType;
     public string $errorMessage;
 
@@ -26,7 +26,7 @@ class KoboArchiveRequestReturnedError implements ShouldBroadcast
      * Create a new event instance.
      * @return void
      */
-    public function __construct(User $user, Xlsform $form, string $errorType, string $errorMessage)
+    public function __construct(User $user, TeamXlsform $form, string $errorType, string $errorMessage)
     {
         //
         $this->user = $user;

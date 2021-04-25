@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Response;
-use Stats4sd\KoboLink\Models\Xlsform;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 class KoboGetDataReturnedError implements ShouldBroadcast
 {
@@ -19,15 +19,15 @@ class KoboGetDataReturnedError implements ShouldBroadcast
     use SerializesModels;
 
     public User $user;
-    public Xlsform $form;
-    public Response $response;
+    public TeamXlsform $form;
+    public String $response;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(User $user, Xlsform $form, Response $response)
+    public function __construct(User $user, TeamXlsform $form, String $response)
     {
         $this->user = $user;
         $this->form = $form;

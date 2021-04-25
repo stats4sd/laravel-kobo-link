@@ -2,6 +2,8 @@
 
 return [
 
+    'echo' => false,
+
     /**
      * Configuration for the link to KoBoToolbox
      */
@@ -33,4 +35,8 @@ return [
     'xlsforms' => [
         'storage_disk' => config('filesystems.default'),
     ],
+
+    'kobomedia' => [
+        'storage_disk' => config('filesystems.default'),
+    ]
 ];

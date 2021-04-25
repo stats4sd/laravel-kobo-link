@@ -14,7 +14,7 @@ use Stats4sd\KoboLink\Events\KoboUploadReturnedError;
 use Stats4sd\KoboLink\Events\KoboUploadReturnedSuccess;
 use Stats4sd\KoboLink\Jobs\MediaFiles\GenerateCsvLookupFiles;
 use Stats4sd\KoboLink\Jobs\MediaFiles\UploadMediaFileAttachmentsToKoboForm;
-use Stats4sd\KoboLink\Models\XlsForm;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 class CheckKoboUpload implements ShouldQueue
 {
@@ -23,21 +23,21 @@ class CheckKoboUpload implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public $user;
-    public $form;
-    public $importUid;
+    public User $user;
+    public TeamXlsform $form;
+    public String $importUid;
 
-    public $tries = 50;
-    public $maxExceptions = 1;
+    public int $tries = 50;
+    public int $maxExceptions = 1;
 
     /**
      * Create a new job instance.
      * @param User $user
-     * @param Xlsform $form
+     * @param TeamXlsform $form
      * @param String $importUid
      * @return void
      */
-    public function __construct(User $user, Xlsform $form, String $importUid)
+    public function __construct(User $user, TeamXlsform $form, String $importUid)
     {
         $this->user = $user;
         $this->form = $form;
@@ -60,9 +60,6 @@ class CheckKoboUpload implements ShouldQueue
         ->throw()
         ->json();
 
-
-        \Log::info("importCheck");
-        \Log::info($importCheck);
 
         $importStatus = $importCheck['status'];
 

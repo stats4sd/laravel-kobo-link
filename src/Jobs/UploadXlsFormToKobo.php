@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Stats4sd\KoboLink\Models\XlsForm;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 class UploadXlsFormToKobo implements ShouldQueue
 {
@@ -28,7 +28,7 @@ class UploadXlsFormToKobo implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $user, Xlsform $form)
+    public function __construct(User $user, TeamXlsform $form)
     {
         $this->user = $user;
         $this->form = $form;
@@ -45,7 +45,7 @@ class UploadXlsFormToKobo implements ShouldQueue
             ->withHeaders(["Accept" => "application/json"])
             ->attach(
                 'file',
-                Storage::disk(config('kobo-link.xlsforms.storage_driver'))->get($this->form->xlsfile),
+                Storage::disk(config('kobo-link.TeamXlsforms.storage_driver'))->get($this->form->xlsform->xlsfile),
                 Str::slug($this->form->title)
             )
             ->post(config('kobo-link.kobo.endpoint').'/imports/', [
@@ -55,9 +55,6 @@ class UploadXlsFormToKobo implements ShouldQueue
             ])
             ->throw()
             ->json();
-
-        \Log::info("importing");
-        \Log::info($response);
 
         $importUid = $response['uid'];
 
