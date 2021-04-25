@@ -3,6 +3,7 @@
 
 namespace Stats4sd\KoboLink\Models;
 
+use \App\Models\Team;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Stats4sd\KoboLink\Models\Traits\HasUploadFields;
-use \App\Models\Team;
 
 class Xlsform extends Model
 {

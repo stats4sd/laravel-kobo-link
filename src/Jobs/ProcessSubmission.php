@@ -2,8 +2,8 @@
 
 namespace Stats4sd\KoboLink\Jobs;
 
-use App\Models\User;
 use \Stats4sd\KoboLink\Models\Submission;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -12,7 +12,10 @@ use Illuminate\Queue\SerializesModels;
 
 class ProcessSubmission implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     private User $user;
     private Submission $submission;

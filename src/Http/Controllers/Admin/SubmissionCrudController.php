@@ -3,16 +3,15 @@
 
 namespace Stats4sd\KoboLink\Http\Controllers\Admin;
 
-use Stats4sd\KoboLink\Models\TeamXlsform;
-use \Stats4sd\KoboLink\Models\Xlsform;
-use \Stats4sd\KoboLink\Models\Submission;
-use Illuminate\Support\Str;
 use \Stats4sd\KoboLink\Jobs\ProcessSubmission;
-use Venturecraft\Revisionable\Revision;
-use Backpack\ReviseOperation\ReviseOperation;
+use \Stats4sd\KoboLink\Models\Submission;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Backpack\ReviseOperation\ReviseOperation;
+use Illuminate\Support\Str;
+use Stats4sd\KoboLink\Models\TeamXlsform;
+use Venturecraft\Revisionable\Revision;
 
 /**
  * Class SubmissionCrudController
@@ -25,8 +24,6 @@ class SubmissionCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use UpdateOperation;
     //use ReviseOperation;
-
-
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -112,7 +109,6 @@ class SubmissionCrudController extends CrudController
         });
     }
 
-
     public function setupUpdateOperation()
     {
         $content = json_decode(CRUD::getCurrentEntry()->content, true);
@@ -163,7 +159,7 @@ class SubmissionCrudController extends CrudController
         foreach ($request as $key => $value) {
 
             //handle value updates
-            if (!Str::startsWith($key, '_label')) {
+            if (! Str::startsWith($key, '_label')) {
                 $content[$key] = $value;
             }
         }
@@ -185,8 +181,6 @@ class SubmissionCrudController extends CrudController
 
         return redirect(CRUD::getRoute());
     }
-
-
 
     public function reprocessSubmission(Submission $submission)
     {

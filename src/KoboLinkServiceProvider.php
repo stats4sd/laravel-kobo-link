@@ -2,13 +2,13 @@
 
 namespace Stats4sd\KoboLink;
 
+use \App\Models\Team;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Stats4sd\KoboLink\Commands\KoboLinkCommand;
 use Stats4sd\KoboLink\Models\Xlsform;
 use Stats4sd\KoboLink\Observers\TeamObserver;
 use Stats4sd\KoboLink\Observers\XlsFormObserver;
-use \App\Models\Team;
 
 class KoboLinkServiceProvider extends PackageServiceProvider
 {

@@ -60,6 +60,5 @@ class UploadFileToKoboForm implements ShouldQueue
             ])
             ->throw()
             ->json();
-
     }
 }

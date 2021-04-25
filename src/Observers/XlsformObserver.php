@@ -30,7 +30,6 @@ class XlsformObserver
         $this->syncFormWithTeams($xlsform);
     }
 
-
     public function syncFormWithTeams(XlsForm $xlsform)
     {
         if ($xlsform->available) {

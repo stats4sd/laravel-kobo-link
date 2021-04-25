@@ -30,13 +30,12 @@ class TeamObserver
         $this->syncTeamWithForms($team);
     }
 
-
     public function syncTeamWithForms(Team $team)
     {
         $forms = Xlsform::where('available')->get();
         $privateForms = Xlsform::where('private_team_id', $team->id)->get();
 
-        $formIds =  $forms->merge($privateForms)->pluck('id')->toArray();
+        $formIds = $forms->merge($privateForms)->pluck('id')->toArray();
 
         if (count($formIds) > 0) {
             $team->xlsforms->sync($formIds);
