@@ -33,5 +33,4 @@ return [
     'xlsforms' => [
         'storage_disk' => config('filesystems.default'),
     ],
-
 ];

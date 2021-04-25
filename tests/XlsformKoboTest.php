@@ -2,7 +2,7 @@
 
 namespace Stats4sd\KoboLink\Tests;
 
-class ExampleTest extends TestCase
+class XlsformKoboTest extends TestCase
 {
     /** @test */
     public function true_is_true()
