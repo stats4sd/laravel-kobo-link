@@ -8,7 +8,7 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Stats4sd\KoboLink\Commands\KoboLinkCommand;
 use Stats4sd\KoboLink\Models\Xlsform;
 use Stats4sd\KoboLink\Observers\TeamObserver;
-use Stats4sd\KoboLink\Observers\XlsFormObserver;
+use Stats4sd\KoboLink\Observers\XlsformObserver;
 
 class KoboLinkServiceProvider extends PackageServiceProvider
 {
