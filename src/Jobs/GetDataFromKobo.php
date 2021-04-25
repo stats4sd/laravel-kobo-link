@@ -59,7 +59,7 @@ class GetDataFromKobo implements ShouldQueue
         }
 
         $data = $response['results'];
-
+        $count = 0;
         //compare
         $submissions = Submission::where('team_xlsform_id', '=', $this->form->id)->get();
 
@@ -74,7 +74,7 @@ class GetDataFromKobo implements ShouldQueue
                 $submission->submitted_at = $newSubmission['_submission_time'];
 
                 $submission->save();
-
+                $count ++;
                 // $dataMaps = $this->form->xls_form->data_maps;
                 // if ($dataMaps->count() > 0) {
                 //     $submissionId = $newSubmission['_id'];
@@ -91,7 +91,8 @@ class GetDataFromKobo implements ShouldQueue
 
         event(new KoboGetDataReturnedSuccess(
             $this->user,
-            $this->form
+            $this->form,
+            $count
         ));
     }
 }

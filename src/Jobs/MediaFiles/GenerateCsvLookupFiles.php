@@ -8,7 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Maatwebsite\Excel\Facades\Excel;
-use Stats4sd\KoboLink\Exports\SqlViewExporter;
+use Stats4sd\KoboLink\Exports\SqlViewExport;
 use Stats4sd\KoboLink\Models\TeamXlsform;
 
 /**
@@ -54,7 +54,7 @@ class GenerateCsvLookupFiles implements ShouldQueue
                 //            }
 
                 Excel::store(
-                    new SqlViewExporter($media['mysql_name']),
+                    new SqlViewExport($media['mysql_name']),
                     $media['csv_name'] . '.csv',
                     config('kobo-link.TeamXlsforms.storage_disk'),
                 );

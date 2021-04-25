@@ -19,17 +19,18 @@ class KoboGetDataReturnedSuccess implements ShouldBroadcast
 
     public User $user;
     public TeamXlsform $form;
-
+    public int $count;
     /**
      * Create a new event instance.
      * @param User $user
      * @param TeamXlsform $form
      * @return void
      */
-    public function __construct(User $user, TeamXlsform $form)
+    public function __construct(User $user, TeamXlsform $form, int $count)
     {
         $this->user = $user;
         $this->form = $form;
+        $this->count = $count;
     }
 
     /**

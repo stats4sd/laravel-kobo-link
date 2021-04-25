@@ -11,7 +11,9 @@ use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Widget;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Stats4sd\KoboLink\Exports\FormSubmissionsExport;
 use Stats4sd\KoboLink\Http\Requests\XlsformRequest;
 use Stats4sd\KoboLink\Jobs\ArchiveKoboForm;
 use Stats4sd\KoboLink\Jobs\DeployFormToKobo;
@@ -118,7 +120,9 @@ class TeamXlsformCrudController extends CrudController
 
     public function downloadSubmissions(TeamXlsform $form)
     {
-        return 'TODO';
+        $date = Carbon::now()->toDateTimeString();
+
+        return (new FormSubmissionsExport)->forForm($form)->download($form->title . '-raw-submissions-' . $date . ".xlsx");
     }
 
     public function archiveOnKobo(TeamXlsform $form)

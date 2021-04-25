@@ -3,6 +3,7 @@
 
 namespace Stats4sd\KoboLink\Http\Controllers\Admin;
 
+use Stats4sd\KoboLink\Models\TeamXlsform;
 use \Stats4sd\KoboLink\Models\Xlsform;
 use \Stats4sd\KoboLink\Models\Submission;
 use Illuminate\Support\Str;
@@ -23,7 +24,7 @@ class SubmissionCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use UpdateOperation;
-    use ReviseOperation;
+    //use ReviseOperation;
 
 
 
@@ -47,7 +48,7 @@ class SubmissionCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('xlsform')->label('XLS Form')->type('relationship')->attribute('title');
+        CRUD::column('teamXlsform')->label('XLS Form')->type('relationship')->attribute('title');
         CRUD::column('id')->label('Submission ID<br/> (from Kobo)');
         CRUD::column('submitted_at')->type('datetime')->format('YYYY-MM-DD HH:mm:ss');
         CRUD::column('processed')->label('Processed?')->type('boolean');
@@ -56,12 +57,12 @@ class SubmissionCrudController extends CrudController
 
         CRUD::filter('xlsform')
         ->type('select2')
-        ->label('Filter by XLS form')
+        ->label('Filter by Team form')
         ->values(function () {
-            return Xlsform::get()->pluck('title', 'id')->toArray();
+            return TeamXlsform::get()->pluck('title', 'id')->toArray();
         })
         ->whenActive(function ($value) {
-            CRUD::addClause('where', 'xlsform_id', $value);
+            CRUD::addClause('where', 'team_xlsform_id', $value);
         });
 
         CRUD::filter('errors')
@@ -73,7 +74,7 @@ class SubmissionCrudController extends CrudController
 
         Crud::button('reprocess')
         ->stack('line')
-        ->view('crud::buttons.reprocess');
+        ->view('kobo-link::crud.buttons.submissions.reprocess');
     }
 
     public function setupShowOperation()

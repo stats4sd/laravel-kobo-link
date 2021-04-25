@@ -17,5 +17,5 @@ Route::group([
     Route::post('teamxlsform/{form}/syncdata', 'TeamXlsformCrudController@syncData');
     Route::post('teamxlsform/{form}/archive', 'TeamXlsformCrudController@archiveOnKobo');
     Route::post('teamxlsform/{form}/csvgenerate', 'TeamXlsformCrudController@regenerateCsvFileAttachments');
-    Route::get('teamxlsform/{form}/downloadsubmissions', 'TeamXlsformCrudController@downloadSubmissions')->name('xlsforms.submissions');
+    Route::get('teamxlsform/{form}/downloadsubmissions', 'TeamXlsformCrudController@downloadSubmissions')->name('team_xlsforms.submissions');
 });

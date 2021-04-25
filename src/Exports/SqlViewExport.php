@@ -5,7 +5,7 @@ namespace Stats4sd\KoboLink\Exports;
 
 use Illuminate\Support\Facades\DB;
 
-class SqlViewExporter implements \Maatwebsite\Excel\Concerns\FromCollection
+class SqlViewExport implements \Maatwebsite\Excel\Concerns\FromCollection
 {
     public string $viewName;
 

@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Stats4sd\KoboLink\Events\KoboArchiveRequestReturnedError;
 use Stats4sd\KoboLink\Events\KoboArchiveRequestReturnedSuccess;
-use Stats4sd\KoboLink\Models\TeamTeamXlsform;
+use Stats4sd\KoboLink\Models\TeamXlsForm;
 
 class ArchiveKoboForm implements ShouldQueue
 {
@@ -21,15 +21,15 @@ class ArchiveKoboForm implements ShouldQueue
     use SerializesModels;
 
     public User $user;
-    public TeamTeamXlsform $form;
+    public TeamXlsForm $form;
 
     /**
      * Create a new job instance.
      * @param User $user,
-     * @param TeamTeamXlsform $form
+     * @param TeamXlsForm $form
      * @return void
      */
-    public function __construct(User $user, TeamTeamXlsform $form)
+    public function __construct(User $user, TeamXlsForm $form)
     {
         //
         $this->user = $user;

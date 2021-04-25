@@ -30,6 +30,8 @@ return [
          */
         'username' => env('KOBO_USERNAME', ''),
         'password' => env('KOBO_PASSWORD', ''),
+
+        'test_form' => env('KOBO_TEST_FORM', null),
     ],
 
     'xlsforms' => [
