@@ -3,12 +3,12 @@
 
 namespace Stats4sd\KoboLink\Exports;
 
+use \Maatwebsite\Excel\Concerns\FromCollection;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Stats4sd\KoboLink\Models\TeamXlsform;
-use \Maatwebsite\Excel\Concerns\FromCollection;
 
 class FormSubmissionsExport implements FromCollection, WithHeadings, ShouldAutoSize
 {
@@ -19,6 +19,7 @@ class FormSubmissionsExport implements FromCollection, WithHeadings, ShouldAutoS
     public function forForm(TeamXlsform $form)
     {
         $this->form = $form;
+
         return $this;
     }
 

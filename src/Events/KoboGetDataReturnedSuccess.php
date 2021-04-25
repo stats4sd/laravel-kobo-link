@@ -20,6 +20,7 @@ class KoboGetDataReturnedSuccess implements ShouldBroadcast
     public User $user;
     public TeamXlsform $form;
     public int $count;
+
     /**
      * Create a new event instance.
      * @param User $user

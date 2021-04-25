@@ -44,7 +44,6 @@ class TeamXlsform extends \Illuminate\Database\Eloquent\Model
     |--------------------------------------------------------------------------
     */
 
-
     public function xlsform(): BelongsTo
     {
         return $this->belongsTo(Xlsform::class);

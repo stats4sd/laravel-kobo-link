@@ -10,11 +10,8 @@ use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Backpack\CRUD\app\Library\Widget;
 use Illuminate\Support\Facades\Storage;
 use Stats4sd\KoboLink\Http\Requests\XlsformRequest;
-use Stats4sd\KoboLink\Jobs\DeployFormToKobo;
-use Stats4sd\KoboLink\Jobs\GetDataFromKobo;
 use Stats4sd\KoboLink\Models\Xlsform;
 
 /**

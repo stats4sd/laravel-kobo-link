@@ -43,6 +43,5 @@ class UpdateFormNameOnKobo implements ShouldQueue
         ])
         ->throw()
         ->json();
-
     }
 }

@@ -4,22 +4,17 @@
 namespace Stats4sd\KoboLink\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Widget;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage;
 use Stats4sd\KoboLink\Exports\FormSubmissionsExport;
-use Stats4sd\KoboLink\Http\Requests\XlsformRequest;
 use Stats4sd\KoboLink\Jobs\ArchiveKoboForm;
 use Stats4sd\KoboLink\Jobs\DeployFormToKobo;
 use Stats4sd\KoboLink\Jobs\GetDataFromKobo;
 use Stats4sd\KoboLink\Models\TeamXlsform;
-use Stats4sd\KoboLink\Models\Xlsform;
 
 /**
  * Class XlsformCrudController

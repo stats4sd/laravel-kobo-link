@@ -74,7 +74,7 @@ class GetDataFromKobo implements ShouldQueue
                 $submission->submitted_at = $newSubmission['_submission_time'];
 
                 $submission->save();
-                $count ++;
+                $count++;
                 // $dataMaps = $this->form->xls_form->data_maps;
                 // if ($dataMaps->count() > 0) {
                 //     $submissionId = $newSubmission['_id'];
