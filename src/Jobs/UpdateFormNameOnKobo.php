@@ -3,16 +3,19 @@
 namespace Stats4sd\KoboLink\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Stats4sd\KoboLink\Models\XlsForm;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Http;
+use Stats4sd\KoboLink\Models\XlsForm;
 
 class UpdateFormNameOnKobo implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public $form;
 
@@ -33,7 +36,6 @@ class UpdateFormNameOnKobo implements ShouldQueue
      */
     public function handle()
     {
-
         $response = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
         ->withHeaders(["Accept" => "application/json"])
         ->patch(config('kobo-link.kobo.endpoint_v2').'/assets/'.$this->form->kobo_id.'/', [
