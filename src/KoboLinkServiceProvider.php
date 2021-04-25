@@ -33,7 +33,7 @@ class KoboLinkServiceProvider extends PackageServiceProvider
 
     public function bootingPackage()
     {
-        XlsForm::observe(XlsFormObserver::class);
+        XlsForm::observe(XlsformObserver::class);
         Team::observe(TeamObserver::class);
     }
 }
