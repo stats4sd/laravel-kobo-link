@@ -74,9 +74,20 @@ class XlsformCrudController extends CrudController
         CRUD::field('xlsfile')->type('upload')->upload(true);
         CRUD::field('description')->type('textarea');
         CRUD::field('media')->type('upload_multiple')->label('Add any static files that should be pushed to KoboToolBox as media attachments for this form')->upload(true);
-        CRUD::field('csv_lookups')->type('table')->columns([
-            'mysql_name' => 'MySQL Table Name',
-            'csv_name' => 'CSV File Name',
+        CRUD::field('csv_lookups')->type('repeatable')->fields([
+            [
+                'name' => 'mysql_name',
+                'label' => 'MySQL Table Name',
+            ],
+            [
+                'name' => 'csv_name',
+                'label' => 'CSV File Name',
+            ],
+            [
+                'name' => 'per_team',
+                'type' => 'checkbox',
+                'label' => 'Should this csv file be filtered by "team_id"?'
+            ]
         ])->label('<h4>Add Lookups from the Database</h4>
         <br/><div class="bd-callout bd-callout-info font-weight-normal">
         You should add the name of the MySQL Table or View, and the required name of the resulting CSV file. Every time you deploy this form, the platform will create a new version of the csv file using the data from the MySQL table or view you specify. This file will be uploaded to KoboToolBox as a form media attachment.
@@ -86,6 +97,7 @@ class XlsformCrudController extends CrudController
                 <li>MySQL Table Name = housholds_csv</li>
                 <li>CSV File Name = households</li>
             </ul>
+        CSV files can optionally be filtered to only show team-specific records. Use this for data that each team can customise themselves, or for data that should be filtered to a team\'s local context. For this to work, the MySQL table or view <b>must</b> have a "team_id" field to filter by.
         </div>')->entity_singular('CSV Lookup reference');
         CRUD::field('available')->label('If this form should be available to all teams, tick this box')->type('checkbox');
         CRUD::field('privateTeam')->label('If this form should be available to a <b>single</b> team, select the team here.')->type('relationship')->attribute('name');

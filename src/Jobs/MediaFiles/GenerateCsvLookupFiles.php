@@ -45,17 +45,17 @@ class GenerateCsvLookupFiles implements ShouldQueue
 
         if ($mediaToGenerate && is_countable($mediaToGenerate)) {
             foreach ($mediaToGenerate as $media) {
+                $filePath = $media['csv_name'];
+                $team = null;
 
-                // if the media file should be filtered by the team that owns the TeamXlsform, use a customised script...
-                //            if ($media['per_team']) {
-                //                $scriptPath = base_path().'/scripts/save_table_for_team.py';
-                //            } else {
-                //            $scriptPath = base_path().'/scripts/save_table.py';
-                //            }
+                if ($media['per_team'] === "1") {
+                    $team = $this->form->team;
+                    $filePath = $team->id . '/' . $media['csv_name'];
+                }
 
                 Excel::store(
-                    new SqlViewExport($media['mysql_name']),
-                    $media['csv_name'] . '.csv',
+                    new SqlViewExport($media['mysql_name'], $team),
+                    $filePath . '.csv',
                     config('kobo-link.TeamXlsforms.storage_disk'),
                 );
             }

@@ -77,7 +77,9 @@ class UploadCsvMediaFileAttachmentsToKoboForm implements ShouldQueue
 
         if ($csvLookups && is_countable($csvLookups)) {
             foreach ($csvLookups as $csvMedia) {
-                UploadFileToKoboForm::dispatch($csvMedia['csv_name'] . '.csv', $koboform);
+                $filePath = $csvMedia['per_team'] === "1" ? $this->form->team->id.'/'.$csvMedia['csv_name'] : $csvMedia['csv_name'];
+
+                UploadFileToKoboForm::dispatch($filePath . '.csv', $koboform);
             }
         }
     }
