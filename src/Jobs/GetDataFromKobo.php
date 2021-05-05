@@ -58,34 +58,33 @@ class GetDataFromKobo implements ShouldQueue
             $this->fail();
         }
 
-        $data = $response['results'];
+        $data = $response['results'] ?? null;
         $count = 0;
-        //compare
-        $submissions = Submission::where('team_xlsform_id', '=', $this->form->id)->get();
 
-        foreach ($data as $newSubmission) {
-            if (! in_array($newSubmission['_id'], $submissions->pluck('id')->toArray())) {
-                $submission = new Submission;
+        if ($data) {
+            //compare
+            $submissions = Submission::where('team_xlsform_id', '=', $this->form->id)->get();
 
-                $submission->id = $newSubmission['_id'];
-                $submission->uuid = $newSubmission['_uuid'];
-                $submission->team_xlsform_id = $this->form->id;
-                $submission->content = json_encode($newSubmission);
-                $submission->submitted_at = $newSubmission['_submission_time'];
+            foreach ($data as $newSubmission) {
+                if (! in_array($newSubmission['_id'], $submissions->pluck('id')->toArray())) {
+                    $submission = new Submission;
 
-                $submission->save();
-                $count++;
-                // $dataMaps = $this->form->xls_form->data_maps;
-                // if ($dataMaps->count() > 0) {
-                //     $submissionId = $newSubmission['_id'];
-                //     $teamId = $this->form->team->id;
-                //     $data = $newSubmission;
+                    $submission->id = $newSubmission['_id'];
+                    $submission->uuid = $newSubmission['_uuid'];
+                    $submission->team_xlsform_id = $this->form->id;
+                    $submission->content = json_encode($newSubmission);
+                    $submission->submitted_at = $newSubmission['_submission_time'];
 
-                //     // $newSubmission = GenericHelper::remove_group_names_from_kobo_data($newSubmission);
-                //     foreach ($dataMaps as $dataMap) {
-                //         // DataMapController::newRecord($dataMap, $newSubmission, $teamId);
-                //     }
-                // }
+                    $submission->save();
+                    $count++;
+
+                    $dataMaps = $this->form->xlsform->datamaps;
+                    if ($dataMaps->count() > 0) {
+                        foreach ($dataMaps as $dataMap) {
+                            $dataMap->process($submission);
+                        }
+                    }
+                }
             }
         }
 

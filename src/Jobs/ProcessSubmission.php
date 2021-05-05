@@ -54,7 +54,7 @@ class ProcessSubmission implements ShouldQueue
         $this->submission->save();
 
         // find correct data map(s);
-        $datamaps = $this->submission->xlsform->datamaps;
+        $datamaps = $this->submission->teamXlsform->xlsform->datamaps;
 
 
         foreach ($datamaps as $datamap) {
