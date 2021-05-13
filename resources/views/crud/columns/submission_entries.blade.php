@@ -5,7 +5,7 @@
     $column['prefix'] = $column['prefix'] ?? '';
     $column['suffix'] = $column['suffix'] ?? '';
 
-    // the value should be an array wether or not attribute casting is used
+    // the value should be an array whether or not attribute casting is used
     if (!is_array($value)) {
         $value = json_decode($value, true);
     }
@@ -14,14 +14,12 @@
 <span>
     @if($value && count($value))
 
-        <span class="d-inline-flex">
-            @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_start')
+        <span class="d-flex flex-wrap">
             <ul>
                 @foreach($value as $model => $entries)
                     <li>{{ $model }}: <span class="font-weight-bold">{{ count($entries) ?? 'none' }}</span></li>
                 @endforeach
             </ul>
-            @includeWhen(!empty($column['wrapper']), 'crud::columns.inc.wrapper_end')
         </span>
 
     @else

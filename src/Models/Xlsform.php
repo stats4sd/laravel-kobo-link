@@ -41,7 +41,7 @@ class Xlsform extends Model
 
     public function datamaps(): BelongsToMany
     {
-        return $this->belongsToMany(DataMap::class);
+        return $this->belongsToMany(config('kobo-link.models.datamap'));
     }
 
     public function privateTeam(): BelongsTo

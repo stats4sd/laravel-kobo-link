@@ -49,8 +49,8 @@ class SubmissionCrudController extends CrudController
         CRUD::column('id')->label('Submission ID<br/> (from Kobo)');
         CRUD::column('submitted_at')->type('datetime')->format('YYYY-MM-DD HH:mm:ss');
         CRUD::column('processed')->label('Processed?')->type('boolean');
-        CRUD::column('errors')->label('Validation errors')->type('submission_errors');
-        CRUD::column('entries')->label('Db Entries created')->type('submission_entries');
+        CRUD::column('errors')->label('Validation errors')->type('submission_errors')->view_namespace('kobo-link::crud.columns');
+        CRUD::column('entries')->label('Db Entries created')->type('submission_entries')->view_namespace('kobo-link::crud.columns');
 
         CRUD::filter('xlsform')
         ->type('select2')

@@ -4,6 +4,13 @@ return [
 
     'echo' => false,
 
+    'models' => [
+        'xlsform' => '\\Stats4sd\\KoboLink\\Xlsform',
+        'teamxlsform' => '\\Stats4sd\\KoboLink\\TeamXlsform',
+        'submission' => '\\Stats4sd\\KoboLink\\Submission',
+        'datamap' => '\\Stats4sd\\KoboLink\\Datamap',
+    ],
+
     /**
      * Configuration for the link to KoBoToolbox
      */

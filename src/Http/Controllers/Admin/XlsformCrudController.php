@@ -88,6 +88,12 @@ class XlsformCrudController extends CrudController
                 'type' => 'checkbox',
                 'label' => 'Should this csv file be filtered by "team_id"?',
             ],
+            [
+                'name' => 'external_file',
+                'type' => 'checkbox',
+                'label' => 'Is this file to be used with either a select_one_from_external or select_multiple_from_external question type?',
+                'hint' => 'If you are not sure, leave this unchecked!',
+            ],
         ])->label('<h4>Add Lookups from the Database</h4>
         <br/><div class="bd-callout bd-callout-info font-weight-normal">
         You should add the name of the MySQL Table or View, and the required name of the resulting CSV file. Every time you deploy this form, the platform will create a new version of the csv file using the data from the MySQL table or view you specify. This file will be uploaded to KoboToolBox as a form media attachment.
