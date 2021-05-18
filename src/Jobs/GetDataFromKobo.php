@@ -2,8 +2,6 @@
 
 namespace Stats4sd\KoboLink\Jobs;
 
-use App\Helpers\GenericHelper;
-use App\Http\Controllers\DataMapController;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

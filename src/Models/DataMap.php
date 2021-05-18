@@ -6,7 +6,7 @@ namespace Stats4sd\KoboLink\Models;
 use Stats4sd\KoboLink\Models\Xlsform;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class DataMap extends \Illuminate\Database\Eloquent\Model
+class Datamap extends \Illuminate\Database\Eloquent\Model
 {
     use CrudTrait;
     use ValidatesRequests;
