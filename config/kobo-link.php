@@ -5,10 +5,10 @@ return [
     'echo' => false,
 
     'models' => [
-        'xlsform' => '\\Stats4sd\\KoboLink\\Xlsform',
-        'teamxlsform' => '\\Stats4sd\\KoboLink\\TeamXlsform',
-        'submission' => '\\Stats4sd\\KoboLink\\Submission',
-        'datamap' => '\\Stats4sd\\KoboLink\\Datamap',
+        'xlsform' => '\\Stats4sd\\KoboLink\\Models\\Xlsform',
+        'teamxlsform' => '\\Stats4sd\\KoboLink\\Models\\TeamXlsform',
+        'submission' => '\\Stats4sd\\KoboLink\\Models\\Submission',
+        'datamap' => '\\Stats4sd\\KoboLink\\Models\\Datamap',
     ],
 
     /**

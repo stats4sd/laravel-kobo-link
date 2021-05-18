@@ -62,7 +62,7 @@ class GenerateCsvLookupFiles implements ShouldQueue
                 );
 
                 // If the csv file is used with "select_one_from_external_file" (or multiple) it must not have any enclosure characters:
-                if ($media['external_file'] === "1") {
+                if (isset($media['external_file']) && $media['external_file'] === "1") {
                     $contents = Storage::disk(config('kobo-link.TeamXlsforms.storage_disk'))->get($filePath . '.csv');
 
                     $contents = Str::of($contents)->replace('"', '');
