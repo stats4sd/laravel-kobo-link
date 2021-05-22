@@ -81,6 +81,8 @@ class GetDataFromKobo implements ShouldQueue
                         foreach ($dataMaps as $dataMap) {
                             $dataMap->process($submission);
                         }
+                        $submission->processed = 1;
+                        $submission->save();
                     }
                 }
             }
