@@ -76,11 +76,14 @@ class GetDataFromKobo implements ShouldQueue
                     $submission->save();
                     $count++;
 
+                    $submission = Submission::find($newSubmission['_id']);
+
                     $dataMaps = $this->form->xlsform->datamaps;
                     if ($dataMaps->count() > 0) {
                         foreach ($dataMaps as $dataMap) {
                             $dataMap->process($submission);
                         }
+
                         $submission->processed = 1;
                         $submission->save();
                     }
