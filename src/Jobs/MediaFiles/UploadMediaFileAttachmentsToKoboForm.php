@@ -14,7 +14,6 @@ use Stats4sd\KoboLink\Models\TeamXlsform;
  * Job to handle replacing / uploading ALL media files for the passed TeamXlsform.
  *  - Deletes the old versions off Kobotoolbox
  *  - Takes the media and csv_lookup properties of the passed TeamXlsform, and passes each file to the uploader
- * @param TeamXlsform $TeamXlsform
  */
 class UploadMediaFileAttachmentsToKoboForm implements ShouldQueue
 {

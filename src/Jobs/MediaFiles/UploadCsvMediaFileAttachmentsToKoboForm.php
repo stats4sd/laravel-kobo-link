@@ -13,7 +13,6 @@ use Stats4sd\KoboLink\Models\TeamXlsform;
 
 /**
  * Version of the uploadMediaFileAttachments job that ONLY handles csv files. All non .csv files are ignored. Use this to avoid replacing lots of large image / multimedia files on Kobotools.
- * @param TeamXlsform $xlform
  */
 class UploadCsvMediaFileAttachmentsToKoboForm implements ShouldQueue
 {
@@ -31,7 +30,7 @@ class UploadCsvMediaFileAttachmentsToKoboForm implements ShouldQueue
      */
     public function __construct(TeamXlsform $form)
     {
-        $this->$form = $form;
+        $this->form = $form;
     }
 
     /**
