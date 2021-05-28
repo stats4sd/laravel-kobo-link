@@ -47,12 +47,12 @@ class GenerateCsvLookupFiles implements ShouldQueue
 
         if ($mediaToGenerate && is_countable($mediaToGenerate)) {
             foreach ($mediaToGenerate as $media) {
-                $filePath = $media['csv_name'];
+                $filePath = $this->form->xlsform->id . '/' . $media['csv_name'];
                 $team = null;
 
                 if ($media['per_team'] === "1") {
                     $team = $this->form->team;
-                    $filePath = $team->id . '/' . $media['csv_name'];
+                    $filePath = $team->id . '/' . $filePath;
                 }
 
                 Excel::store(
