@@ -45,7 +45,7 @@ class UploadXlsFormToKobo implements ShouldQueue
             ->withHeaders(["Accept" => "application/json"])
             ->attach(
                 'file',
-                Storage::disk(config('kobo-link.TeamXlsforms.storage_driver'))->get($this->form->xlsform->xlsfile),
+                Storage::disk(config('kobo-link.xlsforms.storage_driver'))->get($this->form->xlsform->xlsfile),
                 Str::slug($this->form->title)
             )
             ->post(config('kobo-link.kobo.endpoint').'/imports/', [

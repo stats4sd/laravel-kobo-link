@@ -58,16 +58,16 @@ class GenerateCsvLookupFiles implements ShouldQueue
                 Excel::store(
                     new SqlViewExport($media['mysql_name'], $team),
                     $filePath . '.csv',
-                    config('kobo-link.TeamXlsforms.storage_disk'),
+                    config('kobo-link.xlsforms.storage_disk'),
                 );
 
                 // If the csv file is used with "select_one_from_external_file" (or multiple) it must not have any enclosure characters:
                 if (isset($media['external_file']) && $media['external_file'] === "1") {
-                    $contents = Storage::disk(config('kobo-link.TeamXlsforms.storage_disk'))->get($filePath . '.csv');
+                    $contents = Storage::disk(config('kobo-link.xlsforms.storage_disk'))->get($filePath . '.csv');
 
                     $contents = Str::of($contents)->replace('"', '');
 
-                    Storage::disk(config('kobo-link.TeamXlsforms.storage_disk'))->put($filePath.'.csv', $contents);
+                    Storage::disk(config('kobo-link.xlsforms.storage_disk'))->put($filePath.'.csv', $contents);
                 }
             }
         }
