@@ -42,22 +42,21 @@ class UploadMediaFileAttachmentsToKoboForm implements ShouldQueue
      */
     public function handle()
     {
-        // media upload still works on the OLD Kobo Api, so we need the OLD formid:
-
-        $oldIdResponse = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
+        $mediaFiles = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
         ->withHeaders(['Accept' => 'application/json'])
-        ->get(config('kobo-link.kobo.old_endpoint').'/api/v1/forms?id_string='.$this->form->kobo_id)
+        ->get(config('kobo-link.kobo.endpoint_v2').'/assets/'.$this->form->kobo_id.'/files/')
         ->throw()
         ->json();
 
-        $koboform = $oldIdResponse[0];
-
+        \Log::info($mediaFiles);
 
         // delete any existing media from form to make way for fresh upload:
-        foreach ($koboform['metadata'] as $metadata) {
-            if ($metadata['data_type'] === "media") {
+        foreach ($mediaFiles['results'] as $key => $file) {
+            \Log::info('deleting existing file...');
+            \Log::info($file);
+            if ($file['file_type'] === "form_media") {
                 Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
-                ->delete(config('kobo-link.kobo.old_endpoint').'/api/v1/metadata/'.$metadata['id'])
+                ->delete($file['url'])
                 ->throw();
             }
         }
@@ -67,7 +66,7 @@ class UploadMediaFileAttachmentsToKoboForm implements ShouldQueue
 
         if ($mediaCollection && is_countable($mediaCollection)) {
             foreach ($mediaCollection as $media) {
-                UploadFileToKoboForm::dispatch($media, $koboform);
+                UploadFileToKoboForm::dispatch($media, $this->form);
             }
         }
 
@@ -75,7 +74,7 @@ class UploadMediaFileAttachmentsToKoboForm implements ShouldQueue
             foreach ($csvLookups as $csvMedia) {
                 $filePath = $csvMedia['per_team'] === "1" ? $this->form->team->id.'/'.$this->form->xlsform->id.'/'.$csvMedia['csv_name'] : $this->form->xlsform->id.'/'.$csvMedia['csv_name'];
 
-                UploadFileToKoboForm::dispatch($filePath . '.csv', $koboform);
+                UploadFileToKoboForm::dispatch($filePath . '.csv', $this->form);
             }
         }
     }
