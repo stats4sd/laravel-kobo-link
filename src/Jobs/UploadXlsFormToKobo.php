@@ -22,7 +22,7 @@ class UploadXlsFormToKobo implements ShouldQueue
 
     public $user;
     public $form;
-    public $handleMedia
+    public $handleMedia;
 
     /**
      * Create a new job instance.
