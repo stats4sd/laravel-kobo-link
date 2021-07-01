@@ -18,6 +18,7 @@ class DeployFormToKobo implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    public bool $handleMedia;
     public User $user;
     public TeamXlsform $form;
 
@@ -26,9 +27,10 @@ class DeployFormToKobo implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $user, TeamXlsform $form)
+    public function __construct(User $user, TeamXlsform $form, bool $handleMedia = true)
     {
-        //
+        ## 2021-07-01 temporary variable to workaround the Kobo media handling bug.
+        $this->handleMedia = $handleMedia;
         $this->user = $user;
         $this->form = $form;
     }
@@ -61,6 +63,6 @@ class DeployFormToKobo implements ShouldQueue
 
 
         // Always upload TeamXlsform (in case it is changed)
-        UploadXlsFormToKobo::dispatch($this->user, $this->form);
+        UploadXlsFormToKobo::dispatch($this->user, $this->form, $this->handleMedia);
     }
 }

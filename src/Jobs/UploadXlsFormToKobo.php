@@ -22,14 +22,16 @@ class UploadXlsFormToKobo implements ShouldQueue
 
     public $user;
     public $form;
+    public $handleMedia
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(User $user, TeamXlsform $form)
+    public function __construct(User $user, TeamXlsform $form, bool $handleMedia)
     {
+        $this->handleMedia = $handleMedia;
         $this->user = $user;
         $this->form = $form;
     }
@@ -58,6 +60,6 @@ class UploadXlsFormToKobo implements ShouldQueue
 
         $importUid = $response['uid'];
 
-        CheckKoboUpload::dispatch($this->user, $this->form, $importUid);
+        CheckKoboUpload::dispatch($this->user, $this->form, $importUid, $this->handleMedia);
     }
 }
