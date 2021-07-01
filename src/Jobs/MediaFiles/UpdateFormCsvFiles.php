@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Stats4sd\KoboLink\Jobs\DeployFormToKobo;
 use Stats4sd\KoboLink\Models\TeamXlsform;
 
 /**
@@ -43,6 +44,7 @@ class UpdateFormCsvFiles implements ShouldQueue
         GenerateCsvLookupFiles::withChain(
             [
                 new UploadCsvMediaFileAttachmentsToKoboForm($this->form),
+                new DeployFormToKobo(User::find(1), $this->form, false),
             ]
         )->dispatch($this->form);
     }
