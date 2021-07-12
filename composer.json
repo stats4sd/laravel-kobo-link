@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^7.4",
+        "php": "^7.4|^8.0",
         "ext-json": "*",
         "backpack/crud": "^4.1",
         "backpack/revise-operation": "^1.0",
