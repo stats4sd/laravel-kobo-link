@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^7.4",
+        "php": "^7.4|^8.0",
         "backpack/crud": "^4.1",
         "intervention/image": "^2.5",
         "maatwebsite/excel": "^3.1",
