@@ -2,7 +2,6 @@
 
 namespace Stats4sd\KoboLink\Jobs;
 
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -18,7 +17,7 @@ class DeployFormToKobo implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public User $user;
+    public $user;
     public TeamXlsform $form;
 
     /**
@@ -26,7 +25,7 @@ class DeployFormToKobo implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $user, TeamXlsform $form)
+    public function __construct($user = null, TeamXlsform $form)
     {
         $this->user = $user;
         $this->form = $form;

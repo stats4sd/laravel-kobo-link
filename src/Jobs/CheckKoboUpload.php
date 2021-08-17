@@ -2,7 +2,6 @@
 
 namespace Stats4sd\KoboLink\Jobs;
 
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -23,7 +22,7 @@ class CheckKoboUpload implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public User $user;
+    public $user;
     public TeamXlsform $form;
     public String $importUid;
 
@@ -32,12 +31,12 @@ class CheckKoboUpload implements ShouldQueue
 
     /**
      * Create a new job instance.
-     * @param User $user
+     * @param $user
      * @param TeamXlsform $form
      * @param String $importUid
      * @return void
      */
-    public function __construct(User $user, TeamXlsform $form, String $importUid)
+    public function __construct($user = null, TeamXlsform $form, String $importUid)
     {
         $this->user = $user;
         $this->form = $form;
@@ -92,19 +91,18 @@ class CheckKoboUpload implements ShouldQueue
                 $this->form
             ));
 
-         
-                // run other actions on Kobo that required a successfully imported form:
-                Bus::chain([
+
+            // run other actions on Kobo that required a successfully imported form:
+            Bus::chain([
                     new UpdateFormNameOnKobo($this->form),
                     new SetKoboFormToActive($this->user, $this->form),
                     new GenerateCsvLookupFiles($this->form),
                     new UploadMediaFileAttachmentsToKoboForm($this->form),
                     new ShareFormWithUsers($this->form),
-                    
+
                     new SetKoboFormToActive($this->user, $this->form),
                     new DeploymentSuccessMessage($this->user, $this->form),
                 ])->dispatch($this->form);
-            
         }
     }
 }

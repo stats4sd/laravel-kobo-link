@@ -2,7 +2,7 @@
 
 namespace Stats4sd\KoboLink\Jobs;
 
-use App\Models\User;
+;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -22,16 +22,14 @@ class UploadXlsFormToKobo implements ShouldQueue
 
     public $user;
     public $form;
-    public $handleMedia;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(User $user, TeamXlsform $form, bool $handleMedia)
+    public function __construct($user = null, TeamXlsform $form)
     {
-        $this->handleMedia = $handleMedia;
         $this->user = $user;
         $this->form = $form;
     }
