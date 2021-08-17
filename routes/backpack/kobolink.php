@@ -7,7 +7,7 @@ Route::group([
         (array) config('backpack.base.middleware_key', 'admin'),
     ),
     'namespace' => 'Stats4sd\KoboLink\Http\Controllers\Admin',
-], function() {
+], function () {
     Route::crud('xlsform', 'XlsformCrudController');
 //    Route::crud('submission', 'SubmissionCrudController');
 
