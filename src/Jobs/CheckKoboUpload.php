@@ -26,7 +26,6 @@ class CheckKoboUpload implements ShouldQueue
     public User $user;
     public TeamXlsform $form;
     public String $importUid;
-    public bool $handleMedia;
 
     public int $tries = 50;
     public int $maxExceptions = 1;
@@ -38,9 +37,8 @@ class CheckKoboUpload implements ShouldQueue
      * @param String $importUid
      * @return void
      */
-    public function __construct(User $user, TeamXlsform $form, String $importUid, bool $handleMedia)
+    public function __construct(User $user, TeamXlsform $form, String $importUid)
     {
-        $this->handleMedia = $handleMedia;
         $this->user = $user;
         $this->form = $form;
         $this->importUid = $importUid;
@@ -94,7 +92,7 @@ class CheckKoboUpload implements ShouldQueue
                 $this->form
             ));
 
-            if ($this->handleMedia) {
+         
                 // run other actions on Kobo that required a successfully imported form:
                 Bus::chain([
                     new UpdateFormNameOnKobo($this->form),
@@ -102,20 +100,11 @@ class CheckKoboUpload implements ShouldQueue
                     new GenerateCsvLookupFiles($this->form),
                     new UploadMediaFileAttachmentsToKoboForm($this->form),
                     new ShareFormWithUsers($this->form),
-                    // 2021-07-01 Tempoarary workaround for Kobo Media error
-                    new DeployFormToKobo($this->user, $this->form, false),
-                    // new DeploymentSuccessMessage($this->user, $this->form),
-                ])->dispatch($this->form);
-            } else {
-                Bus::chain([
-                    new UpdateFormNameOnKobo($this->form),
+                    
                     new SetKoboFormToActive($this->user, $this->form),
-                    // new GenerateCsvLookupFiles($this->form),
-                    // new UploadMediaFileAttachmentsToKoboForm($this->form),
-                    new ShareFormWithUsers($this->form),
                     new DeploymentSuccessMessage($this->user, $this->form),
                 ])->dispatch($this->form);
-            }
+            
         }
     }
 }
