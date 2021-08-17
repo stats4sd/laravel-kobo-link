@@ -25,7 +25,7 @@ class ProcessSubmission implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($user = null, Submission $submission)
+    public function __construct(Submission $submission, $user = null)
     {
         $this->user = $user;
         $this->submission = $submission;

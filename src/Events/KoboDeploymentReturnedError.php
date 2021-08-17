@@ -29,7 +29,7 @@ class KoboDeploymentReturnedError implements ShouldBroadcast
      * @param String $errorMessage
      * @return void
      */
-    public function __construct($user = null, TeamXlsform $form, $errorType, $errorMessage)
+    public function __construct(TeamXlsform $form, $errorType, $errorMessage, $user = null)
     {
         //
         $this->user = $user;

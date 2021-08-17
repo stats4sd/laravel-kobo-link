@@ -28,7 +28,7 @@ class ArchiveKoboForm implements ShouldQueue
      * @param TeamXlsForm $form
      * @return void
      */
-    public function __construct($user = null, TeamXlsForm $form)
+    public function __construct(TeamXlsForm $form, $user = null)
     {
         //
         $this->user = $user;
@@ -47,7 +47,7 @@ class ArchiveKoboForm implements ShouldQueue
         ->patch(config('kobo-link.kobo.endpoint_v2').'/assets/'.$this->form->kobo_id.'/deployment/', [
             'active' => false,
         ])->throw(function ($response, $e) {
-            event(new KoboArchiveRequestReturnedError($this->user, $this->form, 'Archive Error', json_encode($response->json())));
+            event(new KoboArchiveRequestReturnedError($this->form, 'Archive Error', json_encode($response->json(), $this->user)));
         });
 
         $this->form->update([
@@ -55,6 +55,6 @@ class ArchiveKoboForm implements ShouldQueue
             'is_active' => false,
         ]);
 
-        event(new KoboArchiveRequestReturnedSuccess($this->user, $this->form));
+        event(new KoboArchiveRequestReturnedSuccess($this->form, $this->user));
     }
 }

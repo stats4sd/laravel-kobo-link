@@ -26,7 +26,7 @@ class KoboGetDataReturnedError implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($user = null, TeamXlsform $form, String $response)
+    public function __construct(TeamXlsform $form, String $response, $user = null)
     {
         $this->user = $user;
         $this->form = $form;

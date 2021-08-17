@@ -25,7 +25,7 @@ class DeployFormToKobo implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($user = null, TeamXlsform $form)
+    public function __construct(TeamXlsform $form, $user = null)
     {
         $this->user = $user;
         $this->form = $form;
@@ -59,6 +59,6 @@ class DeployFormToKobo implements ShouldQueue
 
 
         // Always upload TeamXlsform (in case it is changed)
-        UploadXlsFormToKobo::dispatch($this->user, $this->form);
+        UploadXlsFormToKobo::dispatch($this->form, $this->user);
     }
 }

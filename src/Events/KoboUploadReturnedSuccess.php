@@ -26,7 +26,7 @@ class KoboUploadReturnedSuccess implements ShouldBroadcast
      * @param TeamXlsform $form
      * @return void
      */
-    public function __construct($user = null, TeamXlsform $form)
+    public function __construct(TeamXlsform $form, $user = null)
     {
         $this->user = $user;
         $this->form = $form;

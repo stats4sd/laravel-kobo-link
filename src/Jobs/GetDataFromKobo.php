@@ -30,7 +30,7 @@ class GetDataFromKobo implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($user = null, TeamXlsform $form)
+    public function __construct(TeamXlsform $form, $user = null)
     {
         $this->user = $user;
         $this->form = $form;
@@ -92,9 +92,9 @@ class GetDataFromKobo implements ShouldQueue
         }
 
         event(new KoboGetDataReturnedSuccess(
-            $this->user,
             $this->form,
-            $count
+            $count,
+            $this->user
         ));
     }
 }

@@ -30,7 +30,7 @@ class SetKoboFormToActive implements ShouldQueue
      * @param TeamXlsform $form
      * @return void
      */
-    public function __construct($user = null, TeamXlsform $form)
+    public function __construct(TeamXlsform $form, $user = null)
     {
         $this->user = $user;
         $this->form = $form;
@@ -76,7 +76,7 @@ class SetKoboFormToActive implements ShouldQueue
             $this->form->update([
                 'processing' => false,
             ]);
-            event(new KoboDeploymentReturnedError($this->user, $this->form, 'Deployment Error', json_encode($response->json())));
+            event(new KoboDeploymentReturnedError($this->form, 'Deployment Error', json_encode($response->json(), $this->user)));
             $this->fail();
         }
 

@@ -26,7 +26,7 @@ class DeploymentSuccessMessage implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($user = null, TeamXlsform $form)
+    public function __construct(TeamXlsform $form, $user = null)
     {
         $this->user = $user;
         $this->form = $form;
@@ -40,6 +40,6 @@ class DeploymentSuccessMessage implements ShouldQueue
     public function handle()
     {
         // emit Laravel event
-        event(new KoboDeploymentReturnedSuccess($this->user, $this->form));
+        event(new KoboDeploymentReturnedSuccess($this->form, $this->user));
     }
 }

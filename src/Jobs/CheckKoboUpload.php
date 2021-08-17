@@ -36,7 +36,7 @@ class CheckKoboUpload implements ShouldQueue
      * @param String $importUid
      * @return void
      */
-    public function __construct($user = null, TeamXlsform $form, String $importUid)
+    public function __construct(TeamXlsform $form, String $importUid, $user = null)
     {
         $this->user = $user;
         $this->form = $form;
@@ -72,10 +72,10 @@ class CheckKoboUpload implements ShouldQueue
             \Log::error("Error Message = " . $importCheck['messages']['error']);
 
             event(new KoboUploadReturnedError(
-                $this->user,
                 $this->form,
                 $importCheck['messages']['error_type'],
-                $importCheck['messages']['error']
+                $importCheck['messages']['error'],
+                $this->user,
             ));
 
             $this->form->update([
@@ -87,21 +87,21 @@ class CheckKoboUpload implements ShouldQueue
 
         if ($importStatus == "complete") {
             event(new KoboUploadReturnedSuccess(
-                $this->user,
-                $this->form
+                $this->form,
+                $this->user
             ));
 
 
             // run other actions on Kobo that required a successfully imported form:
             Bus::chain([
                     new UpdateFormNameOnKobo($this->form),
-                    new SetKoboFormToActive($this->user, $this->form),
+                    new SetKoboFormToActive($this->form, $this->user),
                     new GenerateCsvLookupFiles($this->form),
                     new UploadMediaFileAttachmentsToKoboForm($this->form),
                     new ShareFormWithUsers($this->form),
 
-                    new SetKoboFormToActive($this->user, $this->form),
-                    new DeploymentSuccessMessage($this->user, $this->form),
+                    new SetKoboFormToActive($this->form, $this->user),
+                    new DeploymentSuccessMessage($this->form, $this->user),
                 ])->dispatch($this->form);
         }
     }
