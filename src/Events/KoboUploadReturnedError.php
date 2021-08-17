@@ -17,7 +17,7 @@ class KoboUploadReturnedError implements ShouldBroadcast
     use InteractsWithSockets;
     use SerializesModels;
 
-    public User $user;
+    public $user;
     public TeamXlsform $form;
     public string $errorType;
     public string $errorMessage;
@@ -25,12 +25,12 @@ class KoboUploadReturnedError implements ShouldBroadcast
     /**
      * Create a new event instance
      *
-     * @param User $user
+     * @param $user
      * @param TeamXlsform $form
      * @param String $errorType
      * @param String $errorMessage
      */
-    public function __construct(User $user, TeamXlsform $form, string $errorType, string $errorMessage)
+    public function __construct($user, TeamXlsform $form, string $errorType, string $errorMessage)
     {
         $this->user = $user;
         $this->form = $form;

@@ -2,7 +2,7 @@
 
 namespace Stats4sd\KoboLink\Events;
 
-use App\Models\User;
+;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -17,7 +17,7 @@ class KoboGetDataReturnedError implements ShouldBroadcast
     use InteractsWithSockets;
     use SerializesModels;
 
-    public User $user;
+    public $user;
     public TeamXlsform $form;
     public String $response;
 
@@ -26,7 +26,7 @@ class KoboGetDataReturnedError implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(User $user, TeamXlsform $form, String $response)
+    public function __construct($user, TeamXlsform $form, String $response)
     {
         $this->user = $user;
         $this->form = $form;

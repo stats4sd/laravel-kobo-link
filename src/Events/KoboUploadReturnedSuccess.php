@@ -2,7 +2,7 @@
 
 namespace Stats4sd\KoboLink\Events;
 
-use App\Models\User;
+;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -22,11 +22,11 @@ class KoboUploadReturnedSuccess implements ShouldBroadcast
 
     /**
      * Create a new event instance.
-     * @param User $user
+     * @param $user
      * @param TeamXlsform $form
      * @return void
      */
-    public function __construct(User $user, TeamXlsform $form)
+    public function __construct($user, TeamXlsform $form)
     {
         $this->user = $user;
         $this->form = $form;

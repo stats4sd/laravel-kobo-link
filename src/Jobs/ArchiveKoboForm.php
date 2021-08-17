@@ -2,7 +2,6 @@
 
 namespace Stats4sd\KoboLink\Jobs;
 
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -20,16 +19,16 @@ class ArchiveKoboForm implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public User $user;
+    public $user;
     public TeamXlsForm $form;
 
     /**
      * Create a new job instance.
-     * @param User $user,
+     * @param $user, -- should be an instance of your app's User model
      * @param TeamXlsForm $form
      * @return void
      */
-    public function __construct(User $user, TeamXlsForm $form)
+    public function __construct($user, TeamXlsForm $form)
     {
         //
         $this->user = $user;
