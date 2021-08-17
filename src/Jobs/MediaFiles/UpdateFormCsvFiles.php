@@ -44,7 +44,7 @@ class UpdateFormCsvFiles implements ShouldQueue
         GenerateCsvLookupFiles::withChain(
             [
                 new UploadCsvMediaFileAttachmentsToKoboForm($this->form),
-                new DeployFormToKobo(User::find(1), $this->form, false),
+                new SetKoboFormToActive(User::find(1), $this->form),
             ]
         )->dispatch($this->form);
     }
