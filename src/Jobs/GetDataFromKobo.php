@@ -52,7 +52,7 @@ class GetDataFromKobo implements ShouldQueue
             if ($response->status() === 504) {
                 $this->release(5);
             }
-            event(new KoboGetDataReturnedError($this->user, $this->form, json_encode($response->json())));
+            event(new KoboGetDataReturnedError($this->form, json_encode($response->json()), $this->user));
             $this->fail();
         }
 
