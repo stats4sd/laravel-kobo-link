@@ -2,7 +2,7 @@
 
 namespace Stats4sd\KoboLink\Jobs;
 
-use App\Models\User;
+;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -19,18 +19,18 @@ class SetKoboFormToActive implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public User $user;
+    public $user;
     public TeamXlsform $form;
     public int $tries = 3;
     public int $maxExceptions = 1;
 
     /**
      * Create a new job instance.
-     * @param User $user
+     * @param $user
      * @param TeamXlsform $form
      * @return void
      */
-    public function __construct(User $user, TeamXlsform $form)
+    public function __construct(TeamXlsform $form, $user = null)
     {
         $this->user = $user;
         $this->form = $form;
@@ -76,7 +76,7 @@ class SetKoboFormToActive implements ShouldQueue
             $this->form->update([
                 'processing' => false,
             ]);
-            event(new KoboDeploymentReturnedError($this->user, $this->form, 'Deployment Error', json_encode($response->json())));
+            event(new KoboDeploymentReturnedError($this->form, 'Deployment Error', json_encode($response->json(), $this->user)));
             $this->fail();
         }
 

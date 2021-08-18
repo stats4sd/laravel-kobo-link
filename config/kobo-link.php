@@ -9,6 +9,7 @@ return [
         'teamxlsform' => '\\Stats4sd\\KoboLink\\Models\\TeamXlsform',
         'submission' => '\\Stats4sd\\KoboLink\\Models\\Submission',
         'datamap' => '\\Stats4sd\\KoboLink\\Models\\Datamap',
+        'user' => '\\App\\Models\\User',
     ],
 
     /**

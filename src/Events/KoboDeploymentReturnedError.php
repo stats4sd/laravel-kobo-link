@@ -2,7 +2,7 @@
 
 namespace Stats4sd\KoboLink\Events;
 
-use App\Models\User;
+;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -23,13 +23,13 @@ class KoboDeploymentReturnedError implements ShouldBroadcast
 
     /**
      * Create a new event instance.
-     * @param User $user
+     * @param $user
      * @param TeamXlsform $form
      * @param String $errorType
      * @param String $errorMessage
      * @return void
      */
-    public function __construct(User $user, TeamXlsform $form, $errorType, $errorMessage)
+    public function __construct(TeamXlsform $form, $errorType, $errorMessage, $user = null)
     {
         //
         $this->user = $user;
@@ -45,6 +45,8 @@ class KoboDeploymentReturnedError implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel("App.Models.User.{$this->user->id}");
+        if ($this->user) {
+            return new PrivateChannel("App.Models.User.{$this->user->id}");
+        }
     }
 }

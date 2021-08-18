@@ -96,7 +96,7 @@ class TeamXlsformCrudController extends CrudController
 
     public function deployToKobo(TeamXlsform $form)
     {
-        DeployFormToKobo::dispatchSync(backpack_auth()->user(), $form);
+        DeployFormToKobo::dispatch($form, backpack_auth()->user());
 
         return response()->json([
             'title' => $form->title,
@@ -106,7 +106,7 @@ class TeamXlsformCrudController extends CrudController
 
     public function syncData(TeamXlsform $form)
     {
-        GetDataFromKobo::dispatchSync(backpack_auth()->user(), $form);
+        GetDataFromKobo::dispatchSync($form, backpack_auth()->user());
 
         $submissions = $form->submissions;
 
@@ -122,7 +122,7 @@ class TeamXlsformCrudController extends CrudController
 
     public function archiveOnKobo(TeamXlsform $form)
     {
-        ArchiveKoboForm::dispatch(backpack_auth()->user(), $form);
+        ArchiveKoboForm::dispatch($form, backpack_auth()->user());
 
         return response()->json([
             'title' => $form->title,

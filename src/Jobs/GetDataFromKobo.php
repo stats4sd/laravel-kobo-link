@@ -2,7 +2,7 @@
 
 namespace Stats4sd\KoboLink\Jobs;
 
-use App\Models\User;
+;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -22,7 +22,7 @@ class GetDataFromKobo implements ShouldQueue
     use SerializesModels;
 
     public TeamXlsform $form;
-    public User $user;
+    public $user;
     public int $tries = 5;
 
     /**
@@ -30,7 +30,7 @@ class GetDataFromKobo implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $user, TeamXlsform $form)
+    public function __construct(TeamXlsform $form, $user = null)
     {
         $this->user = $user;
         $this->form = $form;
@@ -92,9 +92,9 @@ class GetDataFromKobo implements ShouldQueue
         }
 
         event(new KoboGetDataReturnedSuccess(
-            $this->user,
             $this->form,
-            $count
+            $count,
+            $this->user
         ));
     }
 }

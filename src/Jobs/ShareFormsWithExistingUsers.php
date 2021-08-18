@@ -23,16 +23,16 @@ class ShareFormsWithExistingUsers implements ShouldQueue
     use SerializesModels;
 
 
-    public Team $team;
+    public $team;
 
     /**
      * Create a new job instance.
-     * @param Team $team
+     * @param Team $team - should be an instance of your app's Team model
      * @return void
      */
-    public function __construct(Team $team)
+    public function __construct($team)
     {
-        $this->team = $form;
+        $this->team = $team;
     }
 
     /**

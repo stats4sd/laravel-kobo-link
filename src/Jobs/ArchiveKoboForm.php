@@ -2,7 +2,6 @@
 
 namespace Stats4sd\KoboLink\Jobs;
 
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -20,16 +19,16 @@ class ArchiveKoboForm implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public User $user;
+    public $user;
     public TeamXlsForm $form;
 
     /**
      * Create a new job instance.
-     * @param User $user,
+     * @param $user, -- should be an instance of your app's User model
      * @param TeamXlsForm $form
      * @return void
      */
-    public function __construct(User $user, TeamXlsForm $form)
+    public function __construct(TeamXlsForm $form, $user = null)
     {
         //
         $this->user = $user;
@@ -48,7 +47,7 @@ class ArchiveKoboForm implements ShouldQueue
         ->patch(config('kobo-link.kobo.endpoint_v2').'/assets/'.$this->form->kobo_id.'/deployment/', [
             'active' => false,
         ])->throw(function ($response, $e) {
-            event(new KoboArchiveRequestReturnedError($this->user, $this->form, 'Archive Error', json_encode($response->json())));
+            event(new KoboArchiveRequestReturnedError($this->form, 'Archive Error', json_encode($response->json(), $this->user)));
         });
 
         $this->form->update([
@@ -56,6 +55,6 @@ class ArchiveKoboForm implements ShouldQueue
             'is_active' => false,
         ]);
 
-        event(new KoboArchiveRequestReturnedSuccess($this->user, $this->form));
+        event(new KoboArchiveRequestReturnedSuccess($this->form, $this->user));
     }
 }
