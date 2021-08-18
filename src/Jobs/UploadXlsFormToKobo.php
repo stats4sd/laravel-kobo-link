@@ -62,6 +62,6 @@ class UploadXlsFormToKobo implements ShouldQueue
         \Log::info($response);
         $importUid = $response['uid'];
 
-        CheckKoboUpload::dispatch($this->form, $importUid, $this->handleMedia, $this->user);
+        CheckKoboUpload::dispatch($this->form, $importUid, $this->user);
     }
 }
