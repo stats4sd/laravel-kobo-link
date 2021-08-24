@@ -184,7 +184,7 @@ class SubmissionCrudController extends CrudController
 
     public function reprocessSubmission(Submission $submission)
     {
-        ProcessSubmission::dispatchSync(auth()->user(), $submission);
+        ProcessSubmission::dispatchSync($submission, auth()->user());
     }
 
     //overwrite the restore revision (to avoid doubling the json_encode on content...)
