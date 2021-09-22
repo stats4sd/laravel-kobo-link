@@ -76,7 +76,7 @@ class SetKoboFormToActive implements ShouldQueue
             $this->form->update([
                 'processing' => false,
             ]);
-            event(new KoboDeploymentReturnedError($this->form, 'Deployment Error', json_encode($response->json(), $this->user)));
+            event(new KoboDeploymentReturnedError($this->form, 'Deployment Error', json_encode($response->json()), $this->user));
             $this->fail();
         }
 
