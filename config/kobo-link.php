@@ -4,14 +4,6 @@ return [
 
     'echo' => false,
 
-    'models' => [
-        'xlsform' => '\\Stats4sd\\KoboLink\\Models\\Xlsform',
-        'teamxlsform' => '\\Stats4sd\\KoboLink\\Models\\TeamXlsform',
-        'submission' => '\\Stats4sd\\KoboLink\\Models\\Submission',
-        'datamap' => '\\Stats4sd\\KoboLink\\Models\\Datamap',
-        'user' => '\\App\\Models\\User',
-    ],
-
     /**
      * Configuration for the link to KoBoToolbox
      */
@@ -24,10 +16,6 @@ return [
 
         /** The url for the legacy API. This is still required for some functionality. */
         'old_endpoint' => env('KOBO_OLD_ENDPOINT', 'https://kc.kobotoolbox.org'),
-
-
-        // TODO: Check and remove Kobo account token
-        'token' => env('KOBO_TOKEN', ''),
 
         /**
          * Username and password for the main platform account

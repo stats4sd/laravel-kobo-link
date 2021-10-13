@@ -3,7 +3,6 @@
 
 namespace Stats4sd\KoboLink\Models;
 
-use \App\Models\Team;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -41,17 +40,17 @@ class Xlsform extends Model
 
     public function datamaps(): BelongsToMany
     {
-        return $this->belongsToMany(config('kobo-link.models.datamap'));
+        return $this->belongsToMany(Datamap::class);
     }
 
     public function privateTeam(): BelongsTo
     {
-        return $this->belongsTo(Team::class, 'private_team_id');
+        return $this->belongsTo(config('kobo-link.models.team'), 'private_team_id');
     }
 
     public function teams(): BelongsToMany
     {
-        return $this->belongsToMany(Team::class, 'team_xlsform');
+        return $this->belongsToMany(config('kobo-link.models.team'), 'team_xlsform');
     }
 
     public function teamXlsform(): HasMany

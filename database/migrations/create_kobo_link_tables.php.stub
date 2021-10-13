@@ -17,6 +17,21 @@ class CreateKoboLinkTables extends Migration
         });
 
         /**
+         * Creates table to store teams (should be moved to seperate package eventually!)
+         */
+        Schema::table('teams', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('creator_id');
+            $table->string('name')->unique();
+            $table->string('slug')->unique();
+            $table->text('description');
+            $table->tinyInteger('status');
+            $table->string('avatar')->nullable();
+            $table->softDeletes($column = 'deleted_at', $precision = 0);
+            $table->timestamps();
+        });
+
+        /**
          * Table to store ODK forms managed through the platform
          */
         Schema::create('xlsforms', function (Blueprint $table) {

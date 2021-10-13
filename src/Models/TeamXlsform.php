@@ -3,7 +3,6 @@
 
 namespace Stats4sd\KoboLink\Models;
 
-use App\Models\Team;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -51,7 +50,7 @@ class TeamXlsform extends \Illuminate\Database\Eloquent\Model
 
     public function team(): BelongsTo
     {
-        return $this->belongsTo(Team::class);
+        return $this->belongsTo(config('kobo-link.models.team'));
     }
 
     public function submissions(): HasMany
