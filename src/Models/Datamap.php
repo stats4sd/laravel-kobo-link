@@ -4,6 +4,7 @@
 namespace Stats4sd\KoboLink\Models;
 
 use Illuminate\Support\Str;
+use Stats4sd\KoboLink\Models\Traits\HasDataMaps;
 use Stats4sd\KoboLink\Models\Xlsform;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -13,6 +14,7 @@ class Datamap extends \Illuminate\Database\Eloquent\Model
 {
     use CrudTrait;
     use ValidatesRequests;
+    use HasDataMaps;
 
     /*
     |--------------------------------------------------------------------------
@@ -46,7 +48,7 @@ class Datamap extends \Illuminate\Database\Eloquent\Model
         foreach ($record as $key => $value) {
 
             // Keep this as it forms part of the media download url
-            if ($key == 'formhub/uuid') {
+            if ($key === 'formhub/uuid') {
                 continue;
             }
 

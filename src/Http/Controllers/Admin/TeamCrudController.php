@@ -9,6 +9,7 @@ use Stats4sd\KoboLink\Http\Requests\TeamRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Stats4sd\KoboLink\Models\Team;
 
 
 /**
@@ -74,7 +75,7 @@ class TeamCrudController extends CrudController
         CRUD::setValidation(TeamRequest::class);
 
         CRUD::field('name')->label('Enter the team name');
-        CRUD::field('description')->type('textarea')->label('Enter a brief description of the teamy');
+        CRUD::field('description')->type('textarea')->label('Enter a brief description of the team');
         CRUD::field('avatar')->type('image')->crop(true)->upload(true)->disk('team')->label('Upload a cover image for the main team page');
 
         CRUD::field('creator_id')->type('hidden')->value(Auth::user()->id);
@@ -92,21 +93,21 @@ class TeamCrudController extends CrudController
 
         CRUD::setValidation(TeamRequest::class);
 
-        CRUD::field('name')->label('Enter the case study name');
-        CRUD::field('description')->type('textarea')->label('Enter a brief description of the case study');
+        CRUD::field('name')->label('Enter the team name');
+        CRUD::field('description')->type('textarea')->label('Enter a brief description of the team');
         CRUD::field('avatar')->type('image')->crop(true)->upload(true)->disk('team')->label('Upload a cover image for the main team page');
 
-        CRUD::field('status')->type('radio')->label('Is this case study active currently?<br/><span class="font-weight-normal">This should be left as active for the duration of the TPP Viability Case Study project.</span>')->options([
+        CRUD::field('status')->type('radio')->label('
+                Is this case study active currently?')->options([
             1 => 'Active',
             0 => 'Inactive',
         ]);
     }
 
-    public function show()
+    public function show(Team $id)
     {
-        // TODO: create teams.show view!
-        $team = CRUD::getCurrentEntry()->load('languages');
-        return view('teams.show', ['team' => $team]);
+        // TODO: create teams.show view or view component... (component better to let devs drop it into where-ever on each platform)
+        return view('teams.show', ['team' => $id]);
     }
 
     public function getForms($team)

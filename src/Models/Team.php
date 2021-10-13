@@ -2,6 +2,7 @@
 
 namespace Stats4sd\KoboLink\Models;
 
+use App\Models\User;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -50,20 +51,20 @@ class Team extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(config('kobo-link.models.user'), 'team_members')
+        return $this->belongsToMany(User::class, 'team_members')
             ->withPivot('is_admin');
     }
 
     public function admins(): BelongsToMany
     {
-        return $this->belongsToMany(config('kobo-link.models.user'), 'team_members')
+        return $this->belongsToMany(User::class, 'team_members')
             ->withPivot('is_admin')
             ->wherePivot('is_admin', 1);
     }
 
     public function members(): BelongsToMany
     {
-        return $this->belongsToMany(config('kobo-link.models.user'), 'team_members')
+        return $this->belongsToMany(User::class, 'team_members')
             ->withPivot('is_admin')
             ->wherePivot('is_admin', 0);
     }

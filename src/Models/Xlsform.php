@@ -45,12 +45,12 @@ class Xlsform extends Model
 
     public function privateTeam(): BelongsTo
     {
-        return $this->belongsTo(config('kobo-link.models.team'), 'private_team_id');
+        return $this->belongsTo(Team::class, 'private_team_id');
     }
 
     public function teams(): BelongsToMany
     {
-        return $this->belongsToMany(config('kobo-link.models.team'), 'team_xlsform');
+        return $this->belongsToMany(Team::class, 'team_xlsform');
     }
 
     public function teamXlsform(): HasMany

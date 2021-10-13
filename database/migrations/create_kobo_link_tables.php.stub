@@ -19,7 +19,7 @@ class CreateKoboLinkTables extends Migration
         /**
          * Creates table to store teams (should be moved to seperate package eventually!)
          */
-        Schema::table('teams', function (Blueprint $table) {
+        Schema::create('teams', function (Blueprint $table) {
             $table->id();
             $table->foreignId('creator_id');
             $table->string('name')->unique();

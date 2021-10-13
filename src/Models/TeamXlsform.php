@@ -50,7 +50,7 @@ class TeamXlsform extends \Illuminate\Database\Eloquent\Model
 
     public function team(): BelongsTo
     {
-        return $this->belongsTo(config('kobo-link.models.team'));
+        return $this->belongsTo(Team::class);
     }
 
     public function submissions(): HasMany

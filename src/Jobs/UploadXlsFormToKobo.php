@@ -38,11 +38,10 @@ class UploadXlsFormToKobo implements ShouldQueue
      * Execute the job.
      *
      * @return void
+     * @throws \Illuminate\Hp\Client\RequestException
      */
     public function handle()
     {
-        \Log::info($this->user);
-        \Log::info($this->form);
         $response = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
             ->withHeaders(["Accept" => "application/json"])
             ->attach(
@@ -58,8 +57,6 @@ class UploadXlsFormToKobo implements ShouldQueue
             ->throw()
             ->json();
 
-        \Log::info('response');
-        \Log::info($response);
         $importUid = $response['uid'];
 
         CheckKoboUpload::dispatch($this->form, $importUid, $this->user);
