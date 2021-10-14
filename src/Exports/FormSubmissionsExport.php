@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use Stats4sd\KoboLink\Models\TeamXlsform;
+use App\Models\TeamXlsform;
 
 class FormSubmissionsExport implements FromCollection, WithHeadings, ShouldAutoSize
 {

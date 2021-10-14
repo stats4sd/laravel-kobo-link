@@ -78,7 +78,7 @@ public function xls_forms()
 
 public function team_xlsforms()
 {
-    return $this->hasMany(TeamXlsForm::class);
+    return $this->hasMany(TeamXlsform::class);
 }
 
 ```

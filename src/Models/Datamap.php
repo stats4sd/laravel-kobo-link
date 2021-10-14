@@ -4,8 +4,6 @@
 namespace Stats4sd\KoboLink\Models;
 
 use Illuminate\Support\Str;
-use Stats4sd\KoboLink\Models\Traits\HasDataMaps;
-use Stats4sd\KoboLink\Models\Xlsform;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -14,7 +12,6 @@ class Datamap extends \Illuminate\Database\Eloquent\Model
 {
     use CrudTrait;
     use ValidatesRequests;
-    use HasDataMaps;
 
     /*
     |--------------------------------------------------------------------------
@@ -39,7 +36,10 @@ class Datamap extends \Illuminate\Database\Eloquent\Model
 
     public function process(Submission $submission)
     {
-        $this->{$this->id}($submission);
+        $service = app(config('kobo-link.process_scripts_class'));
+
+        // TODO: figure out why on earth we're using the id to determine the method name!! (or rather - how to do it more logically...)
+        $service->{$this->id}($submission);
     }
 
     public function removeGroupNames(array $record): array

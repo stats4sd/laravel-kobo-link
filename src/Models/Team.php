@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PsalmGlobal */
 
 namespace Stats4sd\KoboLink\Models;
 
@@ -72,12 +72,12 @@ class Team extends Model
     // May not need?
     public function creator(): BelongsTo
     {
-        return $this->belongsTo(config('kobo-link.models.user', 'creator_id'));
+        return $this->belongsTo(User::class, 'creator_id');
     }
 
     public function invites(): HasMany
     {
-        return $this->hasMany(config('kobo-link.models.invite'));
+        return $this->hasMany(Invite::class);
     }
 
 

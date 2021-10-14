@@ -4,14 +4,16 @@ namespace Stats4sd\KoboLink\Jobs;
 
 ;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Stats4sd\KoboLink\Models\TeamXlsform;
+use App\Models\TeamXlsform;
 
 class UploadXlsFormToKobo implements ShouldQueue
 {
@@ -20,27 +22,23 @@ class UploadXlsFormToKobo implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public $user;
-    public $form;
-
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(TeamXlsform $form, $user = null)
+    public function __construct(public TeamXlsform $form, public mixed $user = null)
     {
-        $this->user = $user;
-        $this->form = $form;
+
     }
 
     /**
      * Execute the job.
      *
      * @return void
-     * @throws \Illuminate\Hp\Client\RequestException
+     * @throws RequestException|FileNotFoundException
      */
-    public function handle()
+    public function handle(): void
     {
         $response = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
             ->withHeaders(["Accept" => "application/json"])
@@ -59,6 +57,7 @@ class UploadXlsFormToKobo implements ShouldQueue
 
         $importUid = $response['uid'];
 
+        // dispatch next step in the process
         CheckKoboUpload::dispatch($this->form, $importUid, $this->user);
     }
 }

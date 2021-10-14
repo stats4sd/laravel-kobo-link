@@ -8,7 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
-use Stats4sd\KoboLink\Models\TeamXlsform;
+use App\Models\TeamXlsform;
 
 class DeployFormToKobo implements ShouldQueue
 {
@@ -17,26 +17,22 @@ class DeployFormToKobo implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public $user;
-    public TeamXlsform $form;
-
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(TeamXlsform $form, $user = null)
+    public function __construct(public TeamXlsform $form, public $user = null)
     {
-        $this->user = $user;
-        $this->form = $form;
     }
 
     /**
      * Execute the job.
      *
      * @return void
+     * @throws \Illuminate\Http\Client\RequestException
      */
-    public function handle()
+    public function handle(): void
     {
 
         //if form is not already on Kobo, create asset...
@@ -56,9 +52,7 @@ class DeployFormToKobo implements ShouldQueue
             ]);
         }
 
-
-
-        // Always upload TeamXlsform (in case it is changed)
+        // Dispatch next job in sequence
         UploadXlsFormToKobo::dispatch($this->form, $this->user);
     }
 }

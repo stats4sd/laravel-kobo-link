@@ -2,14 +2,13 @@
 
 namespace Stats4sd\KoboLink\Http\Controllers\Admin;
 
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Stats4sd\KoboLink\Http\Requests\TeamRequest;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
-
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Stats4sd\KoboLink\Models\Team;
+use App\Models\Team;
 
 
 /**
@@ -32,9 +31,9 @@ class TeamCrudController extends CrudController
      * @return void
      * @throws Exception
      */
-    public function setup()
+    public function setup(): void
     {
-        CRUD::setModel(config('kobo-link.models.team'));
+        CRUD::setModel(Team::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/team');
         CRUD::setEntityNameStrings('team', 'teams');
     }
@@ -45,7 +44,7 @@ class TeamCrudController extends CrudController
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
-    protected function setupListOperation()
+    protected function setupListOperation(): void
     {
 
         CRUD::setResponsiveTable(false);
@@ -68,10 +67,8 @@ class TeamCrudController extends CrudController
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
-    protected function setupCreateOperation()
+    protected function setupCreateOperation(): void
     {
-
-
         CRUD::setValidation(TeamRequest::class);
 
         CRUD::field('name')->label('Enter the team name');
@@ -88,7 +85,7 @@ class TeamCrudController extends CrudController
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
-    protected function setupUpdateOperation()
+    protected function setupUpdateOperation(): void
     {
 
         CRUD::setValidation(TeamRequest::class);
@@ -104,15 +101,14 @@ class TeamCrudController extends CrudController
         ]);
     }
 
-    public function show(Team $id)
-    {
-        // TODO: create teams.show view or view component... (component better to let devs drop it into where-ever on each platform)
-        return view('teams.show', ['team' => $id]);
-    }
+//    public function show(Team $id): Factory|View|Application
+//    {
+//        // TODO: create teams.show view or view component... (component better to let devs drop it into where-ever on each platform)
+//        return view('teams.show', ['team' => $id]);
+//    }
 
     public function getForms($team)
     {
         return $team->team_xlsforms->toJson();
     }
-
 }

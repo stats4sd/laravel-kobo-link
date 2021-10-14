@@ -2,7 +2,6 @@
 
 namespace Stats4sd\KoboLink\Http\Requests;
 
-use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TeamRequest extends FormRequest
@@ -12,10 +11,10 @@ class TeamRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         // only allow updates if the user can update the current team
-        return backpack_auth()->check();
+        return auth()->check();
     }
 
     /**
@@ -23,7 +22,7 @@ class TeamRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => ['required','max:255'],
@@ -33,27 +32,4 @@ class TeamRequest extends FormRequest
         ];
     }
 
-    /**
-     * Get the validation attributes that apply to the request.
-     *
-     * @return array
-     */
-    public function attributes()
-    {
-        return [
-            //
-        ];
-    }
-
-    /**
-     * Get the validation messages that apply to the request.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            //
-        ];
-    }
 }

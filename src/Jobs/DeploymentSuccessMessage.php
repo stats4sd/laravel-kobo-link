@@ -9,7 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Stats4sd\KoboLink\Events\KoboDeploymentReturnedSuccess;
-use Stats4sd\KoboLink\Models\TeamXlsform;
+use App\Models\TeamXlsform;
 
 class DeploymentSuccessMessage implements ShouldQueue
 {
@@ -18,18 +18,13 @@ class DeploymentSuccessMessage implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public $user;
-    public TeamXlsform $form;
-
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(TeamXlsform $form, $user = null)
+    public function __construct(public TeamXlsform $form, public $user = null)
     {
-        $this->user = $user;
-        $this->form = $form;
     }
 
     /**
@@ -37,7 +32,7 @@ class DeploymentSuccessMessage implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         // emit Laravel event
         event(new KoboDeploymentReturnedSuccess($this->form, $this->user));

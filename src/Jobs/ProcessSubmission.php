@@ -2,13 +2,12 @@
 
 namespace Stats4sd\KoboLink\Jobs;
 
-use \Stats4sd\KoboLink\Models\Submission;
-;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Stats4sd\KoboLink\Models\Submission;
 
 class ProcessSubmission implements ShouldQueue
 {
@@ -17,18 +16,13 @@ class ProcessSubmission implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    private $user;
-    private Submission $submission;
-
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Submission $submission, $user = null)
+    public function __construct(private Submission $submission)
     {
-        $this->user = $user;
-        $this->submission = $submission;
     }
 
     /**

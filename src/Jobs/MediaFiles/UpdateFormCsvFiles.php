@@ -5,7 +5,7 @@ namespace Stats4sd\KoboLink\Jobs\MediaFiles;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
-use Stats4sd\KoboLink\Models\TeamXlsform;
+use App\Models\TeamXlsform;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Stats4sd\KoboLink\Jobs\DeployFormToKobo;
@@ -13,7 +13,7 @@ use Stats4sd\KoboLink\Jobs\SetKoboFormToActive;
 
 /**
  * Call this class to update the csv lookup files on the passed TeamXlsform.
- * This handles calling the right jobs to generate the new csv files from the database and push them up to Kobotoolbox
+ * This method handles calling the right jobs to generate the new csv files from the database and push them up to Kobotoolbox
  * @param TeamXlsform $form
  */
 class UpdateFormCsvFiles implements ShouldQueue

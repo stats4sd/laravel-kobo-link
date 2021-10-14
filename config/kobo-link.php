@@ -2,6 +2,13 @@
 
 return [
 
+
+    /**
+     * Enter the fully-qualified path to the class that contains the scripts used to process incoming ODK submissions
+     * See Stats4sd\KoboLink\Services\DatamapService::class for a basic example
+     */
+    'process_scripts_class' => Stats4sd\KoboLink\Services\DatamapService::class,
+
     'echo' => false,
 
     /**
@@ -34,7 +41,7 @@ return [
         'storage_disk' => config('filesystems.default'),
     ],
 
-    'kobomedia' => [
+    'media' => [
         'storage_disk' => config('filesystems.default'),
     ]
 ];

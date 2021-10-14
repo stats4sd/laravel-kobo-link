@@ -14,9 +14,9 @@
 	    function archiveForm(button) {
 		    // ask for confirmation before deleting an item
 		    // e.preventDefault();
-            var button = $(button);
-            var route = button.attr('data-route');
-            var row = $("#crudTable a[data-route='"+route+"']").closest('tr');
+            button = $(button);
+            const route = button.attr('data-route');
+            const row = $("#crudTable a[data-route='" + route + "']").closest('tr');
 
             $.ajax({
                 url: route,
@@ -25,7 +25,7 @@
                     console.log(result);
                     new Noty({
                         type: "info",
-                        text: "Archive Request Sent to Kobotoolbox"
+                        text: "Archive Request Sent to KoboToolBox"
                     }).show();
                 },
                 error: function(result) {

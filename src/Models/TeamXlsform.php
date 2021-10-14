@@ -6,6 +6,7 @@ namespace Stats4sd\KoboLink\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use JetBrains\PhpStorm\Pure;
 
 class TeamXlsform extends \Illuminate\Database\Eloquent\Model
 {
@@ -27,12 +28,12 @@ class TeamXlsform extends \Illuminate\Database\Eloquent\Model
     |--------------------------------------------------------------------------
     */
 
-    public function getTitleAttribute()
+    public function getTitleAttribute(): string
     {
         return $this->team ? $this->team->name.' - '.$this->xlsform->title : '';
     }
 
-    public function getRecordsAttribute()
+    public function getRecordsAttribute(): int
     {
         return $this->submissions->count();
     }

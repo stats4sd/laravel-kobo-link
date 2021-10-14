@@ -3,34 +3,41 @@
 
 namespace Stats4sd\KoboLink\Http\Controllers\Admin;
 
-use \Stats4sd\KoboLink\Jobs\ProcessSubmission;
-use \Stats4sd\KoboLink\Models\Submission;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Backpack\ReviseOperation\ReviseOperation;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Str;
-use Stats4sd\KoboLink\Models\TeamXlsform;
-use Venturecraft\Revisionable\Revision;
+use JsonException;
+use Stats4sd\KoboLink\Jobs\ProcessSubmission;
+use App\Models\Submission;
+use App\Models\TeamXlsform;
 
 /**
  * Class SubmissionCrudController
  * @package App\Http\Controllers\Admin
- * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
+ * @property-read CrudPanel $crud
  */
 class SubmissionCrudController extends CrudController
 {
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use ListOperation;
+    use ShowOperation;
     use UpdateOperation;
-    //use ReviseOperation;
+
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      *
      * @return void
+     * @throws Exception
      */
-    public function setup()
+    public function setup(): void
     {
         CRUD::setModel(Submission::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/submission');
@@ -43,7 +50,7 @@ class SubmissionCrudController extends CrudController
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
-    protected function setupListOperation()
+    protected function setupListOperation(): void
     {
         CRUD::column('teamXlsform')->label('XLS Form')->type('relationship')->attribute('title');
         CRUD::column('id')->label('Submission ID<br/> (from Kobo)');
@@ -74,12 +81,14 @@ class SubmissionCrudController extends CrudController
         ->view('kobo-link::crud.buttons.submissions.reprocess');
     }
 
-    public function setupShowOperation()
+    public function setupShowOperation(): void
     {
         $this->setupListOperation();
 
-        CRUD::column('content')->type('closure')->function(function ($entry) {
-            $content = json_decode($entry->content, true);
+        CRUD::column('content')->type('closure')->function(/**
+         * @throws JsonException
+         */ function ($entry) {
+            $content = json_decode($entry->content, true, 512, JSON_THROW_ON_ERROR);
 
 
             $output = '
@@ -92,7 +101,7 @@ class SubmissionCrudController extends CrudController
 
             foreach ($content as $key => $value) {
                 if (is_array($value)) {
-                    $value = json_encode($value);
+                    $value = json_encode($value, JSON_THROW_ON_ERROR);
                 }
 
                 $output .= '
@@ -109,9 +118,12 @@ class SubmissionCrudController extends CrudController
         });
     }
 
-    public function setupUpdateOperation()
+    /**
+     * @throws JsonException
+     */
+    public function setupUpdateOperation(): void
     {
-        $content = json_decode(CRUD::getCurrentEntry()->content, true);
+        $content = json_decode(CRUD::getCurrentEntry()->content, true, 512, JSON_THROW_ON_ERROR);
 
         CRUD::setTitle('Edit Submission with ID: ' . $content['_id']);
 
@@ -127,17 +139,16 @@ class SubmissionCrudController extends CrudController
             'formhub/uuid',
         ];
 
-
-
         foreach ($content as $key => $value) {
 
             // TODO: fix hack to quietly ignore arrays / repeat groups...
             if (is_array($value)) {
-                $value = json_encode($value);
+                $value = json_encode($value, JSON_THROW_ON_ERROR);
             }
 
+
             // Do not allow immutable variables to be edited;
-            if (in_array($key, $immutable) || Str::startsWith($key, '_')) {
+            if (in_array($key, $immutable, true) || Str::startsWith($key, '_')) {
                 continue;
             }
 
@@ -148,11 +159,14 @@ class SubmissionCrudController extends CrudController
         }
     }
 
-    /** Totally override default update functionality */
-    public function update()
+    /** Totally override default update functionality
+     * @throws JsonException
+     */
+    public function update(): Redirector|Application|RedirectResponse
     {
         $submission = CRUD::getCurrentEntry();
-        $content = json_decode($submission->content, true);
+
+        $content = json_decode($submission->content, true, 512, JSON_THROW_ON_ERROR);
 
         $request = $this->crud->getStrippedSaveRequest();
 
@@ -176,45 +190,14 @@ class SubmissionCrudController extends CrudController
             }
         }
 
-        $submission->content = json_encode($content);
+        $submission->content = json_encode($content, JSON_THROW_ON_ERROR);
         $submission->save();
 
         return redirect(CRUD::getRoute());
     }
 
-    public function reprocessSubmission(Submission $submission)
+    public function reprocessSubmission(Submission $submission): void
     {
         ProcessSubmission::dispatchSync($submission, auth()->user());
-    }
-
-    //overwrite the restore revision (to avoid doubling the json_encode on content...)
-    public function restoreRevision($id)
-    {
-        $this->crud->hasAccessOrFail('revise');
-
-        $revisionId = \Request::input('revision_id', false);
-        if (! $revisionId) {
-            abort(500, 'Can\'t restore revision without revision_id');
-        } else {
-            $entry = $this->crud->getEntryWithoutFakes($id);
-            $revision = Revision::findOrFail($revisionId);
-
-            // Update the revisioned field with the old value
-            if ($revision->key === "content") {
-                $content = json_decode(json_decode($revision->old_value, true), true);
-
-                $entry->content = json_encode($content);
-                $entry->save();
-            } else {
-                $entry->update([$revision->key => $revision->old_value]);
-            }
-
-            $this->data['entry'] = $this->crud->getEntry($id);
-            $this->data['crud'] = $this->crud;
-            $this->data['revisions'] = $this->crud->getRevisionsForEntry($id); // Reload revisions as they have changed
-
-            // Rebuild the revision timeline HTML and return it to the AJAX call
-            return view($this->crud->get('revise.timelineView') ?? 'revise-operation::revision_timeline', $this->data);
-        }
     }
 }

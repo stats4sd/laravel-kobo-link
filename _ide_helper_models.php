@@ -12,6 +12,19 @@
 
 namespace App\Models{
 /**
+ * App\Models\Datamap
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Stats4sd\KoboLink\Models\Xlsform[] $xlsforms
+ * @property-read int|null $xlsforms_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Datamap newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Datamap newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Datamap query()
+ */
+	class Datamap extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\User
  *
  * @property int $id
@@ -59,6 +72,19 @@ namespace Stats4sd\KoboLink\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Datamap query()
  */
 	class Datamap extends \Eloquent {}
+}
+
+namespace Stats4sd\KoboLink\Models{
+/**
+ * Stats4sd\KoboLink\Models\Invite
+ *
+ * @property-read \App\Models\User $inviter
+ * @property-read \Stats4sd\KoboLink\Models\Team $team
+ * @method static \Illuminate\Database\Eloquent\Builder|Invite newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Invite newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Invite query()
+ */
+	class Invite extends \Eloquent {}
 }
 
 namespace Stats4sd\KoboLink\Models{
@@ -111,6 +137,9 @@ namespace Stats4sd\KoboLink\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $admins
  * @property-read int|null $admins_count
+ * @property-read \App\Models\User $creator
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Stats4sd\KoboLink\Models\Invite[] $invites
+ * @property-read int|null $invites_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $members
  * @property-read int|null $members_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Stats4sd\KoboLink\Models\TeamXlsform[] $teamXlsforms
@@ -150,8 +179,8 @@ namespace Stats4sd\KoboLink\Models{
  * @property int $processing Is the form currently being processed by a Kobo Job?
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read mixed $records
- * @property-read mixed $title
+ * @property-read int $records
+ * @property-read string $title
  * @property-read \Illuminate\Database\Eloquent\Collection|\Stats4sd\KoboLink\Models\Submission[] $submissions
  * @property-read int|null $submissions_count
  * @property-read \Stats4sd\KoboLink\Models\Team $team

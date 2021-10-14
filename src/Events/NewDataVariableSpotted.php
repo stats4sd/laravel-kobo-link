@@ -14,16 +14,12 @@ class NewDataVariableSpotted
     use InteractsWithSockets;
     use SerializesModels;
 
-    public string $variableName;
-
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(String $variableName)
+    public function __construct(public String $variableName)
     {
-        //
-        $this->variableName = $variableName;
     }
 }

@@ -12,7 +12,7 @@ use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\Storage;
 use Stats4sd\KoboLink\Http\Requests\XlsformRequest;
-use Stats4sd\KoboLink\Models\Xlsform;
+use App\Models\Xlsform;
 
 /**
  * Class XlsformCrudController
@@ -27,7 +27,7 @@ class XlsformCrudController extends CrudController
     use DeleteOperation;
     use ShowOperation;
 
-    public function setup()
+    public function setup(): void
     {
         CRUD::setModel(Xlsform::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/xlsform');
@@ -40,7 +40,7 @@ class XlsformCrudController extends CrudController
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
-    protected function setupListOperation()
+    protected function setupListOperation(): void
     {
         CRUD::column('title');
         CRUD::column('xlsfile')->type('upload')->wrapper([
@@ -66,7 +66,7 @@ class XlsformCrudController extends CrudController
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
-    protected function setupCreateOperation()
+    protected function setupCreateOperation(): void
     {
         CRUD::setValidation(XlsformRequest::class);
 
@@ -100,7 +100,7 @@ class XlsformCrudController extends CrudController
         <br/><br/>
         For example, if the form requires a csv lookup file called "households.csv", and the data is available in a view called "households_csv", then you should an entry like this:
             <ul>
-                <li>MySQL Table Name = housholds_csv</li>
+                <li>MySQL Table Name = households_csv</li>
                 <li>CSV File Name = households</li>
             </ul>
         CSV files can optionally be filtered to only show team-specific records. Use this for data that each team can customise themselves, or for data that should be filtered to a team\'s local context. For this to work, the MySQL table or view <b>must</b> have a "team_id" field to filter by.
@@ -115,12 +115,12 @@ class XlsformCrudController extends CrudController
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
-    protected function setupUpdateOperation()
+    protected function setupUpdateOperation(): void
     {
         $this->setupCreateOperation();
     }
 
-    public function setupShowOperation()
+    public function setupShowOperation(): void
     {
         $this->crud->set('show.setFromDb', false);
 
