@@ -1,5 +1,8 @@
 <?php
 
+$finder = Symfony\CS\Finder\DefaultFinder::create()
+    ->in('src');
+
 return (new PhpCsFixer\Config())
     ->setRules([
         '@PSR2' => true,
@@ -21,4 +24,4 @@ return (new PhpCsFixer\Config())
             'keep_multiple_spaces_after_comma' => true,
         ],
         'single_trait_insert_per_statement' => true,
-    ]);
+    ])->finder($finder);
