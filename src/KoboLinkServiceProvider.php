@@ -2,9 +2,13 @@
 
 namespace Stats4sd\KoboLink;
 
+use \App\Models\Team;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Stats4sd\KoboLink\Commands\KoboLinkCommand;
+use Stats4sd\KoboLink\Models\Xlsform;
+use Stats4sd\KoboLink\Observers\TeamObserver;
+use Stats4sd\KoboLink\Observers\XlsformObserver;
 
 class KoboLinkServiceProvider extends PackageServiceProvider
 {
@@ -25,5 +29,11 @@ class KoboLinkServiceProvider extends PackageServiceProvider
 
         // Add extra config merge(s)
         //$this->mergeConfigFrom($this->package->basePath("/../config/services.php"), $configFileName);
+    }
+
+    public function bootingPackage()
+    {
+        XlsForm::observe(XlsformObserver::class);
+        Team::observe(TeamObserver::class);
     }
 }

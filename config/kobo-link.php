@@ -2,6 +2,16 @@
 
 return [
 
+    'echo' => false,
+
+    'models' => [
+        'xlsform' => '\\Stats4sd\\KoboLink\\Models\\Xlsform',
+        'teamxlsform' => '\\Stats4sd\\KoboLink\\Models\\TeamXlsform',
+        'submission' => '\\Stats4sd\\KoboLink\\Models\\Submission',
+        'datamap' => '\\Stats4sd\\KoboLink\\Models\\Datamap',
+        'user' => '\\App\\Models\\User',
+    ],
+
     /**
      * Configuration for the link to KoBoToolbox
      */
@@ -28,9 +38,15 @@ return [
          */
         'username' => env('KOBO_USERNAME', ''),
         'password' => env('KOBO_PASSWORD', ''),
+
+        'test_form' => env('KOBO_TEST_FORM', null),
     ],
 
     'xlsforms' => [
         'storage_disk' => config('filesystems.default'),
     ],
+
+    'kobomedia' => [
+        'storage_disk' => config('filesystems.default'),
+    ]
 ];

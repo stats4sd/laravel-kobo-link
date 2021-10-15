@@ -2,7 +2,6 @@
 
 namespace Stats4sd\KoboLink\Jobs;
 
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -14,7 +13,7 @@ use Stats4sd\KoboLink\Events\KoboUploadReturnedError;
 use Stats4sd\KoboLink\Events\KoboUploadReturnedSuccess;
 use Stats4sd\KoboLink\Jobs\MediaFiles\GenerateCsvLookupFiles;
 use Stats4sd\KoboLink\Jobs\MediaFiles\UploadMediaFileAttachmentsToKoboForm;
-use Stats4sd\KoboLink\Models\XlsForm;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 class CheckKoboUpload implements ShouldQueue
 {
@@ -24,20 +23,20 @@ class CheckKoboUpload implements ShouldQueue
     use SerializesModels;
 
     public $user;
-    public $form;
-    public $importUid;
+    public TeamXlsform $form;
+    public String $importUid;
 
-    public $tries = 50;
-    public $maxExceptions = 1;
+    public int $tries = 50;
+    public int $maxExceptions = 1;
 
     /**
      * Create a new job instance.
-     * @param User $user
-     * @param Xlsform $form
+     * @param $user
+     * @param TeamXlsform $form
      * @param String $importUid
      * @return void
      */
-    public function __construct(User $user, Xlsform $form, String $importUid)
+    public function __construct(TeamXlsform $form, String $importUid, $user = null)
     {
         $this->user = $user;
         $this->form = $form;
@@ -61,9 +60,6 @@ class CheckKoboUpload implements ShouldQueue
         ->json();
 
 
-        \Log::info("importCheck");
-        \Log::info($importCheck);
-
         $importStatus = $importCheck['status'];
 
         if ($importStatus === "processing") {
@@ -76,10 +72,10 @@ class CheckKoboUpload implements ShouldQueue
             \Log::error("Error Message = " . $importCheck['messages']['error']);
 
             event(new KoboUploadReturnedError(
-                $this->user,
                 $this->form,
                 $importCheck['messages']['error_type'],
-                $importCheck['messages']['error']
+                $importCheck['messages']['error'],
+                $this->user,
             ));
 
             $this->form->update([
@@ -91,19 +87,22 @@ class CheckKoboUpload implements ShouldQueue
 
         if ($importStatus == "complete") {
             event(new KoboUploadReturnedSuccess(
-                $this->user,
-                $this->form
+                $this->form,
+                $this->user
             ));
+
 
             // run other actions on Kobo that required a successfully imported form:
             Bus::chain([
-                new UpdateFormNameOnKobo($this->form),
-                new SetKoboFormToActive($this->user, $this->form),
-                new GenerateCsvLookupFiles($this->form),
-                new UploadMediaFileAttachmentsToKoboForm($this->form),
-                new ShareFormWithUsers($this->form),
-                new DeploymentSuccessMessage($this->user, $this->form),
-            ])->dispatch($this->form);
+                    new UpdateFormNameOnKobo($this->form),
+                    new SetKoboFormToActive($this->form, $this->user),
+                    new GenerateCsvLookupFiles($this->form),
+                    new UploadMediaFileAttachmentsToKoboForm($this->form),
+                    new ShareFormWithUsers($this->form),
+
+                    new SetKoboFormToActive($this->form, $this->user),
+                    new DeploymentSuccessMessage($this->form, $this->user),
+                ])->dispatch($this->form);
         }
     }
 }

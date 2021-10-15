@@ -109,14 +109,16 @@ trait HasUploadFields
         if (request()->hasFile($attribute_name)) {
             foreach (request()->file($attribute_name) as $file) {
                 if ($file->isValid()) {
+                    $destination_path .= time();
+
                     // 1. Generate a new file name
-                    $name = explode('.', $file->getClientOriginalName());
-                    array_pop($name);
-                    $name = implode('', $name);
-                    $new_file_name = $name.time().'.'.$file->getClientOriginalExtension();
+//                    $name = explode('.', $file->getClientOriginalName());
+//                    array_pop($name);
+//                    $name = implode('', $name);
+//                    $new_file_name = $name.time().'.'.$file->getClientOriginalExtension();
 
                     // 2. Move the new file to the correct path
-                    $file_path = $file->storeAs($destination_path, $new_file_name, $disk);
+                    $file_path = $file->storeAs($destination_path, $file->getClientOriginalName(), $disk);
 
                     // 3. Add the public path to the database
                     $attribute_value[] = $file_path;

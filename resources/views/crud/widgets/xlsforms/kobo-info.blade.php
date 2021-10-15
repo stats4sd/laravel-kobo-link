@@ -2,11 +2,11 @@
     <div class="col-md-6">
     <ul class="list-group">
         <li class="list-group-item d-flex p-0">
-            <div class="w-50 m-0 p-3">Test Form on Kobo?</div>
+            <div class="w-50 m-0 p-3">Form exists on Kobo?</div>
             <div class="w-50 m-0 p-3 {{ $widget['form']->kobo_id ? 'bg-success' : 'bg-secondary' }}">
                 <b id="kobo_url">
                     @if($widget['form']->kobo_id)
-                        <a target="_blank" href="{{ config('services.kobo.endpoint') }}/#/forms/{{ $widget['form']->kobo_id }}/" class="btn btn-link text-white font-weight-bold text-center">Yes - View on Kobo</a>
+                        <a target="_blank" href="{{ config('kobo-link.kobo.endpoint') }}/#/forms/{{ $widget['form']->kobo_id }}/" class="btn btn-link text-white font-weight-bold text-center">Yes - View on Kobo</a>
                     @else
                         No
                     @endif
@@ -14,7 +14,7 @@
             </div>
         </li>
         <li class="list-group-item d-flex p-0">
-            <div class="w-50 m-0 p-3">Test Active on Kobo?</div>
+            <div class="w-50 m-0 p-3">Form active on Kobo?</div>
             <div class="w-50 m-0 p-3 {{ $widget['form']->is_active ? 'bg-success' : 'bg-secondary' }}">
                 <b id="enketo_url">
                     @if($widget['form']->is_active)
@@ -37,7 +37,7 @@
 
 <script src="{{ asset('js/echo.js') }}"></script>
 
-@if (auth() -> check())
+@if (auth() -> check() && config('kobo-link.echo'))
 <script>
     Echo.private("App.Models.User.{{ auth()->user()->id }}")
 

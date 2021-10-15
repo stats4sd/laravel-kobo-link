@@ -10,6 +10,8 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 /**
  * Uploads an individual file to Kobotoolbox
@@ -24,17 +26,17 @@ class UploadFileToKoboForm implements ShouldQueue
     use SerializesModels;
 
     public $media;
-    public $koboform;
+    public $form;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(String $media, array $koboform)
+    public function __construct(String $media, TeamXlsform $form)
     {
         $this->media = $media;
-        $this->koboform = $koboform;
+        $this->form = $form;
     }
 
     /**
@@ -46,22 +48,37 @@ class UploadFileToKoboForm implements ShouldQueue
     {
         $filename = Arr::last(explode('/', $this->media));
 
+        $file = Storage::disk(config('kobo-link.xlsforms.storage_disk'))->get($this->media);
+        $mime = Storage::disk(config('kobo-link.xlsforms.storage_disk'))->mimeType($this->media);
+
+
+        // csv files often give back "text/plain" as mime-type for some reason...
+        switch (Str::before($mime, '/')) {
+            case 'text':
+                $type = 'text/csv';
+
+                break;
+            default:
+                $type = $mime;
+
+                break;
+        }
+
+        $base64 = 'data:'.$type.';base64,'.base64_encode($file);
+
         $upload = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
             ->withHeaders(['Accept' => 'application/json'])
-            ->attach(
-                'data_file',
-                Storage::disk(config('kobo-link.xlsforms.storage_disk'))->get($this->media),
-                $filename
-            )
-            ->post(config('kobo-link.kobo.old_endpoint') . '/api/v1/metadata', [
-                'xform' => $this->koboform['formid'],
-                'data_type' => 'media',
-                'data_value' => $filename,
+            ->post(config('kobo-link.kobo.endpoint_v2') . '/assets/' . $this->form->kobo_id .'/files/', [
+                'user' => config('kobo-link.kobo.endpoint_v2') . '/users/' . config('kobo-link.kobo.username') .'/',
+                'asset' => config('kobo-link.kobo.endpoint_v2') . '/assets/' . $this->form->kobo_id .'/',
+                'description' => $filename . 'uploaded from ' . config('app.name') . ' (' . config('app.url') . ').',
+                'file_type' => 'form_media',
+                'base64Encoded' => $base64,
+                'metadata' => [
+                    'filename' => $filename,
+                ],
             ])
             ->throw()
             ->json();
-
-        \Log::info('media file uploaded');
-        \Log::info($upload);
     }
 }

@@ -3,10 +3,13 @@
 
 namespace Stats4sd\KoboLink\Models;
 
+use \App\Models\Team;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Stats4sd\KoboLink\Models\Traits\HasUploadFields;
 
 class Xlsform extends Model
@@ -31,13 +34,28 @@ class Xlsform extends Model
         $this->uploadMultipleFilesWithNames($value, 'media', config('kobo-link.xlsforms.storage_disk'), '');
     }
 
-    public function submissions(): HasMany
+    public function submissions(): HasManyThrough
     {
-        return $this->hasMany(Submission::class);
+        return $this->hasManyThrough(Submission::class, TeamXlsform::class);
     }
 
     public function datamaps(): BelongsToMany
     {
-        return $this->belongsToMany(Datamap::class);
+        return $this->belongsToMany(config('kobo-link.models.datamap'));
+    }
+
+    public function privateTeam(): BelongsTo
+    {
+        return $this->belongsTo(Team::class, 'private_team_id');
+    }
+
+    public function teams(): BelongsToMany
+    {
+        return $this->belongsToMany(Team::class, 'team_xlsform');
+    }
+
+    public function teamXlsform(): HasMany
+    {
+        return $this->hasMany(TeamXlsform::class);
     }
 }

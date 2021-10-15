@@ -8,7 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
-use Stats4sd\KoboLink\Models\XlsForm;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 class UpdateFormNameOnKobo implements ShouldQueue
 {
@@ -24,7 +24,7 @@ class UpdateFormNameOnKobo implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Xlsform $form)
+    public function __construct(TeamXlsform $form)
     {
         $this->form = $form;
     }
@@ -43,8 +43,5 @@ class UpdateFormNameOnKobo implements ShouldQueue
         ])
         ->throw()
         ->json();
-
-        \Log::info("form name updated");
-        \Log::info($response);
     }
 }
