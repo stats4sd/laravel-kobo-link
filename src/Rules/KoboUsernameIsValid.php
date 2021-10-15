@@ -2,8 +2,8 @@
 
 namespace App\Rules;
 
-use Illuminate\Support\Facades\Http;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Http;
 
 class KoboUsernameIsValid implements Rule
 {

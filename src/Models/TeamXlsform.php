@@ -6,7 +6,6 @@ namespace Stats4sd\KoboLink\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use JetBrains\PhpStorm\Pure;
 
 class TeamXlsform extends \Illuminate\Database\Eloquent\Model
 {

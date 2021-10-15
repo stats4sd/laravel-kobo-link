@@ -2,6 +2,7 @@
 
 namespace Stats4sd\KoboLink\Jobs;
 
+use App\Models\TeamXlsform;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -12,7 +13,6 @@ use Illuminate\Support\Facades\Http;
 use Log;
 use Stats4sd\KoboLink\Events\KoboArchiveRequestReturnedError;
 use Stats4sd\KoboLink\Events\KoboArchiveRequestReturnedSuccess;
-use App\Models\TeamXlsform;
 
 class ArchiveKoboForm implements ShouldQueue
 {
@@ -58,6 +58,5 @@ class ArchiveKoboForm implements ShouldQueue
 
 
         event(new KoboArchiveRequestReturnedSuccess($this->form, $this->user));
-
     }
 }

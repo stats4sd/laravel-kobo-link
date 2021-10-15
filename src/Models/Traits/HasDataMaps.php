@@ -14,5 +14,4 @@ trait HasDataMaps
 //        $submission->save();
 //
 //    }
-
 }

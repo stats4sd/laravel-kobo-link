@@ -3,6 +3,7 @@
 namespace Stats4sd\KoboLink\Jobs;
 
 ;
+use App\Models\TeamXlsform;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,7 +14,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use App\Models\TeamXlsform;
 
 class UploadXlsFormToKobo implements ShouldQueue
 {
@@ -29,7 +29,6 @@ class UploadXlsFormToKobo implements ShouldQueue
      */
     public function __construct(public TeamXlsform $form, public mixed $user = null)
     {
-
     }
 
     /**

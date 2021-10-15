@@ -31,5 +31,4 @@ class TeamRequest extends FormRequest
             'avatar' => ['sometimes'],
         ];
     }
-
 }

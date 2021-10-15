@@ -2,6 +2,7 @@
 
 namespace Stats4sd\KoboLink\Jobs;
 
+use App\Models\TeamXlsform;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -15,7 +16,6 @@ use Stats4sd\KoboLink\Events\KoboUploadReturnedError;
 use Stats4sd\KoboLink\Events\KoboUploadReturnedSuccess;
 use Stats4sd\KoboLink\Jobs\MediaFiles\GenerateCsvLookupFiles;
 use Stats4sd\KoboLink\Jobs\MediaFiles\UploadMediaFileAttachmentsToKoboForm;
-use App\Models\TeamXlsform;
 
 class CheckKoboUpload implements ShouldQueue
 {

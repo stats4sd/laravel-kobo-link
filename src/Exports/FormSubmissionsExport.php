@@ -4,11 +4,11 @@
 namespace Stats4sd\KoboLink\Exports;
 
 use \Maatwebsite\Excel\Concerns\FromCollection;
+use App\Models\TeamXlsform;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use App\Models\TeamXlsform;
 
 class FormSubmissionsExport implements FromCollection, WithHeadings, ShouldAutoSize
 {

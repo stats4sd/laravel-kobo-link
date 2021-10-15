@@ -11,7 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Invite extends Model
 {
-    use CrudTrait, HasFactory;
+    use CrudTrait;
+    use HasFactory;
 
     protected $table = "invites";
     protected $guarded = ['id'];
@@ -22,7 +23,7 @@ class Invite extends Model
 
     protected static function booted(): void
     {
-        static::addGlobalScope('unconfirmed', function(Builder $builder) {
+        static::addGlobalScope('unconfirmed', function (Builder $builder) {
             $builder->where('is_confirmed', false);
         });
     }
@@ -44,9 +45,4 @@ class Invite extends Model
     {
         return $this->belongsTo(Team::class);
     }
-
-
-
-
-
 }

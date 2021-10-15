@@ -2,14 +2,13 @@
 
 namespace Stats4sd\KoboLink\Http\Controllers\Admin;
 
+use App\Models\Team;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Stats4sd\KoboLink\Http\Requests\TeamRequest;
-use App\Models\Team;
-
 
 /**
  * Class TeamCrudController
@@ -46,7 +45,6 @@ class TeamCrudController extends CrudController
      */
     protected function setupListOperation(): void
     {
-
         CRUD::setResponsiveTable(false);
 
         CRUD::column('avatar')
@@ -87,7 +85,6 @@ class TeamCrudController extends CrudController
      */
     protected function setupUpdateOperation(): void
     {
-
         CRUD::setValidation(TeamRequest::class);
 
         CRUD::field('name')->label('Enter the team name');

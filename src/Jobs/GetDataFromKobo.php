@@ -3,6 +3,8 @@
 namespace Stats4sd\KoboLink\Jobs;
 
 ;
+use App\Models\Submission;
+use App\Models\TeamXlsform;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -11,8 +13,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Stats4sd\KoboLink\Events\KoboGetDataReturnedError;
 use Stats4sd\KoboLink\Events\KoboGetDataReturnedSuccess;
-use App\Models\Submission;
-use App\Models\TeamXlsform;
 
 class GetDataFromKobo implements ShouldQueue
 {
@@ -61,7 +61,7 @@ class GetDataFromKobo implements ShouldQueue
             $submissions = Submission::where('team_xlsform_id', '=', $this->form->id)->get();
 
             foreach ($data as $newSubmission) {
-                if (!in_array($newSubmission['_id'], $submissions->pluck('id')->toArray(), true)) {
+                if (! in_array($newSubmission['_id'], $submissions->pluck('id')->toArray(), true)) {
                     $submission = new Submission;
 
                     $submission->id = $newSubmission['_id'];
