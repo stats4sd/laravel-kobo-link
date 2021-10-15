@@ -7,7 +7,7 @@ return [
      * Enter the fully-qualified path to the class that contains the scripts used to process incoming ODK submissions
      * See Stats4sd\KoboLink\Services\DatamapService::class for a basic example
      */
-    'process_scripts_class' => Stats4sd\KoboLink\Services\DatamapService::class,
+    'data_processing_class' => env('DATA_PROCESSING_CLASS', 'Stats4sd\KoboLink\Services\DatamapService::class'),
 
     'echo' => false,
 
