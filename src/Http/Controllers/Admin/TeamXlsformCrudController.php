@@ -3,23 +3,28 @@
 
 namespace Stats4sd\KoboLink\Http\Controllers\Admin;
 
+use App\Models\TeamXlsform;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanel;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Widget;
 use Carbon\Carbon;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Stats4sd\KoboLink\Exports\FormSubmissionsExport;
 use Stats4sd\KoboLink\Jobs\ArchiveKoboForm;
 use Stats4sd\KoboLink\Jobs\DeployFormToKobo;
 use Stats4sd\KoboLink\Jobs\GetDataFromKobo;
-use Stats4sd\KoboLink\Models\TeamXlsform;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
  * Class XlsformCrudController
  * @package \Stats4SD\KoboLink\Http\Controllers\Admin
- * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
+ * @property-read CrudPanel $crud
  */
 class TeamXlsformCrudController extends CrudController
 {
@@ -27,6 +32,9 @@ class TeamXlsformCrudController extends CrudController
     use UpdateOperation;
     use ShowOperation;
 
+    /**
+     * @throws Exception
+     */
     public function setup()
     {
         CRUD::setModel(TeamXlsform::class);
@@ -58,12 +66,12 @@ class TeamXlsformCrudController extends CrudController
         CRUD::column('is_active')->type('boolean')->label('Form active on Kobo?');
     }
 
-    public function setupUpdateOperation()
+    public function setupUpdateOperation(): void
     {
         CRUD::field('warning')->type('custom_html')->value('<div class="alert alert-info">This page is only for site administrators. Be careful modifying any of these properties for forms that are currently live, as it may interfere with ongoing data collection.</div>');
     }
 
-    public function setupShowOperation()
+    public function setupShowOperation(): void
     {
         $this->crud->set('show.setFromDb', false);
 
@@ -94,39 +102,39 @@ class TeamXlsformCrudController extends CrudController
         ])->to('after_content');
     }
 
-    public function deployToKobo(TeamXlsform $form)
+    public function deployToKobo(TeamXlsform $form): JsonResponse
     {
-        DeployFormToKobo::dispatch($form, backpack_auth()->user());
+        DeployFormToKobo::dispatch($form, auth()->user());
 
         return response()->json([
             'title' => $form->title,
-            'user' => backpack_auth()->user()->email,
+            'user' => auth()->user()->email,
         ]);
     }
 
-    public function syncData(TeamXlsform $form)
+    public function syncData(TeamXlsform $form): string
     {
-        GetDataFromKobo::dispatchSync($form, backpack_auth()->user());
+        GetDataFromKobo::dispatchSync($form, auth()->user());
 
         $submissions = $form->submissions;
 
         return $submissions->toJson();
     }
 
-    public function downloadSubmissions(TeamXlsform $form)
+    public function downloadSubmissions(TeamXlsform $form): Response|BinaryFileResponse
     {
         $date = Carbon::now()->toDateTimeString();
 
         return (new FormSubmissionsExport)->forForm($form)->download($form->title . '-raw-submissions-' . $date . ".xlsx");
     }
 
-    public function archiveOnKobo(TeamXlsform $form)
+    public function archiveOnKobo(TeamXlsform $form): JsonResponse
     {
-        ArchiveKoboForm::dispatch($form, backpack_auth()->user());
+        ArchiveKoboForm::dispatch($form, auth()->user());
 
         return response()->json([
             'title' => $form->title,
-            'user' => backpack_auth()->user()->email,
+            'user' => auth()->user()->email,
         ]);
     }
 }

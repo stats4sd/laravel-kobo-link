@@ -17,6 +17,21 @@ class CreateKoboLinkTables extends Migration
         });
 
         /**
+         * Creates table to store teams (should be moved to seperate package eventually!)
+         */
+        Schema::create('teams', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('creator_id');
+            $table->string('name')->unique();
+            $table->string('slug')->unique();
+            $table->text('description');
+            $table->tinyInteger('status');
+            $table->string('avatar')->nullable();
+            $table->softDeletes($column = 'deleted_at', $precision = 0);
+            $table->timestamps();
+        });
+
+        /**
          * Table to store ODK forms managed through the platform
          */
         Schema::create('xlsforms', function (Blueprint $table) {
@@ -61,6 +76,22 @@ class CreateKoboLinkTables extends Migration
             $table->json('errors')->nullable();
             $table->boolean('processed')->default(0);
             $table->json('entries')->nullable();
+            $table->timestamps();
+        });
+
+        /**
+         * Table to store all data maps
+         */
+        Schema::create('datamaps', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->string('title');
+            $table->timestamps();
+        });
+
+        Schema::create('datamap_xlsform', function (Blueprint $table) {
+            $table->id();
+            $table->string('datamap_id');
+            $table->foreignId('xlsform_id');
             $table->timestamps();
         });
     }

@@ -3,6 +3,8 @@
 namespace Stats4sd\KoboLink\Jobs;
 
 ;
+use App\Models\Submission;
+use App\Models\TeamXlsform;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -11,8 +13,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Stats4sd\KoboLink\Events\KoboGetDataReturnedError;
 use Stats4sd\KoboLink\Events\KoboGetDataReturnedSuccess;
-use Stats4sd\KoboLink\Models\Submission;
-use Stats4sd\KoboLink\Models\TeamXlsform;
 
 class GetDataFromKobo implements ShouldQueue
 {
@@ -21,8 +21,6 @@ class GetDataFromKobo implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public TeamXlsform $form;
-    public $user;
     public int $tries = 5;
 
     /**
@@ -30,18 +28,17 @@ class GetDataFromKobo implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(TeamXlsform $form, $user = null)
+    public function __construct(public TeamXlsform $form, public $user = null)
     {
-        $this->user = $user;
-        $this->form = $form;
     }
 
     /**
      * Execute the job.
      *
      * @return void
+     * @throws \JsonException
      */
-    public function handle()
+    public function handle(): void
     {
         $response = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
         ->withHeaders(['Accept' => 'application/json'])
@@ -64,13 +61,13 @@ class GetDataFromKobo implements ShouldQueue
             $submissions = Submission::where('team_xlsform_id', '=', $this->form->id)->get();
 
             foreach ($data as $newSubmission) {
-                if (! in_array($newSubmission['_id'], $submissions->pluck('id')->toArray())) {
+                if (! in_array($newSubmission['_id'], $submissions->pluck('id')->toArray(), true)) {
                     $submission = new Submission;
 
                     $submission->id = $newSubmission['_id'];
                     $submission->uuid = $newSubmission['_uuid'];
                     $submission->team_xlsform_id = $this->form->id;
-                    $submission->content = json_encode($newSubmission);
+                    $submission->content = json_encode($newSubmission, JSON_THROW_ON_ERROR);
                     $submission->submitted_at = $newSubmission['_submission_time'];
 
                     $submission->save();

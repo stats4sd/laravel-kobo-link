@@ -2,15 +2,14 @@
 
 return [
 
-    'echo' => false,
 
-    'models' => [
-        'xlsform' => '\\Stats4sd\\KoboLink\\Models\\Xlsform',
-        'teamxlsform' => '\\Stats4sd\\KoboLink\\Models\\TeamXlsform',
-        'submission' => '\\Stats4sd\\KoboLink\\Models\\Submission',
-        'datamap' => '\\Stats4sd\\KoboLink\\Models\\Datamap',
-        'user' => '\\App\\Models\\User',
-    ],
+    /**
+     * Enter the fully-qualified path to the class that contains the scripts used to process incoming ODK submissions
+     * See Stats4sd\KoboLink\Services\DatamapService::class for a basic example
+     */
+    'data_processing_class' => env('DATA_PROCESSING_CLASS', 'Stats4sd\KoboLink\Services\DatamapService::class'),
+
+    'echo' => false,
 
     /**
      * Configuration for the link to KoBoToolbox
@@ -24,10 +23,6 @@ return [
 
         /** The url for the legacy API. This is still required for some functionality. */
         'old_endpoint' => env('KOBO_OLD_ENDPOINT', 'https://kc.kobotoolbox.org'),
-
-
-        // TODO: Check and remove Kobo account token
-        'token' => env('KOBO_TOKEN', ''),
 
         /**
          * Username and password for the main platform account
@@ -46,7 +41,7 @@ return [
         'storage_disk' => config('filesystems.default'),
     ],
 
-    'kobomedia' => [
+    'media' => [
         'storage_disk' => config('filesystems.default'),
     ]
 ];

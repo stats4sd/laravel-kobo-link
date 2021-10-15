@@ -3,7 +3,9 @@
 
 namespace Stats4sd\KoboLink\Http\Requests;
 
-class XlsformRequest extends \Illuminate\Foundation\Http\FormRequest
+use Illuminate\Foundation\Http\FormRequest;
+
+class XlsformRequest extends FormRequest
 {
     /**
          * Determine if the user is authorized to make this request.
@@ -31,30 +33,6 @@ class XlsformRequest extends \Illuminate\Foundation\Http\FormRequest
             'csv_lookups' => ['nullable', 'json'],
             'is_active' => ['boolean'],
             'available' => ['boolean'],
-        ];
-    }
-
-    /**
-     * Get the validation attributes that apply to the request.
-     *
-     * @return array
-     */
-    public function attributes(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    /**
-     * Get the validation messages that apply to the request.
-     *
-     * @return array
-     */
-    public function messages(): array
-    {
-        return [
-            //
         ];
     }
 }

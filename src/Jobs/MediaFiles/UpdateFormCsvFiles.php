@@ -12,7 +12,7 @@ use Stats4sd\KoboLink\Models\TeamXlsform;
 
 /**
  * Call this class to update the csv lookup files on the passed TeamXlsform.
- * This handles calling the right jobs to generate the new csv files from the database and push them up to Kobotoolbox
+ * This method handles calling the right jobs to generate the new csv files from the database and push them up to Kobotoolbox
  * @param TeamXlsform $form
  */
 class UpdateFormCsvFiles implements ShouldQueue

@@ -3,18 +3,17 @@
 
 namespace Stats4sd\KoboLink\Observers;
 
-use \App\Models\Team;
-use Stats4sd\KoboLink\Models\Xlsform;
+use App\Models\Xlsform;
 
 class TeamObserver
 {
     /**
-         * Handle the xlsform "created" event.
+         * Handle the xlsform "created" event.f
          *
-         * @param  Team $team
+         * @param  $team
          * @return void
          */
-    public function created(Team $team)
+    public function created($team)
     {
         $this->syncTeamWithForms($team);
     }
@@ -22,15 +21,15 @@ class TeamObserver
     /**
      * Handle the xlsform "updated" event.
      *
-     * @param  Team $team
+     * @param  $team
      * @return void
      */
-    public function updated(Team $team)
+    public function updated($team)
     {
         $this->syncTeamWithForms($team);
     }
 
-    public function syncTeamWithForms(Team $team)
+    public function syncTeamWithForms($team)
     {
         $forms = Xlsform::where('available')->get();
         $privateForms = Xlsform::where('private_team_id', $team->id)->get();

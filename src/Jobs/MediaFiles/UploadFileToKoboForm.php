@@ -3,6 +3,7 @@
 namespace Stats4sd\KoboLink\Jobs\MediaFiles;
 
 use Illuminate\Bus\Queueable;
+
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -16,7 +17,7 @@ use Stats4sd\KoboLink\Models\TeamXlsform;
 /**
  * Uploads an individual file to Kobotoolbox
  * @param String $media - the path to the media file to upload
- * @param Array $koboform - the KoboForm object returned from querying the OLD Kobotoolbox API (kc.kobotoolbox/api/v1)
+ * @param Array $koboform - the KoboForm object returned from querying the OLD Kobotoolbox API (https://kc.kobotoolbox/api/v1)
  */
 class UploadFileToKoboForm implements ShouldQueue
 {

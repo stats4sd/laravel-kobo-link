@@ -6,6 +6,7 @@ use App\Models\Team;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
@@ -23,26 +24,24 @@ class ShareFormsWithExistingUsers implements ShouldQueue
     use SerializesModels;
 
 
-    public $team;
-
     /**
      * Create a new job instance.
-     * @param Team $team - should be an instance of your app's Team model
+     * @param Team $team
      * @return void
      */
-    public function __construct($team)
+    public function __construct(public Team $team)
     {
-        $this->team = $team;
     }
 
     /**
      * Execute the job.
      *
      * @return void
+     * @throws RequestException
      */
-    public function handle()
+    public function handle(): void
     {
-        $forms = $this->team->teamXlsForms;
+        $forms = $this->team->teamXlsforms;
         $users = $this->team->users;
 
         $permissions = ['change_asset', 'add_submissions', 'change_submissions', 'validate_submissions'];
@@ -62,7 +61,7 @@ class ShareFormsWithExistingUsers implements ShouldQueue
                     }
                 }
 
-                $response = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
+                Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
                 ->withHeaders(['Accept' => 'application/json'])
                 ->post(config('kobo-link.kobo.endpoint_v2') . '/assets/' . $form->kobo_id . '/permission-assignments/bulk/', $payload)
                 ->throw()

@@ -3,14 +3,15 @@
 namespace Stats4sd\KoboLink\Jobs;
 
 ;
+use App\Models\TeamXlsform;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Stats4sd\KoboLink\Events\KoboDeploymentReturnedError;
-use Stats4sd\KoboLink\Models\TeamXlsform;
 
 class SetKoboFormToActive implements ShouldQueue
 {
@@ -19,8 +20,6 @@ class SetKoboFormToActive implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public $user;
-    public TeamXlsform $form;
     public int $tries = 3;
     public int $maxExceptions = 1;
 
@@ -30,18 +29,18 @@ class SetKoboFormToActive implements ShouldQueue
      * @param TeamXlsform $form
      * @return void
      */
-    public function __construct(TeamXlsform $form, $user = null)
+    public function __construct(public TeamXlsform $form, public $user = null)
     {
-        $this->user = $user;
-        $this->form = $form;
     }
 
     /**
      * Execute the job.
      *
      * @return void
+     * @throws RequestException
+     * @throws \JsonException
      */
-    public function handle()
+    public function handle(): void
     {
 
         // Deployment already exists, so get new version_id to update deployment
@@ -72,11 +71,12 @@ class SetKoboFormToActive implements ShouldQueue
             ]);
         }
 
+        // on failure, finish processing and send error event;
         if ($response->failed()) {
             $this->form->update([
                 'processing' => false,
             ]);
-            event(new KoboDeploymentReturnedError($this->form, 'Deployment Error', json_encode($response->json()), $this->user));
+            event(new KoboDeploymentReturnedError($this->form, 'Deployment Error', json_encode($response->json(), JSON_THROW_ON_ERROR), $this->user));
             $this->fail();
         }
 

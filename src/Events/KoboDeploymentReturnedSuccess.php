@@ -3,13 +3,14 @@
 namespace Stats4sd\KoboLink\Events;
 
 ;
+
+use App\Models\TeamXlsform;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Stats4sd\KoboLink\Models\TeamXlsform;
 
 class KoboDeploymentReturnedSuccess implements ShouldBroadcast
 {
@@ -17,17 +18,12 @@ class KoboDeploymentReturnedSuccess implements ShouldBroadcast
     use InteractsWithSockets;
     use SerializesModels;
 
-    public $user;
-    public TeamXlsform $form;
-
     /**
      * Create a new event instance.
      * @return void
      */
-    public function __construct(TeamXlsform $form, $user = null)
+    public function __construct(public TeamXlsform $form, public mixed $user = null)
     {
-        $this->user = $user;
-        $this->form = $form;
     }
 
     /**
@@ -36,8 +32,8 @@ class KoboDeploymentReturnedSuccess implements ShouldBroadcast
      */
     public function broadcastOn(): Channel
     {
-        if ($this->user) {
-            return new PrivateChannel("App.Models.User.{$this->user->id}");
-        }
+        $channel = $this->user?->id ?? 'admin';
+
+        return new PrivateChannel("App.Models.User.{$channel}");
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Stats4sd\KoboLink\Jobs\MediaFiles;
 
+use App\Models\TeamXlsform;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -9,10 +10,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
-use Stats4sd\KoboLink\Models\TeamXlsform;
 
 /**
- * Version of the uploadMediaFileAttachments job that ONLY handles csv files. All non .csv files are ignored. Use this to avoid replacing lots of large image / multimedia files on Kobotools.
+ * Version of the uploadMediaFileAttachments job that ONLY handles csv files. All non .csv files are ignored. Use this to avoid replacing lots of large image / multimedia files on Kobotoolbox.
  */
 class UploadCsvMediaFileAttachmentsToKoboForm implements ShouldQueue
 {
