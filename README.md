@@ -17,9 +17,6 @@ Platforms built with this package can help with the following scenarios:
 > ### IMPORTANT NOTE
 > This is not an off-the-shelf data management solution! It requires you to build your own Laravel platform and pull in this package via composer. It does not handle the processing of the data collected through your ODK forms, but it provides hooks to enable you to write your own processing scripts to run automatically when ODK submissions are pulled in from KoboToolBox. You can provide your own database structures / data models to organise the processed data however you see fit.
 
-
-
-
 ## Installation
 
 You can install the package via composer:
@@ -152,18 +149,20 @@ php artisan vendor:publish --provider="Stats4sd\KoboLink\KoboLinkServiceProvider
 ```
 
 
-## Add the CrudControllers to the Sidebar
-This package assumes you are using Laravel Backpack as your admin panel. As such, it comes with a set of CrudControllers for managing your XLS forms and submissions. 
+## Add the Front-end
+This package assumes you are using Laravel Backpack as your admin panel. As such, it comes with a set of CrudControllers for managing your XLS forms and submissions. It also assumes that you are able to build your own front-end to allow team members to access their data, manage forms etc. 
 
 You can add links to these crud panels into your sidebar:
 
+TODO: Add example team UI for team members to manage their own forms, submissions and team members/invites.
+
 ```
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('team') }}'><i class="lab la-wpforms nav-icon"></i> XLSForms</a></li>
+
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('xlsform') }}'><i class="lab la-wpforms nav-icon"></i> XLSForms</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('submissions') }}'><i class="lab la-wpforms nav-icon"></i> Submissions</a></li>
+
 ```
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
 
 ## Security Vulnerabilities
 
