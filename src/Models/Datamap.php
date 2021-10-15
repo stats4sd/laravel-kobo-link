@@ -3,10 +3,10 @@
 
 namespace Stats4sd\KoboLink\Models;
 
-use Illuminate\Support\Str;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Str;
 
 class Datamap extends \Illuminate\Database\Eloquent\Model
 {

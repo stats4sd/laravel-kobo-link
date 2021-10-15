@@ -145,7 +145,7 @@ If you add the required ENV variables to your application, there should be no ne
 However, you may wish to do so anyway. To publish the file, use:
 
 ```bash
-php artisan vendor:publish --provider="Stats4sd\KoboLink\KoboLinkServiceProvider" --tag="laravel-kobo-link-config"
+php artisan vendor:publish --provider="Stats4sd\KoboLink\KoboLinkServiceProvider" --tag="kobo-link-config"
 ```
 
 
