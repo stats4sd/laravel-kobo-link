@@ -1,6 +1,6 @@
 <?php
 
-$finder = Symfony\CS\Finder\DefaultFinder::create()
+$finder = PhpCsFixer\Finder::create()
     ->in('src');
 
 return (new PhpCsFixer\Config())
