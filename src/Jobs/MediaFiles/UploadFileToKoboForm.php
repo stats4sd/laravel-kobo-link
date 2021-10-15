@@ -2,16 +2,16 @@
 
 namespace Stats4sd\KoboLink\Jobs\MediaFiles;
 
-use Illuminate\Support\Arr;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Queue\InteractsWithQueue;
-use Stats4sd\KoboLink\Models\TeamXlsform;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 /**
  * Uploads an individual file to Kobotoolbox
@@ -56,9 +56,11 @@ class UploadFileToKoboForm implements ShouldQueue
         switch (Str::before($mime, '/')) {
             case 'text':
                 $type = 'text/csv';
+
                 break;
             default:
                 $type = $mime;
+
                 break;
         }
 
@@ -69,7 +71,7 @@ class UploadFileToKoboForm implements ShouldQueue
             ->post(config('kobo-link.kobo.endpoint_v2') . '/assets/' . $this->form->kobo_id .'/files/', [
                 'user' => config('kobo-link.kobo.endpoint_v2') . '/users/' . config('kobo-link.kobo.username') .'/',
                 'asset' => config('kobo-link.kobo.endpoint_v2') . '/assets/' . $this->form->kobo_id .'/',
-                'description' =>  $filename . 'uploaded from ' . config('app.name') . ' (' . config('app.url') . ').',
+                'description' => $filename . 'uploaded from ' . config('app.name') . ' (' . config('app.url') . ').',
                 'file_type' => 'form_media',
                 'base64Encoded' => $base64,
                 'metadata' => [

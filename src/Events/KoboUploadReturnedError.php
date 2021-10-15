@@ -2,7 +2,6 @@
 
 namespace Stats4sd\KoboLink\Events;
 
-use \App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;

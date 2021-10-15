@@ -3,6 +3,7 @@
 namespace Stats4sd\KoboLink\Jobs;
 
 use \Stats4sd\KoboLink\Models\Submission;
+
 ;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
