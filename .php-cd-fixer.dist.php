@@ -1,19 +1,19 @@
 <?php
 
-$finder = Symfony\Component\Finder\Finder::create()
-    ->notPath('bootstrap/*')
-    ->notPath('storage/*')
-    ->notPath('resources/view/mail/*')
-    ->in([
-        __DIR__ . '/src',
-        __DIR__ . '/tests',
-    ])
-    ->name('*.php')
-    ->notName('*.blade.php')
-    ->ignoreDotFiles(true)
-    ->ignoreVCS(true);
+//$finder = Symfony\Component\Finder\Finder::create()
+//    ->notPath('bootstrap/*')
+//    ->notPath('storage/*')
+//    ->notPath('resources/view/mail/*')
+//    ->in([
+//        __DIR__ . '/src',
+//        __DIR__ . '/tests',
+//    ])
+//    ->name('*.php')
+//    ->notName('*.blade.php')
+//    ->ignoreDotFiles(true)
+//    ->ignoreVCS(true);
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setRules([
         '@PSR2' => true,
         'array_syntax' => ['syntax' => 'short'],
@@ -39,5 +39,4 @@ return PhpCsFixer\Config::create()
             'keep_multiple_spaces_after_comma' => true,
         ],
         'single_trait_insert_per_statement' => true,
-    ])
-    ->setFinder($finder);
+    ]);
