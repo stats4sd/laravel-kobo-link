@@ -3,8 +3,6 @@
 
 namespace Stats4sd\KoboLink\Http\Controllers\Admin;
 
-use Stats4sd\KoboLink\Models\Submission;
-use Stats4sd\KoboLink\Models\TeamXlsform;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
@@ -18,6 +16,8 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Str;
 use JsonException;
 use Stats4sd\KoboLink\Jobs\ProcessSubmission;
+use Stats4sd\KoboLink\Models\Submission;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 /**
  * Class SubmissionCrudController

@@ -2,7 +2,6 @@
 
 namespace Stats4sd\KoboLink\Jobs;
 
-use Stats4sd\KoboLink\Models\TeamXlsform;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -10,6 +9,7 @@ use Illuminate\Http\Client\RequestException;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 class UpdateFormNameOnKobo implements ShouldQueue
 {

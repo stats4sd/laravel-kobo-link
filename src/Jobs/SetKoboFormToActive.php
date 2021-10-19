@@ -3,7 +3,6 @@
 namespace Stats4sd\KoboLink\Jobs;
 
 ;
-use Stats4sd\KoboLink\Models\TeamXlsform;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -12,6 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Stats4sd\KoboLink\Events\KoboDeploymentReturnedError;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 class SetKoboFormToActive implements ShouldQueue
 {

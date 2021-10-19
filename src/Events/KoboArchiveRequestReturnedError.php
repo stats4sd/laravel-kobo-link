@@ -3,13 +3,13 @@
 namespace Stats4sd\KoboLink\Events;
 
 ;
-use Stats4sd\KoboLink\Models\TeamXlsform;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 class KoboArchiveRequestReturnedError implements ShouldBroadcast
 {
@@ -26,8 +26,7 @@ class KoboArchiveRequestReturnedError implements ShouldBroadcast
         public string      $errorType,
         public string      $errorMessage,
         public mixed       $user = null
-    )
-    {
+    ) {
     }
 
     /**
