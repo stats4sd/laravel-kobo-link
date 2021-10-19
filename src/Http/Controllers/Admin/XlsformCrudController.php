@@ -3,7 +3,7 @@
 
 namespace Stats4sd\KoboLink\Http\Controllers\Admin;
 
-use App\Models\Xlsform;
+use Stats4sd\KoboLink\Models\Xlsform;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;

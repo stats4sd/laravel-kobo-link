@@ -4,7 +4,7 @@ namespace Stats4sd\KoboLink\Events;
 
 ;
 
-use App\Models\TeamXlsform;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;

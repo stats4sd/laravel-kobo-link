@@ -3,8 +3,8 @@
 
 namespace Stats4sd\KoboLink\Http\Controllers\Admin;
 
-use App\Models\Submission;
-use App\Models\TeamXlsform;
+use Stats4sd\KoboLink\Models\Submission;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;

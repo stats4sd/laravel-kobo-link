@@ -2,7 +2,7 @@
 
 namespace App\Models\Traits;
 
-use App\Models\Submission;
+use Stats4sd\KoboLink\Models\Submission;
 
 trait HasDataMaps
 {

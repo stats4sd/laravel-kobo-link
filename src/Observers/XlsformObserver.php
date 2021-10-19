@@ -3,8 +3,8 @@
 
 namespace Stats4sd\KoboLink\Observers;
 
-use \App\Models\Team;
-use App\Models\XlsForm;
+use Stats4sd\KoboLink\Models\Team;
+use Stats4sd\KoboLink\Models\Xlsform;
 
 class XlsformObserver
 {

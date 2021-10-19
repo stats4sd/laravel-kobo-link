@@ -2,7 +2,7 @@
 
 namespace Stats4sd\KoboLink\Jobs\MediaFiles;
 
-use App\Models\TeamXlsform;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

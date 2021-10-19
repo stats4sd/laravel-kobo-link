@@ -3,7 +3,7 @@
 namespace Stats4sd\KoboLink\Jobs;
 
 ;
-use App\Models\TeamXlsform;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Queue\ShouldQueue;
