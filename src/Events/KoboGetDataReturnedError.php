@@ -2,15 +2,15 @@
 
 namespace Stats4sd\KoboLink\Events;
 
-use App\Models\User;
+;
+
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Response;
-use Stats4sd\KoboLink\Models\Xlsform;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 class KoboGetDataReturnedError implements ShouldBroadcast
 {
@@ -18,20 +18,13 @@ class KoboGetDataReturnedError implements ShouldBroadcast
     use InteractsWithSockets;
     use SerializesModels;
 
-    public User $user;
-    public Xlsform $form;
-    public Response $response;
-
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(User $user, Xlsform $form, Response $response)
+    public function __construct(public TeamXlsform $form, public string $response, public mixed $user = null)
     {
-        $this->user = $user;
-        $this->form = $form;
-        $this->response = $response;
     }
 
     /**
@@ -40,6 +33,8 @@ class KoboGetDataReturnedError implements ShouldBroadcast
      */
     public function broadcastOn(): Channel
     {
-        return new PrivateChannel("App.Models.User.{$this->user->id}");
+        $channel = $this->user?->id ?? 'admin';
+
+        return new PrivateChannel("App.Models.User.{$channel}");
     }
 }

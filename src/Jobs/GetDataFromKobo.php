@@ -2,10 +2,7 @@
 
 namespace Stats4sd\KoboLink\Jobs;
 
-use App\Helpers\GenericHelper;
-use App\Http\Controllers\DataMapController;
-use App\Models\Submission;
-use App\Models\User;
+;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -14,7 +11,8 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Stats4sd\KoboLink\Events\KoboGetDataReturnedError;
 use Stats4sd\KoboLink\Events\KoboGetDataReturnedSuccess;
-use Stats4sd\KoboLink\Models\XlsForm;
+use Stats4sd\KoboLink\Models\Submission;
+use Stats4sd\KoboLink\Models\TeamXlsform;
 
 class GetDataFromKobo implements ShouldQueue
 {
@@ -23,27 +21,24 @@ class GetDataFromKobo implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public $form;
-    public $user;
-    public $tries = 5;
+    public int $tries = 5;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(User $user, Xlsform $form)
+    public function __construct(public TeamXlsform $form, public $user = null)
     {
-        $this->user = $user;
-        $this->form = $form;
     }
 
     /**
      * Execute the job.
      *
      * @return void
+     * @throws \JsonException
      */
-    public function handle()
+    public function handle(): void
     {
         $response = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
         ->withHeaders(['Accept' => 'application/json'])
@@ -52,46 +47,51 @@ class GetDataFromKobo implements ShouldQueue
 
         if ($response->failed()) {
             if ($response->status() === 504) {
-                $this->release('5');
+                $this->release(5);
             }
-            event(new KoboGetDataReturnedError($this->user, $this->form, json_encode($response->json())));
+            event(new KoboGetDataReturnedError($this->form, json_encode($response->json()), $this->user));
             $this->fail();
         }
 
-        $data = $response['results'];
+        $data = $response['results'] ?? null;
+        $count = 0;
 
-        //compare
-        $submissions = Submission::where('team_xls_form_id', '=', $this->form->id)->get();
+        if ($data) {
+            //compare
+            $submissions = Submission::where('team_xlsform_id', '=', $this->form->id)->get();
 
-        foreach ($data as $newSubmission) {
-            if (! in_array($newSubmission['_id'], $submissions->pluck('id')->toArray())) {
-                $submission = new Submission;
+            foreach ($data as $newSubmission) {
+                if (! in_array($newSubmission['_id'], $submissions->pluck('id')->toArray(), true)) {
+                    $submission = new Submission;
 
-                $submission->id = $newSubmission['_id'];
-                $submission->uuid = $newSubmission['_uuid'];
-                $submission->team_xls_form_id = $this->form->id;
-                $submission->content = json_encode($newSubmission);
-                $submission->submitted_at = $newSubmission['_submission_time'];
+                    $submission->id = $newSubmission['_id'];
+                    $submission->uuid = $newSubmission['_uuid'];
+                    $submission->team_xlsform_id = $this->form->id;
+                    $submission->content = json_encode($newSubmission, JSON_THROW_ON_ERROR);
+                    $submission->submitted_at = $newSubmission['_submission_time'];
 
-                $submission->save();
+                    $submission->save();
+                    $count++;
 
-                // $dataMaps = $this->form->xls_form->data_maps;
-                // if ($dataMaps->count() > 0) {
-                //     $submissionId = $newSubmission['_id'];
-                //     $teamId = $this->form->team->id;
-                //     $data = $newSubmission;
+                    $submission = Submission::find($newSubmission['_id']);
 
-                //     // $newSubmission = GenericHelper::remove_group_names_from_kobo_data($newSubmission);
-                //     foreach ($dataMaps as $dataMap) {
-                //         // DataMapController::newRecord($dataMap, $newSubmission, $teamId);
-                //     }
-                // }
+                    $dataMaps = $this->form->xlsform->datamaps;
+                    if ($dataMaps->count() > 0) {
+                        foreach ($dataMaps as $dataMap) {
+                            $dataMap->process($submission);
+                        }
+
+                        $submission->processed = 1;
+                        $submission->save();
+                    }
+                }
             }
         }
 
         event(new KoboGetDataReturnedSuccess(
-            $this->user,
-            $this->form
+            $this->form,
+            $count,
+            $this->user
         ));
     }
 }

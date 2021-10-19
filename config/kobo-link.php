@@ -2,6 +2,15 @@
 
 return [
 
+
+    /**
+     * Enter the fully-qualified path to the class that contains the scripts used to process incoming ODK submissions
+     * See Stats4sd\KoboLink\Services\DatamapService::class for a basic example
+     */
+    'data_processing_class' => env('DATA_PROCESSING_CLASS', 'Stats4sd\KoboLink\Services\DatamapService::class'),
+
+    'echo' => false,
+
     /**
      * Configuration for the link to KoBoToolbox
      */
@@ -15,10 +24,6 @@ return [
         /** The url for the legacy API. This is still required for some functionality. */
         'old_endpoint' => env('KOBO_OLD_ENDPOINT', 'https://kc.kobotoolbox.org'),
 
-
-        // TODO: Check and remove Kobo account token
-        'token' => env('KOBO_TOKEN', ''),
-
         /**
          * Username and password for the main platform account
          * The platform requires a 'primary' user account on the KoboToolbox server to manage deployments of ODK forms.
@@ -28,9 +33,15 @@ return [
          */
         'username' => env('KOBO_USERNAME', ''),
         'password' => env('KOBO_PASSWORD', ''),
+
+        'test_form' => env('KOBO_TEST_FORM', null),
     ],
 
     'xlsforms' => [
         'storage_disk' => config('filesystems.default'),
     ],
+
+    'media' => [
+        'storage_disk' => config('filesystems.default'),
+    ]
 ];

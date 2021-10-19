@@ -3,9 +3,12 @@
 
 namespace Stats4sd\KoboLink\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Str;
 
-class DataMap extends \Illuminate\Database\Eloquent\Model
+class Datamap extends \Illuminate\Database\Eloquent\Model
 {
     use CrudTrait;
     use ValidatesRequests;
@@ -33,7 +36,10 @@ class DataMap extends \Illuminate\Database\Eloquent\Model
 
     public function process(Submission $submission)
     {
-        $this->{$this->id}($submission);
+        $service = app(config('kobo-link.process_scripts_class'));
+
+        // TODO: figure out why on earth we're using the id to determine the method name!! (or rather - how to do it more logically...)
+        $service->{$this->id}($submission);
     }
 
     public function removeGroupNames(array $record): array
@@ -42,7 +48,7 @@ class DataMap extends \Illuminate\Database\Eloquent\Model
         foreach ($record as $key => $value) {
 
             // Keep this as it forms part of the media download url
-            if ($key == 'formhub/uuid') {
+            if ($key === 'formhub/uuid') {
                 continue;
             }
 

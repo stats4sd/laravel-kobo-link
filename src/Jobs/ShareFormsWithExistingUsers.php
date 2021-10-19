@@ -2,15 +2,14 @@
 
 namespace Stats4sd\KoboLink\Jobs;
 
-use App\Models\Team;
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
-use Stats4sd\KoboLink\Models\XlsForm;
+use Stats4sd\KoboLink\Models\Team;
 
 /**
  * This job sends a post request to the permission-assignments/bulk endpoint.
@@ -24,23 +23,30 @@ class ShareFormsWithExistingUsers implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+
+    /**
+     * Create a new job instance.
+     * @param Team $team
+     * @return void
+     */
+    public function __construct(public Team $team)
+    {
+    }
+
     /**
      * Execute the job.
      *
      * @return void
+     * @throws RequestException
      */
-    public function handle()
+    public function handle(): void
     {
-        $forms = Xlsform::all();
-        $users = User::all();
-
-        \Log::info("sharing forms with new Users");
+        $forms = $this->team->teamXlsforms;
+        $users = $this->team->users;
 
         $permissions = ['change_asset', 'add_submissions', 'change_submissions', 'validate_submissions'];
 
         foreach ($forms as $form) {
-            \Log::info("sharing form " . $form->title);
-
             if ($form->is_active && $form->kobo_version_id) {
                 $payload = [];
 
@@ -55,14 +61,11 @@ class ShareFormsWithExistingUsers implements ShouldQueue
                     }
                 }
 
-                $response = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
+                Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))
                 ->withHeaders(['Accept' => 'application/json'])
                 ->post(config('kobo-link.kobo.endpoint_v2') . '/assets/' . $form->kobo_id . '/permission-assignments/bulk/', $payload)
                 ->throw()
                 ->json();
-
-                \Log::info("new team member assigned to form");
-                \Log::info(json_encode($response));
             }
         }
     }

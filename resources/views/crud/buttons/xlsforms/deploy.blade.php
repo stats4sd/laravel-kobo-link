@@ -1,4 +1,4 @@
-@if ($crud->hasAccess('delete'))
+@if ($crud->hasAccess('update'))
 	<a href="javascript:void(0)" onclick="deployEntry(this)" data-route="{{ url($crud->route.'/'.$entry->getKey().'/deploytokobo') }}" class="btn btn-sm btn-info" data-button-type="delete"><i class="la la-trash"></i> @if($entry->kobo_id) (Re) @endif Deploy to Kobo</a>
 @endif
 

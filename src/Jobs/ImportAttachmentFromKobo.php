@@ -5,6 +5,7 @@ namespace Stats4sd\KoboLink\Jobs;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
@@ -17,28 +18,22 @@ class ImportAttachmentFromKobo implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public $name;
-
-    public $submission;
-
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(String $name, array $submission)
+    public function __construct(public  String $name, public array $submission)
     {
-        //
-        $this->name = $name;
-        $this->submission = $submission;
     }
 
     /**
      * Execute the job.
      *
      * @return void
+     * @throws RequestException
      */
-    public function handle()
+    public function handle(): void
     {
         // As of June 11 2020, downloadable filename is in the format:
         // kobo_username/attachments/submission['formhub/uuid']/submission['_uuid']/submission['photo_variable']
@@ -53,6 +48,6 @@ class ImportAttachmentFromKobo implements ShouldQueue
         ->throw();
 
         // store file in "attachments / _id / name"
-        Storage::disk('kobomedia')->put($this->submission['_id'].'/'.$this->name, $response);
+        Storage::disk(config('kobo-link.media.storage_disk'))->put($this->submission['_id'].'/'.$this->name, $response);
     }
 }
