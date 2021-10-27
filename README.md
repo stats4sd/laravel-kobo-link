@@ -105,7 +105,7 @@ TODO: Add example team UI for team members to manage their own forms, submission
 ## Writing Data Processing Scripts
 The Datamap model includes a `process(Submission $submission)` method. This hooks into a Datamap Service class, which is designed to be overwritten by you. Each platform will require a different set of data processing scripts tailored to the data being collected, so we have tried to make it easy to include these scripts in your platform. Here is the short version:
 
-1. Create a "DatamapService" class, and add the fully qualified path to this class into your .env file. E.g.: `DATA_PROCESSING_CLASS: "\App\Services\DatamapService::class"`
+1. Create a "DatamapService" class, and add the fully qualified path to this class into your .env file. E.g.: `DATA_PROCESSING_CLASS="\App\Services\DatamapService::class"`
 2. Write the methods you want to use to process a submisison. The method should accept a single Submission parameter, and can then do anything you want to 'process' the submission. e.g.: 
 ```php
     public function testForm(Stats4sd\KoboLink\Models\Submission $submission)
