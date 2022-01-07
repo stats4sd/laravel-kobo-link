@@ -16,6 +16,8 @@ Route::group([
     Route::crud('submission', SubmissionCrudController::class);
     Route::crud('teamxlsform', TeamXlsformCrudController::class);
     Route::crud('team', TeamCrudController::class);
+    Route::crud('invite', InviteCrudController::class);
+    Route::crud('datamap', DataMapCrudController::class);
 
 
     // XLS Form <--> KoBoToolbox handling
