@@ -84,7 +84,7 @@ class CreateKoboLinkTables extends Migration
          */
         Schema::create('datamaps', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->string('title');
+            $table->string('description');
             $table->timestamps();
         });
 
