@@ -32,6 +32,17 @@ php artisan vendor:publish --provider="Stats4sd\KoboLink\KoboLinkServiceProvider
 php artisan migrate
 ```
 
+## Installation of Backpack Package
+
+This package relies on backpack CRUD controller.
+You can install backpack package via composer:
+
+```
+composer require backpack/crud:"4.1.*"
+composer require backpack/generators --dev
+php artisan backpack:install
+```
+
 ### Setup Required Configuration Variables
 
 In order to link up to a KoBoToolbox server, you must provide the following environment variables:
@@ -61,13 +72,6 @@ The platform requires a 'primary' user account on the KoboToolbox server to mana
 
 This packages assumes that the following models exist in the platform:
 - `\App\Models\User`
-        
-To create the database tables required by this package, publish and run the provided migration file: 
-
-```
-php artisan vendor:publish --provider="Stats4sd\KoboLink\KoboLinkServiceProvider" --tag="kobo-link-migrations" 
-php artisan migrate
-```
 
 The package provides the following models:
 
