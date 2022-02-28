@@ -94,16 +94,30 @@ class CreateKoboLinkTables extends Migration
             $table->foreignId('xlsform_id');
             $table->timestamps();
         });
+
+        Schema::create('invites', function (Blueprint $table) {
+            $table->id();
+            $table->string('email');
+            $table->foreignId('team_id')->constrained()->onDelete('cascade');
+            $table->foreignId('inviter_id')->constrained('users')->onDelete('cascade');
+            $table->string('token');
+            $table->tinyInteger('is_confirmed')->default(0);
+            $table->timestamps();
+        });
     }
 
     public function down()
     {
+        Schema::dropIfExists('invites');
+        Schema::dropIfExists('submissions');
+        Schema::dropIfExists('datamap_xlsform');
+        Schema::dropIfExists('team_xlsform');
+        Schema::dropIfExists('datamaps');
+        Schema::dropIfExists('xlsforms');
+        Schema::dropIfExists('teams');
+
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('kobo_username');
         });
-
-        Schema::dropIfExists('xlsforms');
-        Schema::dropIfExists('team_xlsforms');
-        Schema::dropIfExists('submissions');
     }
 }
