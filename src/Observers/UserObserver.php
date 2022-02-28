@@ -3,8 +3,6 @@
 namespace Stats4sd\KoboLink\Observers;
 
 use App\Models\User;
-use App\Models\RoleInvite;
-use Illuminate\Support\Str;
 use Stats4sd\KoboLink\Models\Invite;
 
 class UserObserver

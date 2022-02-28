@@ -2,14 +2,8 @@
 
 namespace Stats4sd\KoboLink\Http\Controllers;
 
-
-use App\Models\User;
-use Illuminate\Http\Request;
-use Stats4sd\KoboLink\Models\Team;
 use Stats4sd\KoboLink\Models\Invite;
-use Illuminate\Database\Eloquent\Builder;
-use App\Http\Requests\TeamMemberStoreRequest;
-use App\Http\Requests\TeamMemberUpdateRequest;
+use Stats4sd\KoboLink\Models\Team;
 
 class RegisteredUserController extends Controller
 {
@@ -21,7 +15,7 @@ class RegisteredUserController extends Controller
             $invite = Invite::where('token', '=', request()->token)->first();
         }
 
-        if (!request()->has('token') || $invite == null) {
+        if (! request()->has('token') || $invite == null) {
             abort(403, 'No valid invite is found');
         }
 
@@ -31,5 +25,4 @@ class RegisteredUserController extends Controller
 
         return view('auth.register', compact('invite', 'inviteMessage'));
     }
-
 }

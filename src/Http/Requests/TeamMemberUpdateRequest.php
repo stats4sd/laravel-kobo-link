@@ -5,7 +5,6 @@ namespace Stats4sd\KoboLink\Http\Requests;
 use App\Http\Requests\Request;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class TeamMemberUpdateRequest extends FormRequest
 {

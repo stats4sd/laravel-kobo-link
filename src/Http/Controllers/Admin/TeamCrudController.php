@@ -4,26 +4,26 @@ namespace Stats4sd\KoboLink\Http\Controllers\Admin;
 
 //use App\Http\Controllers\Admin\Fgds\FgdCrudController;
 //use App\Models\Team;
-use Illuminate\Support\Str;
+use App\Exports\InterviewWorkbookExport;
 //use App\Exports\TeamsExport;
 //use App\Exports\TeamSitesExport;
 //use App\Http\Requests\TeamRequest;
-use Stats4sd\KoboLink\Http\Requests\TeamRequest;
+use App\Exports\Survey\FarmerSurveyWorkbookExport;
 //use Carbon\Carbon;
-use Prologue\Alerts\Facades\Alert;
-use Stats4sd\KoboLink\Models\Team;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Storage;
 //use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\InterviewWorkbookExport;
 use Illuminate\Support\Facades\Redirect;
-use Stats4sd\KoboLink\Jobs\GetDataFromKobo;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 //use \App\Http\Controllers\Operations\ExportOperation;
-use App\Exports\Survey\FarmerSurveyWorkbookExport;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Prologue\Alerts\Facades\Alert;
+use Stats4sd\KoboLink\Http\Requests\TeamRequest;
+use Stats4sd\KoboLink\Jobs\GetDataFromKobo;
+use Stats4sd\KoboLink\Models\Team;
 
 /**
  * Class TeamCrudController
@@ -63,7 +63,6 @@ class TeamCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-
         CRUD::setResponsiveTable(false);
 
         //$this->authorize('viewAny', Team::class);
@@ -87,7 +86,7 @@ class TeamCrudController extends CrudController
 
         CRUD::column('slug');
         
-        CRUD::column('status')        
+        CRUD::column('status')
             ->type('boolean')
             ->label('active?');
 
@@ -163,7 +162,7 @@ class TeamCrudController extends CrudController
             1 => 'Active',
             0 => 'Inactive',
         ]);
-        */        
+        */
     }
 
     public function show()
@@ -225,6 +224,7 @@ class TeamCrudController extends CrudController
             $response = Gate::inspect('viewAny', Team::class);
             if (! $response->allowed()) {
                 Alert::add('error', $response->message())->flash();
+
                 return Redirect::back();
             }
 
@@ -261,6 +261,7 @@ class TeamCrudController extends CrudController
     {
         if ($this->authorize('delete', CRUD::getCurrentEntry())) {
             CRUD::allowAccess('delete');
+
             return $this->traitDestroy($id);
         }
     }

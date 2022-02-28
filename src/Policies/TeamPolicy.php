@@ -3,9 +3,9 @@
 namespace Stats4sd\KoboLink\Policies;
 
 use App\Models\User;
-use Stats4sd\KoboLink\Models\Team;
-use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
+use Stats4sd\KoboLink\Models\Team;
 
 class TeamPolicy
 {
@@ -20,7 +20,8 @@ class TeamPolicy
     public function viewAny(User $user)
     {
         return ($user->hasAnyRole('admin', 'methods group')) ? Response::allow()
-        : Response::deny('Sorry, you do not have permissions to view details of all case study teams.');;
+        : Response::deny('Sorry, you do not have permissions to view details of all case study teams.');
+        ;
     }
 
     /**

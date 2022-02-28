@@ -2,13 +2,11 @@
 
 namespace Stats4sd\KoboLink\Http\Controllers;
 
-
-use App\Models\User;
-use Illuminate\Http\Request;
-use Stats4sd\KoboLink\Models\Team;
-use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\TeamMemberStoreRequest;
 use App\Http\Requests\TeamMemberUpdateRequest;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+use Stats4sd\KoboLink\Models\Team;
 
 class TeamMemberController extends Controller
 {
@@ -42,7 +40,7 @@ class TeamMemberController extends Controller
         }
 
         if (isset($data['emails']) && count(array_filter($data['emails'])) > 0) {
-            $team->sendInvites($data['emails']);            
+            $team->sendInvites($data['emails']);
         }
 
         return redirect()->route('team.show', ['id' => $team->id]);
