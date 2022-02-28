@@ -2,7 +2,7 @@
 
 namespace Stats4sd\KoboLink\Http\Controllers\Admin;
 
-use App\Http\Requests\DataMapRequest;
+use Stats4sd\KoboLink\Http\Requests\DataMapRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Stats4sd\KoboLink\Models\Datamap;
