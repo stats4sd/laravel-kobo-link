@@ -56,8 +56,6 @@ class TeamPolicy
      */
     public function update(User $user, Team $team)
     {
-        ddd($team);
-
         return $team->admins->contains($user) || $user->hasAnyRole('admin');
     }
 
