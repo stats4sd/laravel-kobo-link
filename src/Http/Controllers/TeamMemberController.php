@@ -3,10 +3,10 @@
 namespace Stats4sd\KoboLink\Http\Controllers;
 
 use App\Models\User;
-use Stats4sd\KoboLink\Models\Team;
 use Illuminate\Database\Eloquent\Builder;
 use Stats4sd\KoboLink\Http\Requests\TeamMemberStoreRequest;
 use Stats4sd\KoboLink\Http\Requests\TeamMemberUpdateRequest;
+use Stats4sd\KoboLink\Models\Team;
 
 class TeamMemberController extends Controller
 {

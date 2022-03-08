@@ -3,14 +3,14 @@
 namespace Stats4sd\KoboLink\Models;
 
 use App\Models\User;
-use Stats4sd\KoboLink\Mail\InviteMember;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Stats4sd\KoboLink\Mail\InviteMember;
 
 class Team extends Model
 {

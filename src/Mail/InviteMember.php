@@ -4,13 +4,13 @@ namespace Stats4sd\KoboLink\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Stats4sd\KoboLink\Models\Invite;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Stats4sd\KoboLink\Models\Invite;
 
 class InviteMember extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public $invite;
 
