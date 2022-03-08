@@ -29,6 +29,8 @@ Route::group([
     Route::post('teamxlsform/{form}/archive', [TeamXlsformCrudController::class, 'archiveOnKobo']);
     Route::post('teamxlsform/{form}/csvgenerate', [TeamXlsformCrudController::class, 'regenerateCsvFileAttachments']);
     Route::get('teamxlsform/{form}/downloadsubmissions', [TeamXlsformCrudController::class, 'downloadSubmissions'])->name('team_xlsforms.submissions');
+    
+    Route::get('team/{team}/xlsforms', [TeamCrudController::class, 'getForms']);
 
     Route::post('submission/{submission}/reprocess', [SubmissionCrudController::class, 'reprocessSubmission']);
 });
