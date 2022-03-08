@@ -254,7 +254,7 @@ class TeamCrudController extends CrudController
 
     public function getForms(Team $team)
     {
-        return $team->team_xlsforms->toJson();
+        return $team->teamXlsforms->toJson();
     }
 
     public function destroy($id)
