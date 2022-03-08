@@ -9,11 +9,12 @@
                 <span v-if="row.item.kobo_id && row.item.is_active == 1">Deployed - </span>
                 <span v-if="row.item.kobo_id && row.item.is_active == 0 && !row.item.kobo_version_id">Uploaded - </span>
                 <span v-if="row.item.kobo_id && row.item.is_active == 0 && row.item.kobo_version_id">Archived - </span>
+                <!-- TODO: KoboToolbox URL should be retreived from item "KOBO_ENDPOINT" in .env file -->
                 <a
                     v-if="row.item.kobo_id"
                     target="_blank"
                     :href="
-                        'https://kf.kobotoolbox.org/#/forms/' +
+                        'https://kobo.humanitarianresponse.info/#/forms/' +
                             row.item.kobo_id +
                             '/summary'
                     "
