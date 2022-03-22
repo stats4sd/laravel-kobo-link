@@ -4,7 +4,7 @@
 
 <div class=" row container">
 
-    @include('teams.header')
+    @include('kobo::teams.header')
 
     <ul class="nav nav-tabs" id="team-tabs" role="tablist">
         <li class="nav-item" role="presentation">
@@ -16,10 +16,10 @@
     </ul>
     <div class="tab-content w-100" id="team-tabs-content">
         <div class="tab-pane fade  w-100" id="members" role="tabpanel" aria-labeledby="members-tab">
-            @include('teams.members')
+            @include('kobo::teams.members')
         </div>
         <div class="tab-pane fade  w-100" id="forms" role="tabpanel" aria-labeledby="forms-tab">
-            @include('teams.forms')
+            @include('kobo::teams.forms')
         </div>
     </div>
 

@@ -16,7 +16,7 @@ class TeamMemberController extends Controller
             $query->where('teams.id', '=', $team->id);
         })->get();
 
-        return view('teams.create-members', ['team' => $team, 'users' => $users]);
+        return view('kobo::teams.create-members', ['team' => $team, 'users' => $users]);
     }
 
 
@@ -52,7 +52,7 @@ class TeamMemberController extends Controller
         //use the relationship to get the pivot attributes for user
         $user = $team->users->find($user->id);
 
-        return view('teams.edit-members', ['team' => $team, 'user' => $user]);
+        return view('kobo::teams.edit-members', ['team' => $team, 'user' => $user]);
     }
 
 

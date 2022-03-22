@@ -6,7 +6,7 @@
 
 @section('content')
 
-@include('teams.header')
+@include('kobo::teams.header')
 
 <div class="card">
     <div class="card-header">

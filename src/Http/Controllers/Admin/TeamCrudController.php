@@ -176,7 +176,7 @@ class TeamCrudController extends CrudController
         // to avoid error 403 for testing
         $this->authorize('view', $team);
 
-        return view('teams.show', ['team' => $team]);
+        return view('kobo::teams.show', ['team' => $team]);
     }
 
     /*

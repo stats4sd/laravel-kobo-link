@@ -23,6 +23,6 @@ class RegisteredUserController extends Controller
 
         $inviteMessage = "You have been invited to join the " . $messageStub . ".";
 
-        return view('auth.register', compact('invite', 'inviteMessage'));
+        return view('kobo::auth.register', compact('invite', 'inviteMessage'));
     }
 }

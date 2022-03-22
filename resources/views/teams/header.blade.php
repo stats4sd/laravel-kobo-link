@@ -2,7 +2,7 @@
 <div class="col-12 col-xl-12 card">
 <div class="card-header d-flex align-items-flex-end justify-content-between">
     <div>
-        <h1><b>Viability Case Study: {{$team->name}}</b></h1>
+        <h1><b>{{$team->name}}</b></h1>
     </div>
     @can('edit', $team)
         <div>
