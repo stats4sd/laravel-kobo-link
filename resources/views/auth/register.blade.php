@@ -20,6 +20,9 @@
                         </div>
                     @endif
 
+                    <!-- TODO: -->
+                    <!-- 1. how to add business logic to call Invite.confirm() in backpack registration program? -->
+                    <!-- 2. how to add business logic to insert team_member record in backpack registration program? -->
                     <form method="POST" action="{{ route('backpack.auth.register') }}"">
                         @csrf
 
