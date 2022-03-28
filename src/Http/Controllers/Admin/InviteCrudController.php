@@ -39,7 +39,7 @@ class InviteCrudController extends CrudController
         CRUD::column('email')->label('Sent to');
         CRUD::column('team')->type('relationship')->label('Team invited to');
         CRUD::column('inviter')->type('relationship')->label('Invited by');
-        CRUD::column('created_at_day')->type('date')->label('Invite sent on');
+        CRUD::column('created_at')->type('date')->label('Invite sent on');
         CRUD::column('is_confirmed')->type('boolean')->label('Invite Accepted?');
     }
 
