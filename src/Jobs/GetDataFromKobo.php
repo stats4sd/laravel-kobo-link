@@ -56,12 +56,17 @@ class GetDataFromKobo implements ShouldQueue
         $data = $response['results'] ?? null;
         $count = 0;
 
+        $existingSubmissionIdArray = $submissions->pluck('id')->toArray()
+
         if ($data) {
             //compare
             $submissions = Submission::where('team_xlsform_id', '=', $this->form->id)->get();
 
+            // put all submissions ID into an array for existence check
+            $existingSubmissionIdArray = $submissions->pluck('id')->toArray();
+
             foreach ($data as $newSubmission) {
-                if (! in_array($newSubmission['_id'], $submissions->pluck('id')->toArray(), true)) {
+                if (! in_array($newSubmission['_id'], $existingSubmissionIdArray, true)) {
                     $submission = new Submission;
 
                     $submission->id = $newSubmission['_id'];
