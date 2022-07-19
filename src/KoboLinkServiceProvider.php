@@ -19,10 +19,11 @@ class KoboLinkServiceProvider extends PackageServiceProvider
          *
          * More info: https://github.com/spatie/laravel-package-tools
          */
+
         $package
             ->name('laravel-kobo-link')
             ->hasConfigFile()
-            ->hasViews()
+            ->hasViews('kobo')                              // specfiy custom view namespace
             ->hasMigration('create_kobo_link_tables')
             ->hasRoute('backpack/kobolink')
             ->hasCommand(KoboLinkCommand::class);
