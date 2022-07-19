@@ -61,13 +61,6 @@ The platform requires a 'primary' user account on the KoboToolbox server to mana
 
 This packages assumes that the following models exist in the platform:
 - `\App\Models\User`
-        
-To create the database tables required by this package, publish and run the provided migration file: 
-
-```
-php artisan vendor:publish --provider="Stats4sd\KoboLink\KoboLinkServiceProvider" --tag="kobo-link-migrations" 
-php artisan migrate
-```
 
 The package provides the following models:
 
@@ -82,10 +75,37 @@ The package provides the following models:
 
 TODO: add section explaining how the data maps work, and include real examples. 
 
+
+### Publishing The config
+
+If you add the required ENV variables to your application, there should be no need to publish the config file. 
+
+However, you may wish to do so anyway. To publish the file, use:
+
+```bash
+php artisan vendor:publish --provider="Stats4sd\KoboLink\KoboLinkServiceProvider" --tag="kobo-link-config"
+```
+
+
+## Add the Front-end
+This package assumes you are using Laravel Backpack as your admin panel. As such, it comes with a set of CrudControllers for managing your XLS forms and submissions. It also assumes that you are able to build your own front-end to allow team members to access their data, manage forms etc. 
+
+You can add links to these crud panels into your sidebar file located at resourcs\views\vendor\backpack\base\inc\sidebar_content.blade.php:
+
+TODO: Add example team UI for team members to manage their own forms, submissions and team members/invites.
+
+```
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('team') }}'><i class="lab la-wpforms nav-icon"></i> Teams</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('xlsform') }}'><i class="lab la-wpforms nav-icon"></i> XLSForms</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('submission') }}'><i class="lab la-wpforms nav-icon"></i> Submissions</a></li>
+
+```
+
+
 ## Writing Data Processing Scripts
 The Datamap model includes a `process(Submission $submission)` method. This hooks into a Datamap Service class, which is designed to be overwritten by you. Each platform will require a different set of data processing scripts tailored to the data being collected, so we have tried to make it easy to include these scripts in your platform. Here is the short version:
 
-1. Create a "DatamapService" class, and add the fully qualified path to this class into your .env file. E.g.: `DATAMAP_SERVICE_CLASS: "\App\Services\DatamapService::class"`
+1. Create a "DatamapService" class, and add the fully qualified path to this class into your .env file. E.g.: `DATA_PROCESSING_CLASS="\App\Services\DatamapService::class"`
 2. Write the methods you want to use to process a submisison. The method should accept a single Submission parameter, and can then do anything you want to 'process' the submission. e.g.: 
 ```php
     public function testForm(Stats4sd\KoboLink\Models\Submission $submission)
@@ -138,31 +158,6 @@ TODO: include real examples :)
 
 It is vital to match the datamap ID to the method name, as this is how the datamap chooses which method to run during processing. 
 
-### Publishing The config
-
-If you add the required ENV variables to your application, there should be no need to publish the config file. 
-
-However, you may wish to do so anyway. To publish the file, use:
-
-```bash
-php artisan vendor:publish --provider="Stats4sd\KoboLink\KoboLinkServiceProvider" --tag="kobo-link-config"
-```
-
-
-## Add the Front-end
-This package assumes you are using Laravel Backpack as your admin panel. As such, it comes with a set of CrudControllers for managing your XLS forms and submissions. It also assumes that you are able to build your own front-end to allow team members to access their data, manage forms etc. 
-
-You can add links to these crud panels into your sidebar:
-
-TODO: Add example team UI for team members to manage their own forms, submissions and team members/invites.
-
-```
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('team') }}'><i class="lab la-wpforms nav-icon"></i> XLSForms</a></li>
-
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('xlsform') }}'><i class="lab la-wpforms nav-icon"></i> XLSForms</a></li>
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('submissions') }}'><i class="lab la-wpforms nav-icon"></i> Submissions</a></li>
-
-```
 
 ## Security Vulnerabilities
 
