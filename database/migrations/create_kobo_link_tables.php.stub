@@ -68,7 +68,7 @@ class CreateKoboLinkTables extends Migration
          */
         Schema::create('submissions', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->primary();
-            $table->foreignId('team_xlsform_id')->constrained('xlsforms');
+            $table->foreignId('team_xlsform_id')->constrained('team_xlsform');
             $table->string('uuid');
             $table->timestamp('submitted_at');
             $table->string('submitted_by')->nullable();
@@ -84,7 +84,7 @@ class CreateKoboLinkTables extends Migration
          */
         Schema::create('datamaps', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->string('title');
+            $table->string('description');
             $table->timestamps();
         });
 
@@ -94,16 +94,62 @@ class CreateKoboLinkTables extends Migration
             $table->foreignId('xlsform_id');
             $table->timestamps();
         });
+
+        Schema::create('invites', function (Blueprint $table) {
+            $table->id();
+            $table->string('email');
+            $table->foreignId('team_id')->constrained()->onDelete('cascade');
+            $table->foreignId('inviter_id')->constrained('users')->onDelete('cascade');
+            $table->string('token');
+            $table->tinyInteger('is_confirmed')->default(0);
+            $table->timestamps();
+        });
+
+        Schema::create('sites', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('team_id')->constrained()->onDelete('restrict');
+            $table->string('name');
+            $table->string('boundaries')->nullable();
+            $table->text('location')->nullable();
+            $table->text('agro_ecozone')->nullable();
+            $table->text('dominant_agricultural')->nullable();
+            $table->text('trends_in_agriculture')->nullable();
+            $table->text('policies_influencing_trends')->nullable();
+            $table->text('position_of_agroecology')->nullable();
+            $table->text('topography')->nullable();
+            $table->text('land_use_and_history')->nullable();
+            $table->text('typical_farm_size')->nullable();
+            $table->text('typical_land_tenure')->nullable();
+            $table->text('role_of_livestock')->nullable();
+            $table->text('demography')->nullable();
+            $table->text('employment_and_local_economy')->nullable();
+            $table->text('trends_last_10_years')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('team_members', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('team_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->tinyInteger('is_admin')->default(0);
+            $table->timestamps();
+        });
     }
 
     public function down()
     {
+        Schema::dropIfExists('team_members');
+        Schema::dropIfExists('sites');
+        Schema::dropIfExists('invites');
+        Schema::dropIfExists('submissions');
+        Schema::dropIfExists('datamap_xlsform');
+        Schema::dropIfExists('team_xlsform');
+        Schema::dropIfExists('datamaps');
+        Schema::dropIfExists('xlsforms');
+        Schema::dropIfExists('teams');
+
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('kobo_username');
         });
-
-        Schema::dropIfExists('xlsforms');
-        Schema::dropIfExists('team_xlsforms');
-        Schema::dropIfExists('submissions');
     }
 }

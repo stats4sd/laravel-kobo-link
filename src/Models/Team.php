@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Stats4sd\KoboLink\Mail\InviteMember;
 
 class Team extends Model
 {
@@ -24,11 +26,13 @@ class Team extends Model
     public function sendInvites(array $emails): void
     {
         foreach ($emails as $email) {
-            $this->invites()->create([
+            $invite = $this->invites()->create([
                 'email' => $email,
                 'inviter_id' => auth()->id(),
                 'token' => Str::random(24),
             ]);
+
+            Mail::to($invite->email)->send(new InviteMember($invite));
         }
     }
 

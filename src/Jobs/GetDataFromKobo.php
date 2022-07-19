@@ -56,7 +56,7 @@ class GetDataFromKobo implements ShouldQueue
         $data = $response['results'] ?? null;
         $count = 0;
 
-        
+        $existingSubmissionIdArray = $submissions->pluck('id')->toArray()
 
         if ($data) {
             //compare
