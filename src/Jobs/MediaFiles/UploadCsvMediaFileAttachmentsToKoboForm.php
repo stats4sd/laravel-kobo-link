@@ -61,7 +61,7 @@ class UploadCsvMediaFileAttachmentsToKoboForm implements ShouldQueue
         if ($mediaCollection && is_countable($mediaCollection)) {
             foreach ($mediaCollection as $media) {
 
-            // if the file is not a csv, ignore it
+                // if the file is not a csv, ignore it
                 if (! Str::endsWith($media, 'csv')) {
                     continue;
                 }
