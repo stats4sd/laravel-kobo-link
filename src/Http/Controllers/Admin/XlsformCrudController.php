@@ -78,10 +78,12 @@ class XlsformCrudController extends CrudController
             [
                 'name' => 'mysql_name',
                 'label' => 'MySQL Table Name',
+                'type' => 'text',
             ],
             [
                 'name' => 'csv_name',
                 'label' => 'CSV File Name',
+                'type' => 'text',
             ],
             [
                 'name' => 'per_team',
