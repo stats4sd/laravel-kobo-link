@@ -34,7 +34,6 @@ class DeployFormToKobo implements ShouldQueue
      */
     public function handle(): void
     {
-
         //if form is not already on Kobo, create asset...
         if (! $this->form->kobo_id) {
             // Create new Kobo Asset

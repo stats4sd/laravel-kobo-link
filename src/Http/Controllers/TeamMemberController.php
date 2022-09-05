@@ -48,7 +48,6 @@ class TeamMemberController extends Controller
 
     public function edit(Team $team, User $user)
     {
-
         //use the relationship to get the pivot attributes for user
         $user = $team->users->find($user->id);
 

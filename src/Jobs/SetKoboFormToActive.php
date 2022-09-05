@@ -42,7 +42,6 @@ class SetKoboFormToActive implements ShouldQueue
      */
     public function handle(): void
     {
-
         // Deployment already exists, so get new version_id to update deployment
         if ($this->form->kobo_version_id) {
             $getVersion = Http::withBasicAuth(config('kobo-link.kobo.username'), config('kobo-link.kobo.password'))

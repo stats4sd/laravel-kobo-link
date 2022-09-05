@@ -46,7 +46,6 @@ class Datamap extends \Illuminate\Database\Eloquent\Model
     {
         // go through record variables and remove any group names
         foreach ($record as $key => $value) {
-
             // Keep this as it forms part of the media download url
             if ($key === 'formhub/uuid') {
                 continue;
