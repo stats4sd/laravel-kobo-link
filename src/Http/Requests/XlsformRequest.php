@@ -30,7 +30,7 @@ class XlsformRequest extends FormRequest
             'xlsfile' => ['sometimes', 'required'],
             'description' => ['nullable', 'max:60000'],
             'media' => ['nullable'],
-            'csv_lookups' => ['nullable', 'json'],
+            'csv_lookups' => ['nullable', 'array'],
             'is_active' => ['boolean'],
             'available' => ['boolean'],
         ];
