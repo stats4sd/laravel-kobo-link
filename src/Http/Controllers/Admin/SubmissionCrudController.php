@@ -140,7 +140,6 @@ class SubmissionCrudController extends CrudController
         ];
 
         foreach ($content as $key => $value) {
-
             // TODO: fix hack to quietly ignore arrays / repeat groups...
             if (is_array($value)) {
                 $value = json_encode($value, JSON_THROW_ON_ERROR);
@@ -171,7 +170,6 @@ class SubmissionCrudController extends CrudController
         $request = $this->crud->getStrippedSaveRequest();
 
         foreach ($request as $key => $value) {
-
             //handle value updates
             if (! Str::startsWith($key, '_label')) {
                 $content[$key] = $value;

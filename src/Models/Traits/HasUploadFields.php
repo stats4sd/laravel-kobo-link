@@ -32,7 +32,6 @@ trait HasUploadFields
      */
     public function uploadFileWithNames(string $value, string $attribute_name, string $disk, string $destination_path)
     {
-
         // if a new file is uploaded, delete the file from the disk
         if (request()->hasFile($attribute_name) &&
             $this->{$attribute_name} &&
@@ -131,7 +130,6 @@ trait HasUploadFields
 
     public function uploadImage($value, $attribute_name, $disk, $destination_path)
     {
-
         // if the image was erased
         if ($value == null) {
             // delete the image from disk

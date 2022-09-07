@@ -60,7 +60,6 @@ class UploadCsvMediaFileAttachmentsToKoboForm implements ShouldQueue
         $csvLookups = $this->form->xlsform->csv_lookups;
         if ($mediaCollection && is_countable($mediaCollection)) {
             foreach ($mediaCollection as $media) {
-
                 // if the file is not a csv, ignore it
                 if (! Str::endsWith($media, 'csv')) {
                     continue;

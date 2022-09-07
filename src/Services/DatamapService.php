@@ -7,7 +7,6 @@ use Stats4sd\KoboLink\Models\Submission;
 
 class DatamapService
 {
-
     /**
      * This example method will run whenever a submission from a form linked to a Data Map with id 'testMap'.
      * You should replace this entire Service Class with your own, and include a method for every Data Map you create.
